@@ -1,7 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
@@ -591,7 +590,6 @@ function loadKnowledge() {
     extractTopics();
     console.log(`[KNOWLEDGE] Total ${knowledgeChunks.length} chunk siap.`);
 
-    // Build RAG Hybrid index
     buildRAGIndex().catch(err => {
         console.warn('[HYBRID-RAG] Build index gagal:', err.message);
     });
@@ -873,6 +871,16 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '5mb' }));
 app.use(cookieParser());
 
+// Anti-cache untuk Service Worker supaya update langsung kebaca
+app.use((req, res, next) => {
+    if (req.path === '/sw.js' || req.path === '/admin/sw-admin.js') {
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+    }
+    next();
+});
+
 app.use('/api/', rateLimit({
     windowMs: 15 * 60 * 1000, max: 500,
     standardHeaders: true, legacyHeaders: false
@@ -894,14 +902,43 @@ app.use('/api/admin/login', rateLimit({
     windowMs: 15 * 60 * 1000, max: 10, skipSuccessfulRequests: true
 }));
 
+// ============================================================
+// STATIC FILES — URUTAN PENTING!
+// Admin HARUS didaftarkan SEBELUM public
+// ============================================================
+
+// 1. ADMIN — daftar DULU
+app.use('/admin', express.static(path.join(__dirname, 'admin-public'), {
+    dotfiles: 'deny',
+    index: 'index.html',
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('sw-admin.js')) {
+            res.setHeader('Service-Worker-Allowed', '/admin/');
+        }
+        if (filePath.endsWith('manifest-admin.json')) {
+            res.setHeader('Content-Type', 'application/manifest+json');
+        }
+    }
+}));
+
+// 2. PUBLIC (WARGA) — daftar SETELAH admin
 app.use(express.static(path.join(__dirname, 'public'), {
     dotfiles: 'deny',
     index: 'index.html',
     setHeaders: (res, filePath) => {
-        if (filePath.endsWith('sw.js')) res.setHeader('Service-Worker-Allowed', '/');
-        if (filePath.endsWith('manifest.json')) res.setHeader('Content-Type', 'application/manifest+json');
+        if (filePath.endsWith('sw.js')) {
+            res.setHeader('Service-Worker-Allowed', '/');
+        }
+        if (filePath.endsWith('manifest.json')) {
+            res.setHeader('Content-Type', 'application/manifest+json');
+        }
     }
 }));
+
+// 3. Fallback admin (SPA-style: /admin/apa-saja → kirim admin index.html)
+app.get('/admin/{*splat}', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-public', 'index.html'));
+});
 
 // ============================================================
 // AUTH
@@ -943,6 +980,11 @@ app.get('/api/admin/check', (req, res) => {
     } catch {
         return res.json({ authenticated: false });
     }
+});
+
+// Redirect /admin (tanpa slash) ke /admin/
+app.get('/admin', (req, res) => {
+    res.redirect(301, '/admin/');
 });
 
 app.get('/api/health', (req, res) => {
@@ -1656,7 +1698,6 @@ app.post('/api/admin/providers/test', authAdmin, async (req, res) => {
         }
         const p = PROVIDERS_CONFIG[index];
 
-        // Test embedding
         if (type === 'embedding') {
             try {
                 const result = await callEmbeddingWithFallback([p], { text: 'test' });
@@ -1671,7 +1712,6 @@ app.post('/api/admin/providers/test', authAdmin, async (req, res) => {
             return;
         }
 
-        // Test chat
         let callFn, baseUrl, models;
         if (p.customEndpoint) {
             callFn = callOpenAICompatible;
@@ -2170,7 +2210,6 @@ app.post('/api/chat', async (req, res) => {
             }
         }
 
-        // RAG Hybrid + Graph
         let graphContext = '';
         try {
             const gRes = brain.queryContext(userText, { maxDepth: 1, maxNodes: 15 });
@@ -2321,6 +2360,8 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('============================================');
     console.log(`SIVT AI siap di http://localhost:${PORT}`);
+    console.log(`👤 Warga  : http://localhost:${PORT}/`);
+    console.log(`👮 Admin  : http://localhost:${PORT}/admin/`);
     const activeCount = PROVIDERS_CONFIG.filter(p => p.enabled !== false).length;
     console.log(`Provider AI    : ${PROVIDERS_CONFIG.length} terdaftar (${activeCount} aktif)`);
     PROVIDERS_CONFIG.forEach((p, i) => {

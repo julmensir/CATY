@@ -1,0 +1,26 @@
+{
+  "name": "SIVTY AI Admin Dashboard",
+  "short_name": "SIVTY Admin",
+  "description": "Dashboard admin untuk SIVTY AI - Kemantren Tegalrejo.",
+  "start_url": "/admin/",
+  "scope": "/admin/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d47a1",
+  "theme_color": "#0d47a1",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "/uploads/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/uploads/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

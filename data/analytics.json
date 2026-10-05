@@ -1,65 +1,9 @@
 {
-  "totalChats": 279,
-  "totalAnswers": 38,
-  "totalRefusals": 16,
-  "totalMemoryHits": 114,
-  "totalRagHits": 108,
-  "totalOutOfScope": 3,
-  "dailyStats": {
-    "2026-09-13": {
-      "chats": 37,
-      "good": 22,
-      "bad": 7
-    },
-    "2026-09-14": {
-      "chats": 36,
-      "good": 21,
-      "bad": 2
-    },
-    "2026-09-15": {
-      "chats": 27,
-      "good": 3,
-      "bad": 1
-    },
-    "2026-09-16": {
-      "chats": 43,
-      "good": 10,
-      "bad": 0
-    },
-    "2026-09-17": {
-      "chats": 20,
-      "good": 3,
-      "bad": 1
-    },
-    "2026-09-18": {
-      "chats": 17,
-      "good": 13,
-      "bad": 0
-    },
-    "2026-09-21": {
-      "chats": 44,
-      "good": 3,
-      "bad": 0
-    },
-    "2026-09-22": {
-      "chats": 28,
-      "good": 15,
-      "bad": 1
-    },
-    "2026-09-23": {
-      "chats": 3,
-      "good": 0,
-      "bad": 0
-    },
-    "2026-09-25": {
-      "chats": 4,
-      "good": 1,
-      "bad": 0
-    },
-    "2026-09-29": {
-      "chats": 20,
-      "good": 14,
-      "bad": 0
-    }
-  }
+  "totalChats": 0,
+  "totalAnswers": 0,
+  "totalRefusals": 0,
+  "totalMemoryHits": 0,
+  "totalRagHits": 0,
+  "totalOutOfScope": 0,
+  "dailyStats": {}
 }
