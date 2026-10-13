@@ -1,0 +1,2478 @@
+// ============================================================
+// SIVT AI — Admin Dashboard Script (FINAL v3)
+// Fix: Edit Memori pakai /api/admin/memory/:index
+// Semua alert/confirm/prompt diganti custom modal
+// ============================================================
+let currentUser = null;
+let adminToken = null;
+let currentPage = 'dashboard';
+let currentTheme = null;
+let currentInboxTab = 'all';
+let currentFeedbackFilter = 'all';
+let currentProviderMode = 'builtin';
+let graphNetwork = null;
+let graphNodesDataset = null;
+let graphEdgesDataset = null;
+let enrichPollTimer = null;
+const VALID_ROLES = ['chat', 'embedding', 'enrichment', 'query-rewriter'];
+const LOGO_SIZES = {
+  small:  { login: 80,  sidebar: 36 },
+  medium: { login: 90,  sidebar: 44 },
+  large:  { login: 110, sidebar: 56 },
+  xlarge: { login: 130, sidebar: 72 }
+};
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('[ADMIN] DOM loaded');
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('adminPage').style.display = 'none';
+
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const page = item.dataset.page;
+      if (page) showPage(page);
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    const wrap = document.querySelector('.notif-wrapper');
+    const dropdown = document.getElementById('notifDropdown');
+    if (wrap && dropdown && !wrap.contains(e.target)) {
+      dropdown.classList.remove('show');
+    }
+  });
+
+  initRoleCheckboxes();
+  restoreNavGroups();
+  await loadPublicConfigAdmin();
+  await checkAdminSession();
+});
+
+// ============================================================
+// NAV GROUP
+// ============================================================
+function toggleNavGroup(sectionEl) {
+  const group = sectionEl.closest('.nav-group');
+  if (!group) return;
+  const isCollapsed = group.classList.contains('collapsed');
+  if (isCollapsed) {
+    group.classList.remove('collapsed');
+    saveGroupState(getGroupIndex(group), 'open');
+  } else {
+    group.classList.add('collapsed');
+    saveGroupState(getGroupIndex(group), 'closed');
+  }
+}
+function getGroupIndex(group) {
+  return Array.from(document.querySelectorAll('.nav-group')).indexOf(group);
+}
+function saveGroupState(index, state) {
+  try {
+    const states = JSON.parse(localStorage.getItem('sivt_nav_states') || '{}');
+    states[index] = state;
+    localStorage.setItem('sivt_nav_states', JSON.stringify(states));
+  } catch (_) {}
+}
+function restoreNavGroups() {
+  try {
+    const states = JSON.parse(localStorage.getItem('sivt_nav_states') || '{}');
+    document.querySelectorAll('.nav-group').forEach((group, index) => {
+      if (states[index] === 'closed') group.classList.add('collapsed');
+    });
+  } catch (_) {}
+}
+function expandGroupForPage(page) {
+  const activeItem = document.querySelector(`.nav-item[data-page="${page}"]`);
+  if (!activeItem) return;
+  const group = activeItem.closest('.nav-group');
+  if (group && group.classList.contains('collapsed')) {
+    group.classList.remove('collapsed');
+    saveGroupState(getGroupIndex(group), 'open');
+  }
+}
+function expandAllGroups() {
+  document.querySelectorAll('.nav-group').forEach((group, i) => {
+    group.classList.remove('collapsed');
+    saveGroupState(i, 'open');
+  });
+}
+function collapseAllGroups() {
+  document.querySelectorAll('.nav-group').forEach((group, i) => {
+    group.classList.add('collapsed');
+    saveGroupState(i, 'closed');
+  });
+}
+
+// ============================================================
+// LOAD PUBLIC CONFIG
+// ============================================================
+async function loadPublicConfigAdmin() {
+  try {
+    const res = await fetch('/api/config/public');
+    const cfg = await res.json();
+    const loginTitle = document.getElementById('loginTitle');
+    if (loginTitle) loginTitle.textContent = cfg.aiName || 'SIVT AI';
+    const sidebarAiName = document.getElementById('sidebarAiName');
+    if (sidebarAiName) sidebarAiName.textContent = cfg.aiName || 'SIVT AI';
+    const logoHtml = cfg.logoUrl
+      ? `<img src="${cfg.logoUrl}" alt="logo" style="max-width:100%;max-height:100%;object-fit:contain;">`
+      : 'S';
+    const loginLogo = document.getElementById('loginLogo');
+    if (loginLogo) loginLogo.innerHTML = logoHtml;
+    const sidebarLogo = document.getElementById('sidebarLogo');
+    if (sidebarLogo) sidebarLogo.innerHTML = logoHtml;
+    if (cfg.theme) {
+      currentTheme = cfg.theme;
+      applyTheme(cfg.theme);
+    }
+    applyLogoSizeAdmin(cfg.logoSize || 'medium');
+    if (cfg.logoUrl) {
+      let fav = document.querySelector('link[rel="icon"]');
+      if (!fav) {
+        fav = document.createElement('link');
+        fav.rel = 'icon';
+        document.head.appendChild(fav);
+      }
+      fav.href = cfg.logoUrl;
+    }
+  } catch (err) {
+    console.warn('[ADMIN] Gagal load public config:', err.message);
+  }
+}
+
+// ============================================================
+// TEMA
+// ============================================================
+function applyTheme(theme) {
+  if (!theme) return;
+  currentTheme = theme;
+  const root = document.documentElement;
+  if (theme.primary) root.style.setProperty('--primary', theme.primary);
+  if (theme.primaryDark) root.style.setProperty('--primary-dark', theme.primaryDark);
+  if (theme.primaryLight) root.style.setProperty('--primary-light', theme.primaryLight);
+  if (theme.accent) root.style.setProperty('--accent', theme.accent);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta && theme.primary) meta.setAttribute('content', theme.primary);
+  const sidebar = document.querySelector('.admin-sidebar');
+  if (sidebar && theme.sidebarStart && theme.sidebarEnd) {
+    sidebar.style.background = `linear-gradient(180deg, ${theme.sidebarStart} 0%, ${theme.sidebarEnd} 100%)`;
+  }
+}
+function previewTheme() {
+  const theme = {
+    primary: document.getElementById('theme-primary')?.value,
+    primaryDark: document.getElementById('theme-primaryDark')?.value,
+    accent: document.getElementById('theme-accent')?.value,
+    sidebarStart: document.getElementById('theme-sidebarStart')?.value,
+    sidebarEnd: document.getElementById('theme-sidebarEnd')?.value
+  };
+  Object.keys(theme).forEach(k => {
+    const el = document.getElementById(`theme-${k}-text`);
+    if (el) el.value = theme[k];
+  });
+  applyTheme(theme);
+}
+function syncColorFromText(key) {
+  const textEl = document.getElementById(`theme-${key}-text`);
+  const colorEl = document.getElementById(`theme-${key}`);
+  if (!textEl || !colorEl) return;
+  const val = textEl.value.trim();
+  if (/^#[0-9a-f]{6}$/i.test(val)) {
+    colorEl.value = val;
+    previewTheme();
+  }
+}
+const PRESETS = {
+  default: { primary: '#0d47a1', primaryDark: '#0a3a8a', accent: '#ec4899', sidebarStart: '#0a3a8a', sidebarEnd: '#0d47a1' },
+  dark:    { primary: '#1f2937', primaryDark: '#111827', accent: '#6366f1', sidebarStart: '#111827', sidebarEnd: '#1f2937' },
+  green:   { primary: '#059669', primaryDark: '#047857', accent: '#f59e0b', sidebarStart: '#047857', sidebarEnd: '#059669' },
+  purple:  { primary: '#7c3aed', primaryDark: '#6d28d9', accent: '#ec4899', sidebarStart: '#6d28d9', sidebarEnd: '#7c3aed' },
+  red:     { primary: '#dc2626', primaryDark: '#b91c1c', accent: '#f59e0b', sidebarStart: '#b91c1c', sidebarEnd: '#dc2626' },
+  teal:    { primary: '#0d9488', primaryDark: '#0f766e', accent: '#f97316', sidebarStart: '#0f766e', sidebarEnd: '#0d9488' },
+  orange:  { primary: '#ea580c', primaryDark: '#c2410c', accent: '#0891b2', sidebarStart: '#c2410c', sidebarEnd: '#ea580c' }
+};
+function applyPreset(name) {
+  const p = PRESETS[name];
+  if (!p) return;
+  document.getElementById('theme-primary').value = p.primary;
+  document.getElementById('theme-primaryDark').value = p.primaryDark;
+  document.getElementById('theme-accent').value = p.accent;
+  document.getElementById('theme-sidebarStart').value = p.sidebarStart;
+  document.getElementById('theme-sidebarEnd').value = p.sidebarEnd;
+  previewTheme();
+}
+function loadThemeToForm() {
+  if (!currentTheme) return;
+  const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+  setV('theme-primary', currentTheme.primary || '#0d47a1');
+  setV('theme-primaryDark', currentTheme.primaryDark || '#0a3a8a');
+  setV('theme-accent', currentTheme.accent || '#ec4899');
+  setV('theme-sidebarStart', currentTheme.sidebarStart || '#0a3a8a');
+  setV('theme-sidebarEnd', currentTheme.sidebarEnd || '#0d47a1');
+  previewTheme();
+}
+async function saveTheme() {
+  const theme = {
+    primary: document.getElementById('theme-primary').value,
+    primaryDark: document.getElementById('theme-primaryDark').value,
+    primaryLight: document.getElementById('theme-primary').value,
+    accent: document.getElementById('theme-accent').value,
+    sidebarStart: document.getElementById('theme-sidebarStart').value,
+    sidebarEnd: document.getElementById('theme-sidebarEnd').value
+  };
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify({ theme })
+    });
+    const data = await res.json();
+    if (data.success) {
+      currentTheme = theme;
+      showToast('✅ Tema berhasil disimpan', 'success');
+    } else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+function resetTheme() {
+  showConfirm('Reset tema ke default?', () => {
+    applyPreset('default');
+    showToast('Tema direset ke default', 'info');
+  }, 'Reset Tema');
+}
+
+// ============================================================
+// LOGO SIZE
+// ============================================================
+function applyLogoSizeAdmin(size) {
+  const s = LOGO_SIZES[size] || LOGO_SIZES.medium;
+  const loginLogo = document.getElementById('loginLogo');
+  const sidebarLogo = document.getElementById('sidebarLogo');
+  if (loginLogo) { loginLogo.style.width = s.login + 'px'; loginLogo.style.height = s.login + 'px'; }
+  if (sidebarLogo) { sidebarLogo.style.width = s.sidebar + 'px'; sidebarLogo.style.height = s.sidebar + 'px'; }
+}
+async function changeLogoSize(size) {
+  applyLogoSizeAdmin(size);
+  try {
+    await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify({ logoSize: size })
+    });
+    showToast('Ukuran logo diperbarui', 'success');
+  } catch (err) { console.error(err); }
+}
+
+// ============================================================
+// ROLE CHECKBOXES
+// ============================================================
+function initRoleCheckboxes() {
+  ['newProviderRoles', 'customProviderRoles'].forEach(containerId => {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const span = cb.parentElement.querySelector('.role-badge');
+        if (span) span.classList.toggle('inactive', !cb.checked);
+      });
+    });
+  });
+}
+function getSelectedRoles(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return ['chat'];
+  const roles = [];
+  container.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+    roles.push(cb.value);
+  });
+  return roles.length > 0 ? roles : ['chat'];
+}
+
+// ============================================================
+// CEK SESSION
+// ============================================================
+async function checkAdminSession() {
+  try {
+    const res = await fetch('/api/admin/check', {
+      credentials: 'include',
+      headers: adminToken ? { 'Authorization': `Bearer ${adminToken}` } : {}
+    });
+    const data = await res.json();
+    if (data.authenticated) {
+      adminToken = data.token;
+      currentUser = { username: data.username };
+      document.getElementById('adminUsername').textContent = data.username;
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('adminPage').style.display = 'block';
+      await loadAdminConfig();
+      showPage('dashboard');
+      setInterval(loadNotificationsBadge, 30000);
+    }
+  } catch (err) {
+    console.warn('[AUTH] Cek session gagal:', err.message);
+  }
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showPage(page) {
+  currentPage = page;
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.toggle('active', item.dataset.page === page);
+  });
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.toggle('active', p.id === 'page-' + page);
+  });
+  const titles = {
+    dashboard: 'Dashboard', general: 'Umum', logo: 'Logo & Branding',
+    theme: 'Warna Tema', providers: 'Provider AI', prompt: 'Prompt AI',
+    knowledge: 'Pengetahuan', graph: 'Knowledge Graph', inbox: 'Pertanyaan Warga',
+    feedback: 'Feedback & Akurasi', memory: 'Memori AI', sessions: 'Percakapan',
+    notifications: 'Notifikasi', backup: 'Backup', security: 'Keamanan'
+  };
+  document.getElementById('pageTitle').textContent = titles[page] || page;
+  loadCurrentPage();
+  expandGroupForPage(page);
+  if (window.innerWidth < 992) {
+    document.getElementById('adminSidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+  }
+}
+function loadCurrentPage() {
+  const page = currentPage;
+  switch (page) {
+    case 'dashboard': loadDashboard(); break;
+    case 'notifications': loadNotifications(); break;
+    case 'sessions': loadSessions(); break;
+    case 'backup': loadBackups(); break;
+    case 'memory': loadMemoryList(); break;
+    case 'theme': loadThemeToForm(); break;
+    case 'inbox': loadPertanyaanWarga(); break;
+    case 'feedback': loadFeedback(); break;
+    case 'graph': loadGraphVisualization(); break;
+  }
+  loadAdminConfig();
+}
+function toggleSidebar() {
+  document.getElementById('adminSidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+
+// ============================================================
+// LOGIN / LOGOUT
+// ============================================================
+async function doLogin(event) {
+  event.preventDefault();
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const errorEl = document.getElementById('loginError');
+  errorEl.style.display = 'none';
+  try {
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ username, password })
+    });
+    const data = await res.json();
+    if (data.success) {
+      adminToken = data.token;
+      currentUser = { username };
+      document.getElementById('adminUsername').textContent = username;
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('adminPage').style.display = 'block';
+      await loadAdminConfig();
+      showPage('dashboard');
+      showToast(`Selamat datang, ${username}! `, 'success');
+      setInterval(loadNotificationsBadge, 30000);
+    } else {
+      errorEl.textContent = data.message || 'Login gagal';
+      errorEl.style.display = 'block';
+      showToast(data.message || 'Login gagal', 'error');
+    }
+  } catch (err) {
+    errorEl.textContent = 'Error: ' + err.message;
+    errorEl.style.display = 'block';
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+async function doLogout() {
+  showConfirm('Yakin ingin logout dari dashboard admin?', async () => {
+    try { await adminFetch('/api/admin/logout', { method: 'POST' }); } catch (_) {}
+    currentUser = null; adminToken = null;
+    document.getElementById('adminPage').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+    showToast('Berhasil logout 👋', 'info');
+  }, 'Logout');
+}
+function adminFetch(url, opts = {}) {
+  return fetch(url, {
+    ...opts,
+    credentials: 'include',
+    headers: {
+      'Authorization': `Bearer ${adminToken}`,
+      'Content-Type': 'application/json',
+      ...(opts.headers || {})
+    }
+  });
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+async function loadDashboard() {
+  try {
+    const res = await adminFetch('/api/admin/dashboard/stats');
+    const data = await res.json();
+    const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    setText('dashAiName', data.aiName || 'SIVT AI');
+    const uptime = data.uptime || 0;
+    const h = Math.floor(uptime / 3600);
+    const m = Math.floor((uptime % 3600) / 60);
+    setText('dashUptime', h > 0 ? `${h}j ${m}m` : `${m}m`);
+    setText('statProviders', data.providers.total);
+    setText('statProvidersSub', `${data.providers.active} aktif, ${data.providers.inactive} off`);
+    setText('statKnowledge', data.knowledge.chunks);
+    setText('statKnowledgeSub', `${data.knowledge.files} file, ${data.knowledge.topics} topik`);
+    setText('statMemory', data.memory.total);
+    setText('statMemorySub', `${data.memory.totalHits} total hit`);
+    setText('statSessions', data.sessions.total);
+    setText('statSessionsSub', `${data.sessions.messages} pesan`);
+    if (data.graph) {
+      setText('statGraphNodes', data.graph.nodes || 0);
+      setText('statGraphEdges', data.graph.edges || 0);
+      setText('statGraphNodesSub', 'Dari knowledge base');
+      setText('statGraphEdgesSub', 'Relasi antar node');
+    }
+    if (data.rag) {
+      setText('statRagDocs', data.rag.bm25Docs || 0);
+      setText('statEmbedding', data.rag.embedding?.indexedChunks || 0);
+      setText('statRagDocsSub', `Cache: ${data.rag.cache?.size || 0} entry`);
+      setText('statEmbeddingSub', `${data.rag.embedding?.totalChunks || 0} total chunk`);
+    }
+    if (data.feedback) {
+      setText('statFeedback', data.feedback.satisfactionRate + '%');
+      setText('statFeedbackSub', `${data.feedback.good} 👍 / ${data.feedback.bad} 👎`);
+    }
+    if (data.analytics) {
+      setText('statAccuracy', data.analytics.accuracyRate + '%');
+      setText('statAccuracySub', `${data.analytics.totalRefusals} penolakan`);
+    }
+    setText('statUnanswered', data.unanswered.pending);
+    setText('statUnansweredSub', `${data.unanswered.resolved} sudah dijawab`);
+    setText('statNotif', data.notifications.unread);
+    setText('statNotifSub', `dari ${data.notifications.total} total`);
+    renderChart(data.sessions.daily);
+    renderProviderStatus(data.providers.list);
+    renderLearningHighlight(data.learning);
+    renderRAGStats(data.rag);
+  } catch (err) {
+    console.error('Gagal load dashboard:', err);
+    showToast('Gagal memuat dashboard', 'error');
+  }
+}
+function renderRAGStats(rag) {
+  const el = document.getElementById('ragStatsPanel');
+  if (!el) return;
+  if (!rag) { el.innerHTML = '<div class="empty-state">RAG stats tidak tersedia</div>'; return; }
+  el.innerHTML = `<div class="rag-stats-grid">
+    <div class="rag-stat"><div class="rag-stat-value">${rag.bm25Docs || 0}</div><div class="rag-stat-label">BM25 Docs</div></div>
+    <div class="rag-stat"><div class="rag-stat-value">${rag.embedding?.indexedChunks || 0}</div><div class="rag-stat-label">Embedding Vecs</div></div>
+    <div class="rag-stat"><div class="rag-stat-value">${rag.cache?.size || 0}</div><div class="rag-stat-label">Cache Size</div></div>
+    <div class="rag-stat"><div class="rag-stat-value">${rag.cache?.hitRate || '0%'}</div><div class="rag-stat-label">Cache Hit</div></div>
+    <div class="rag-stat"><div class="rag-stat-value">${rag.rewrites || 0}</div><div class="rag-stat-label">Rewrites</div></div>
+    <div class="rag-stat"><div class="rag-stat-value">${rag.totalQueries || 0}</div><div class="rag-stat-label">Queries</div></div>
+  </div>
+  <div style="margin-top:12px;">
+    <button class="btn-secondary" onclick="rebuildRAG()"><i class="fas fa-sync"></i> Rebuild RAG Index</button>
+  </div>`;
+}
+async function rebuildRAG() {
+  showConfirm('Rebuild RAG index? Proses ini akan memanggil API embedding untuk semua chunk.', async () => {
+    showToast('Sedang rebuild RAG index...', 'info');
+    try {
+      const res = await adminFetch('/api/admin/rag/rebuild', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ RAG index berhasil dibangun ulang', 'success');
+        loadDashboard();
+      } else showToast('❌ ' + data.message, 'error');
+    } catch (err) { showToast('Error: ' + err.message, 'error'); }
+  }, 'Rebuild RAG Index');
+}
+let sessionsChart = null;
+function renderChart(daily) {
+  const el = document.getElementById('chartWrap');
+  if (!el) return;
+  if (!daily || daily.length === 0) { el.innerHTML = '<div class="empty-state">Belum ada data</div>'; return; }
+  el.innerHTML = '<canvas id="sessionsCanvas"></canvas>';
+  const canvas = document.getElementById('sessionsCanvas');
+  const ctx = canvas.getContext('2d');
+  const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+  gradient.addColorStop(0, 'rgba(13, 71, 161, 0.9)');
+  gradient.addColorStop(0.5, 'rgba(21, 101, 192, 0.7)');
+  gradient.addColorStop(1, 'rgba(13, 71, 161, 0.15)');
+  if (sessionsChart) sessionsChart.destroy();
+  sessionsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: daily.map(d => d.day),
+      datasets: [{
+        label: 'Sesi', data: daily.map(d => d.sessions),
+        backgroundColor: gradient, borderColor: '#0d47a1', borderWidth: 2,
+        borderRadius: 12, borderSkipped: false, hoverBackgroundColor: '#1565c0',
+        barPercentage: 0.55, categoryPercentage: 0.7
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 1000, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(13, 71, 161, 0.95)', titleColor: '#fff', bodyColor: '#fff',
+          padding: 14, cornerRadius: 10, displayColors: false,
+          titleFont: { size: 13, weight: '700' }, bodyFont: { size: 13 },
+          callbacks: {
+            title: (items) => daily[items[0].dataIndex].date,
+            label: (ctx) => `${ctx.parsed.y} sesi percakapan`
+          }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#5f6368', font: { size: 12, weight: '600' } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false },
+          ticks: { color: '#5f6368', font: { size: 11 }, stepSize: 1, precision: 0, padding: 8 } }
+      }
+    }
+  });
+}
+function renderProviderStatus(list) {
+  const el = document.getElementById('providerStatusList');
+  if (!el) return;
+  if (!list || list.length === 0) { el.innerHTML = '<div class="empty-state">Belum ada provider</div>'; return; }
+  let html = '';
+  list.forEach(p => {
+    const badge = p.enabled ? '<span class="badge badge-success">✓</span>' : '<span class="badge badge-secondary">✗</span>';
+    const roles = (p.roles || ['chat']).map(r => `<span class="role-badge ${r}">${r}</span>`).join(' ');
+    html += `<div class="provider-status-item">
+      <div class="provider-status-name">${badge} <strong>${p.name}</strong></div>
+      <div class="provider-status-meta">${roles} · ${p.models} model</div>
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+function renderLearningHighlight(learning) {
+  const el = document.getElementById('learningHighlight');
+  if (!el || !learning) return;
+  if (learning.pending === 0) { el.innerHTML = '<div class="empty-state">Tidak ada pertanyaan pending ✅</div>'; return; }
+  el.innerHTML = `<div class="learning-highlight-content">
+    <div class="learning-stat-big">${learning.pending}</div>
+    <div class="learning-stat-label">Pertanyaan perlu diperhatikan</div>
+    <div class="learning-stat-breakdown">
+      ${learning.urgent > 0 ? `<span class="badge badge-danger">${learning.urgent} urgent</span>` : ''}
+      ${learning.high > 0 ? `<span class="badge badge-warning">${learning.high} tinggi</span>` : ''}
+      ${learning.medium > 0 ? `<span class="badge badge-primary">${learning.medium} sedang</span>` : ''}
+    </div>
+    <button class="btn-primary-lg" style="margin-top:14px;" onclick="showPage('inbox')">
+      <i class="fas fa-arrow-right"></i> Lihat Pertanyaan Warga
+    </button>
+  </div>`;
+}
+
+// ============================================================
+// NOTIFIKASI
+// ============================================================
+function toggleNotifDropdown() {
+  const dropdown = document.getElementById('notifDropdown');
+  const isOpen = dropdown.classList.contains('show');
+  if (isOpen) dropdown.classList.remove('show');
+  else { dropdown.classList.add('show'); loadNotificationsDropdown(); }
+}
+async function loadNotificationsBadge() {
+  try {
+    const res = await adminFetch('/api/admin/notifications');
+    const data = await res.json();
+    const badge = document.getElementById('notifBadge');
+    if (data.unread > 0) {
+      badge.textContent = data.unread > 99 ? '99+' : data.unread;
+      badge.style.display = 'flex';
+    } else badge.style.display = 'none';
+  } catch (err) {}
+}
+async function loadNotificationsDropdown() {
+  const body = document.getElementById('notifBody');
+  body.innerHTML = '<div class="notif-empty"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>';
+  try {
+    const res = await adminFetch('/api/admin/notifications');
+    const data = await res.json();
+    const badge = document.getElementById('notifBadge');
+    if (data.unread > 0) {
+      badge.textContent = data.unread > 99 ? '99+' : data.unread;
+      badge.style.display = 'flex';
+    } else badge.style.display = 'none';
+    if (!data.items || data.items.length === 0) {
+      body.innerHTML = '<div class="notif-empty">Belum ada notifikasi</div>';
+      return;
+    }
+    let html = '';
+    data.items.slice(0, 10).forEach(n => {
+      const date = timeAgo(n.timestamp);
+      const icon = n.level === 'danger' ? 'exclamation-triangle' :
+                   (n.level === 'warning' ? 'exclamation-circle' : 'info-circle');
+      html += `<div class="notif-dropdown-item notif-${n.level} ${n.read ? 'notif-read' : ''}">
+        <div class="notif-dropdown-icon"><i class="fas fa-${icon}"></i></div>
+        <div class="notif-dropdown-content">
+          <div class="notif-dropdown-title">${n.title}</div>
+          <div class="notif-dropdown-msg">${n.message.slice(0, 80)}</div>
+          <div class="notif-dropdown-time">${date}</div>
+        </div>
+      </div>`;
+    });
+    body.innerHTML = html;
+  } catch (err) {
+    body.innerHTML = '<div class="notif-empty text-danger">Gagal memuat</div>';
+  }
+}
+function timeAgo(timestamp) {
+  const diff = Date.now() - new Date(timestamp).getTime();
+  const sec = Math.floor(diff / 1000);
+  if (sec < 60) return 'Baru saja';
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min} menit lalu`;
+  const hour = Math.floor(min / 60);
+  if (hour < 24) return `${hour} jam lalu`;
+  const day = Math.floor(hour / 24);
+  return `${day} hari lalu`;
+}
+
+// ============================================================
+// LOAD ADMIN CONFIG
+// ============================================================
+async function loadAdminConfig() {
+  try {
+    const res = await adminFetch('/api/admin/config');
+    const cfg = await res.json();
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+    setVal('cfg-aiName', cfg.aiName);
+    setVal('cfg-tagline', cfg.tagline);
+    setVal('cfg-welcomeMessage', cfg.welcomeMessage);
+    setVal('cfg-contact-address', cfg.contactInfo?.address);
+    setVal('cfg-contact-phone', cfg.contactInfo?.phone);
+    setVal('cfg-contact-whatsapp', cfg.contactInfo?.whatsapp);
+    setVal('cfg-contact-email', cfg.contactInfo?.email);
+    setVal('cfg-contact-hours', cfg.contactInfo?.hours);
+    setVal('cfg-systemInstruction', cfg.systemInstruction);
+    setVal('cfg-surveyLink', cfg.surveyLink || '');
+    setVal('cfg-surveyIdleMinutes', cfg.surveyIdleMinutes || 3);
+    const cb = (id, v) => { const el = document.getElementById(id); if (el) el.checked = v; };
+    cb('memoryEnabled', cfg.memoryEnabled !== false);
+    cb('convEnabled', cfg.conversationHistoryEnabled !== false);
+    cb('surveyEnabled', cfg.surveyEnabled !== false);
+    setVal('memoryMinScore', cfg.memoryMinScore || 75);
+    setVal('memorySaveThreshold', cfg.memorySaveThreshold || 55);
+    setVal('convSize', cfg.conversationHistorySize || 20);
+    setVal('rateLimitPerSession', cfg.rateLimitPerSession || 20);
+    updateLogoPreview(cfg.logoUrl);
+    const sizeRadio = document.querySelector(`input[name="logoSize"][value="${cfg.logoSize || 'medium'}"]`);
+    if (sizeRadio) sizeRadio.checked = true;
+    const setBadge = (id, v) => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = v; el.style.display = v > 0 ? 'inline-flex' : 'none'; }
+    };
+    setBadge('badgeProviders', (cfg.providers || []).length);
+    setBadge('badgeKnowledge', cfg.knowledgeChunks || 0);
+    setBadge('badgeMemory', cfg.memoryCount || 0);
+    setBadge('badgeSessions', cfg.sessionCount || 0);
+    setBadge('badgeInbox', (cfg.pendingUnanswered || 0) + (cfg.pendingLearning || 0));
+    if (cfg.graph) setBadge('badgeGraph', cfg.graph.nodes || 0);
+    renderProviders(cfg.providers || []);
+    renderKnowledgeFiles(cfg.knowledgeFiles || [], cfg.knowledgeChunks || 0);
+  } catch (err) {
+    console.error('Gagal load admin config:', err);
+  }
+}
+
+// ============================================================
+// PROVIDER MODE
+// ============================================================
+function switchProviderMode(mode) {
+  currentProviderMode = mode;
+  document.querySelectorAll('#page-providers .filter-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.mode === mode);
+  });
+  const builtIn = document.getElementById('providerMode-builtin');
+  const custom = document.getElementById('providerMode-custom');
+  if (builtIn) builtIn.style.display = mode === 'builtin' ? 'block' : 'none';
+  if (custom) custom.style.display = mode === 'custom' ? 'block' : 'none';
+}
+
+// ============================================================
+// PROVIDERS LIST
+// ============================================================
+function renderProviders(providers) {
+  const el = document.getElementById('providersList');
+  if (!el) return;
+  if (providers.length === 0) {
+    el.innerHTML = '<div class="empty-state">Belum ada provider. Tambahkan API key di atas.</div>';
+    return;
+  }
+  let html = '<div class="table-wrap"><table class="data-table"><thead><tr>';
+  html += '<th>#</th><th>Provider</th><th>Role</th><th>Model</th><th>Status</th><th>Aksi</th>';
+  html += '</tr></thead><tbody>';
+  providers.forEach(p => {
+    const statusBadge = p.enabled
+      ? '<span class="badge badge-success">✓ Aktif</span>'
+      : '<span class="badge badge-secondary">✗ Off</span>';
+    const customTag = p.isCustom
+      ? ' <span class="badge badge-warning" style="font-size:9px;">CUSTOM</span>'
+      : '';
+    const roleBadges = VALID_ROLES.map(role => {
+      const roles = p.roles || ['chat'];
+      const active = roles.includes(role);
+      return `<span class="role-badge ${role} ${active ? '' : 'inactive'}"
+                  onclick="toggleRole(${p.index}, '${role}')"
+                  title="Klik untuk toggle role ${role}">
+          ${role}${active ? ' ✓' : ''}
+      </span>`;
+    }).join('');
+    const embModels = (p.embeddingModels || []).length > 0
+      ? `<div style="font-size:10px;color:#666;margin-top:4px;">📐 ${(p.embeddingModels || []).join(', ')}</div>`
+      : '';
+    html += `<tr>
+      <td>${p.index + 1}</td>
+      <td><strong>${p.displayName}</strong>${customTag}</td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:4px;max-width:280px;">${roleBadges}</div></td>
+      <td style="font-size:11px">
+        <code>${(p.models || []).slice(0, 2).join(', ')}</code>
+        ${embModels}
+      </td>
+      <td>${statusBadge}</td>
+      <td style="white-space:nowrap">
+        <button class="btn-icon-sm btn-info" onclick="testProvider(${p.index}, 'chat')" title="Test Chat"><i class="fas fa-vial"></i></button>
+        <button class="btn-icon-sm btn-info" onclick="testProvider(${p.index}, 'embedding')" title="Test Embedding"><i class="fas fa-ruler-combined"></i></button>
+        <button class="btn-icon-sm btn-primary" onclick="editProviderModels(${p.index}, '${(p.models || []).join(',')}', '${(p.embeddingModels || []).join(',')}')" title="Edit Model"><i class="fas fa-edit"></i></button>
+        <button class="btn-icon-sm btn-warning" onclick="editProviderKey(${p.index})" title="Edit API Key"><i class="fas fa-key"></i></button>
+        <button class="btn-icon-sm btn-secondary" onclick="toggleProvider(${p.index})" title="On/Off"><i class="fas fa-power-off"></i></button>
+        <button class="btn-icon-sm btn-danger" onclick="removeProvider(${p.index})" title="Hapus"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+async function toggleRole(index, role) {
+  try {
+    const cfgRes = await adminFetch('/api/admin/config');
+    const cfg = await cfgRes.json();
+    const provider = (cfg.providers || []).find(p => p.index === index);
+    if (!provider) return;
+    const currentRoles = provider.roles || ['chat'];
+    const roles = new Set(currentRoles);
+    if (roles.has(role)) {
+      if (roles.size > 1) roles.delete(role);
+      else { showToast('Minimal 1 role harus aktif', 'warning'); return; }
+    } else roles.add(role);
+    const res = await adminFetch('/api/admin/providers/update-roles', {
+      method: 'POST', body: JSON.stringify({ index, roles: [...roles] })
+    });
+    const data = await res.json();
+    if (data.success) {
+      loadAdminConfig();
+      showToast(`Role ${role} diperbarui`, 'success');
+    } else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+
+// ============================================================
+// ADD PROVIDER
+// ============================================================
+async function addProvider() {
+  const isCustom = currentProviderMode === 'custom';
+  let payload;
+  if (isCustom) {
+    const name = document.getElementById('customProviderName').value.trim();
+    const displayName = document.getElementById('customProviderDisplay').value.trim();
+    const endpoint = document.getElementById('customProviderEndpoint').value.trim();
+    const apiKey = document.getElementById('customProviderKey').value.trim();
+    const modelsRaw = document.getElementById('customProviderModels').value.trim();
+    const embModelsRaw = document.getElementById('customProviderEmbeddingModels').value.trim();
+    const roles = getSelectedRoles('customProviderRoles');
+    if (!name) return showToast('Nama provider wajib diisi', 'warning');
+    if (!endpoint) return showToast('Custom Endpoint wajib diisi', 'warning');
+    if (!apiKey) return showToast('API Key wajib diisi', 'warning');
+    const models = modelsRaw ? modelsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const embeddingModels = embModelsRaw ? embModelsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    if (models.length === 0 && !roles.includes('embedding')) {
+      return showToast('Minimal 1 model chat wajib diisi', 'warning');
+    }
+    payload = { name, apiKey, models, embeddingModels, customEndpoint: endpoint, displayName, roles };
+  } else {
+    const name = document.getElementById('newProviderName').value;
+    const apiKey = document.getElementById('newProviderKey').value.trim();
+    const modelsRaw = document.getElementById('newProviderModels').value.trim();
+    const embModelsRaw = document.getElementById('newProviderEmbeddingModels').value.trim();
+    const roles = getSelectedRoles('newProviderRoles');
+    if (!apiKey) return showToast('API key harus diisi', 'warning');
+    const models = modelsRaw ? modelsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    const embeddingModels = embModelsRaw ? embModelsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+    payload = { name, apiKey, models, embeddingModels, roles };
+  }
+  const status = document.getElementById('addProviderStatus');
+  status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menambahkan...';
+  try {
+    const res = await adminFetch('/api/admin/providers/add', {
+      method: 'POST', body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      status.innerHTML = '<span class="text-success">✅ Ditambahkan. Total: ' + data.total + '</span>';
+      ['newProviderKey','newProviderModels','newProviderEmbeddingModels',
+       'customProviderName','customProviderDisplay','customProviderEndpoint',
+       'customProviderKey','customProviderModels','customProviderEmbeddingModels']
+        .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+      loadAdminConfig();
+      showToast('✅ Provider berhasil ditambahkan', 'success');
+    } else {
+      status.innerHTML = '<span class="text-danger">' + data.message + '</span>';
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    status.innerHTML = '<span class="text-danger">' + err.message + '</span>';
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+async function editProviderKey(index) {
+  showPrompt('Masukkan API key baru untuk provider ini:', '', async (val) => {
+    if (val.length < 5) return showToast('API key tidak valid (min 5 karakter)', 'error');
+    try {
+      const res = await adminFetch('/api/admin/providers/update-key', {
+        method: 'POST', body: JSON.stringify({ index, apiKey: val.trim() })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ API key diperbarui', 'success');
+        loadAdminConfig();
+      } else showToast('❌ ' + data.message, 'error');
+    } catch (err) { showToast('Error: ' + err.message, 'error'); }
+  }, 'Edit API Key');
+}
+async function editProviderModels(index, currentModels, currentEmbModels) {
+  showPrompt('Edit model CHAT provider (pisah dengan koma):', currentModels, async (modelsStr) => {
+    const models = modelsStr.split(',').map(s => s.trim()).filter(Boolean);
+    showPrompt('Edit model EMBEDDING (pisah koma, kosongkan untuk skip):', currentEmbModels || '', async (embStr) => {
+      const embeddingModels = embStr ? embStr.split(',').map(s => s.trim()).filter(Boolean) : [];
+      if (models.length === 0 && embeddingModels.length === 0) {
+        return showToast('Minimal 1 model (chat atau embedding)', 'warning');
+      }
+      try {
+        const res = await adminFetch('/api/admin/providers/update-models', {
+          method: 'POST', body: JSON.stringify({ index, models, embeddingModels })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('✅ Model diperbarui', 'success');
+          loadAdminConfig();
+        } else showToast('❌ ' + data.message, 'error');
+      } catch (err) { showToast('Error: ' + err.message, 'error'); }
+    }, 'Edit Model Embedding');
+  }, 'Edit Model Chat');
+}
+async function removeProvider(index) {
+  showConfirm('Hapus provider ini? Tindakan ini tidak dapat dibatalkan.', async () => {
+    try {
+      const res = await adminFetch('/api/admin/providers/remove', {
+        method: 'POST', body: JSON.stringify({ index })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ Provider dihapus', 'success');
+        loadAdminConfig();
+      } else showToast(data.message, 'error');
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus Provider');
+}
+async function toggleProvider(index) {
+  try {
+    const res = await adminFetch('/api/admin/providers/toggle', {
+      method: 'POST', body: JSON.stringify({ index })
+    });
+    const data = await res.json();
+    if (data.success) {
+      loadAdminConfig();
+      loadNotificationsBadge();
+      showToast('Status provider diperbarui', 'success');
+    } else showToast(data.message, 'error');
+  } catch (err) { showToast(err.message, 'error'); }
+}
+async function testProvider(index, type = 'chat') {
+  showToast(`Menguji provider (${type})...`, 'info');
+  try {
+    const res = await adminFetch('/api/admin/providers/test', {
+      method: 'POST', body: JSON.stringify({ index, type })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showAlert(data.message, 'Test Berhasil', 'success');
+    } else {
+      showAlert(data.message, 'Test Gagal', 'error');
+    }
+  } catch (err) { showAlert('Error: ' + err.message, 'Error', 'error'); }
+}
+
+// ============================================================
+// PERTANYAAN WARGA
+// ============================================================
+function switchInboxTab(tab) {
+  currentInboxTab = tab;
+  document.querySelectorAll('#page-inbox .filter-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.inboxTab === tab);
+  });
+  loadPertanyaanWarga();
+}
+async function loadPertanyaanWarga() {
+  const el = document.getElementById('inboxList');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+  const statsEl = document.getElementById('inboxStats');
+  if (currentInboxTab === 'all') {
+    if (statsEl) statsEl.style.display = 'none';
+    try {
+      const res = await adminFetch('/api/admin/unanswered?filter=all');
+      const data = await res.json();
+      const badge = document.getElementById('badgeInbox');
+      if (badge) {
+        badge.textContent = data.pending || 0;
+        badge.style.display = (data.pending || 0) > 0 ? 'inline-flex' : 'none';
+      }
+      const countAll = document.getElementById('inboxTabAllCount');
+      if (countAll) countAll.textContent = data.total || 0;
+      const countPrio = document.getElementById('inboxTabPriorityCount');
+      if (countPrio) {
+        try {
+          const lq = await adminFetch('/api/admin/learning/stats');
+          const stats = await lq.json();
+          countPrio.textContent = stats.pending || 0;
+        } catch (_) {}
+      }
+      if (!data.items || data.items.length === 0) {
+        el.innerHTML = '<div class="empty-state"><i class="fas fa-check-circle" style="font-size:32px; color:var(--success); margin-bottom:8px;"></i><br>Tidak ada pertanyaan warga.</div>';
+        return;
+      }
+      let html = '';
+      data.items.forEach(u => {
+        const date = new Date(u.lastAsked).toLocaleString('id-ID');
+        const isResolved = u.resolved;
+        const countBadge = u.count > 1 ? `<span class="badge badge-warning">Ditanya ${u.count}x</span>` : '';
+        const safeQuestion = u.question.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/'/g, "\\'");
+        html += `<div class="unanswered-item ${isResolved ? 'unanswered-resolved' : ''}">
+          <div class="unanswered-head">
+            <div class="unanswered-icon"><i class="fas fa-${isResolved ? 'check-circle' : 'question-circle'}"></i></div>
+            <div class="unanswered-question">${u.question}</div>
+            <div class="unanswered-badges">
+              ${countBadge}
+              ${isResolved ? '<span class="badge badge-success">✓ Sudah</span>' : '<span class="badge badge-danger">Belum</span>'}
+            </div>
+          </div>
+          <div class="unanswered-meta"><i class="fas fa-clock"></i> Terakhir ditanya: ${date}</div>
+          <div class="unanswered-actions">
+            ${!isResolved ? `
+              <button class="btn-primary-lg btn-sm" onclick="openAnswerModal('${u.id}', '${safeQuestion}', 'unanswered')">
+                <i class="fas fa-plus-circle"></i> Tambah Jawaban
+              </button>
+              <button class="btn-secondary btn-sm" onclick="markUnansweredResolved('${u.id}')">
+                <i class="fas fa-check"></i> Tandai Sudah
+              </button>
+            ` : ''}
+            <button class="btn-danger-outline btn-sm" onclick="deleteUnanswered('${u.id}')">
+              <i class="fas fa-trash"></i> Hapus
+            </button>
+          </div>
+        </div>`;
+      });
+      el.innerHTML = html;
+    } catch (err) {
+      el.innerHTML = `<div class="empty-state text-danger">Gagal load: ${err.message}</div>`;
+    }
+  } else {
+    if (statsEl) statsEl.style.display = 'grid';
+    try {
+      const res = await adminFetch('/api/admin/learning/queue?filter=pending');
+      const data = await res.json();
+      const stats = data.stats || {};
+      const setText = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+      setText('inboxStatTotal', stats.total || 0);
+      setText('inboxStatPending', stats.pending || 0);
+      setText('inboxStatUrgent', stats.urgent || 0);
+      setText('inboxStatResolved', stats.resolved || 0);
+      const badge = document.getElementById('badgeInbox');
+      if (badge) {
+        badge.textContent = stats.pending || 0;
+        badge.style.display = (stats.pending || 0) > 0 ? 'inline-flex' : 'none';
+      }
+      const countAll = document.getElementById('inboxTabAllCount');
+      if (countAll) {
+        try {
+          const un = await adminFetch('/api/admin/unanswered?filter=all');
+          const und = await un.json();
+          countAll.textContent = und.total || 0;
+        } catch (_) {}
+      }
+      const countPrio = document.getElementById('inboxTabPriorityCount');
+      if (countPrio) countPrio.textContent = stats.pending || 0;
+      if (!data.items || data.items.length === 0) {
+        el.innerHTML = '<div class="empty-state"><i class="fas fa-check-circle" style="font-size:32px; color:var(--success); margin-bottom:8px;"></i><br>Tidak ada antrian prioritas. AI Anda sudah pintar! </div>';
+        return;
+      }
+      let html = '';
+      data.items.forEach(item => {
+        const date = new Date(item.lastAsked).toLocaleString('id-ID');
+        const priorityClass = `priority-${item.priority}`;
+        const priorityLabel = {
+          urgent: '🚨 URGENT', high: '⚠️ TINGGI', medium: '📌 SEDANG', normal: 'ℹ️ NORMAL'
+        }[item.priority] || 'NORMAL';
+        const variants = (item.variants || []).slice(0, 3).map(v =>
+          `<div class="variant-item"><i class="fas fa-quote-right"></i> ${v}</div>`
+        ).join('');
+        const safeQuestion = (item.original || item.question)
+          .replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/'/g, "\\'");
+        html += `<div class="learning-item ${priorityClass} ${item.resolved ? 'learning-resolved' : ''}">
+          <div class="learning-head">
+            <div class="learning-priority">${priorityLabel}</div>
+            <div class="learning-count"><i class="fas fa-fire"></i> ${item.count}x ditanya</div>
+          </div>
+          <div class="learning-question"><i class="fas fa-question-circle"></i> ${item.question}</div>
+          ${variants ? `<div class="learning-variants"><div class="variant-label">Variasi pertanyaan:</div>${variants}</div>` : ''}
+          <div class="learning-meta">
+            <i class="fas fa-clock"></i> Pertama: ${new Date(item.firstAsked).toLocaleDateString('id-ID')} • Terakhir: ${date}
+          </div>
+          <div class="unanswered-actions">
+            ${!item.resolved ? `
+              <button class="btn-primary-lg btn-sm" onclick="openAnswerModal('${item.id}', '${safeQuestion}', 'learning')">
+                <i class="fas fa-plus-circle"></i> Tambah ke Pengetahuan
+              </button>
+              <button class="btn-secondary btn-sm" onclick="resolveLearning('${item.id}')">
+                <i class="fas fa-check"></i> Tandai Selesai
+              </button>
+            ` : `<span class="badge badge-success">✓ Sudah ditangani</span>`}
+            <button class="btn-danger-outline btn-sm" onclick="deleteLearning('${item.id}')">
+              <i class="fas fa-trash"></i> Hapus
+            </button>
+          </div>
+        </div>`;
+      });
+      el.innerHTML = html;
+    } catch (err) {
+      el.innerHTML = `<div class="empty-state text-danger">Gagal load: ${err.message}</div>`;
+    }
+  }
+}
+async function markUnansweredResolved(id) {
+  try {
+    const res = await adminFetch('/api/admin/unanswered/resolve', {
+      method: 'POST', body: JSON.stringify({ id })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Ditandai sudah dijawab', 'success');
+      loadPertanyaanWarga();
+      loadAdminConfig();
+    } else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast(err.message, 'error'); }
+}
+async function deleteUnanswered(id) {
+  showConfirm('Hapus pertanyaan ini dari daftar?', async () => {
+    try {
+      const res = await adminFetch('/api/admin/unanswered/delete', {
+        method: 'POST', body: JSON.stringify({ id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ Pertanyaan dihapus', 'success');
+        loadPertanyaanWarga();
+        loadAdminConfig();
+      } else showToast(data.message, 'error');
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus Pertanyaan');
+}
+async function resolveLearning(id) {
+  try {
+    const res = await adminFetch('/api/admin/learning/resolve', {
+      method: 'POST', body: JSON.stringify({ id })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Ditandai selesai', 'success');
+      loadPertanyaanWarga();
+      loadAdminConfig();
+    } else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast(err.message, 'error'); }
+}
+async function deleteLearning(id) {
+  showConfirm('Hapus pertanyaan ini dari antrian prioritas?', async () => {
+    try {
+      const res = await adminFetch('/api/admin/learning/delete', {
+        method: 'POST', body: JSON.stringify({ id })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ Dihapus dari antrian', 'success');
+        loadPertanyaanWarga();
+        loadAdminConfig();
+      } else showToast(data.message, 'error');
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus dari Antrian');
+}
+async function clearInboxResolved() {
+  showConfirm('Hapus semua pertanyaan yang sudah diselesaikan?', async () => {
+    try {
+      if (currentInboxTab === 'all') {
+        await adminFetch('/api/admin/unanswered/clear', {
+          method: 'POST', body: JSON.stringify({ onlyResolved: true })
+        });
+      } else {
+        await adminFetch('/api/admin/learning/clear-resolved', { method: 'POST' });
+      }
+      showToast('✅ Pertanyaan resolved dibersihkan', 'success');
+      loadPertanyaanWarga();
+      loadAdminConfig();
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Bersihkan Resolved');
+}
+async function clearInboxAll() {
+  const tabLabel = currentInboxTab === 'all' ? 'Semua Pertanyaan Warga' : 'Antrian Prioritas';
+  const confirmed = await showConfirmAsync(
+    `⚠️ HAPUS SEMUA ${tabLabel}?\n\nSemua data akan hilang PERMANEN dan tidak dapat dikembalikan.\n\nKlik "Ya, Hapus Semua" jika Anda yakin.`,
+    'Hapus Semua Pertanyaan',
+    'Ya, Hapus Semua'
+  );
+  if (!confirmed) return;
+  try {
+    showToast('Menghapus semua pertanyaan...', 'info');
+    if (currentInboxTab === 'all') {
+      await adminFetch('/api/admin/unanswered/clear', {
+        method: 'POST', body: JSON.stringify({ onlyResolved: false })
+      });
+    } else {
+      await adminFetch('/api/admin/learning/clear-all', { method: 'POST' });
+    }
+    showToast('✅ Semua pertanyaan dihapus', 'success');
+    loadPertanyaanWarga();
+    loadAdminConfig();
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// ============================================================
+// FEEDBACK
+// ============================================================
+function filterFeedback(filter) {
+  currentFeedbackFilter = filter;
+  document.querySelectorAll('#page-feedback .filter-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.filter === filter);
+  });
+  loadFeedback();
+}
+async function loadFeedback() {
+  try {
+    const statsRes = await adminFetch('/api/admin/feedback/stats');
+    const stats = await statsRes.json();
+    const setText = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    setText('fbTotal', stats.feedback?.total || 0);
+    setText('fbGood', stats.feedback?.good || 0);
+    setText('fbBad', stats.feedback?.bad || 0);
+    setText('fbSatisfaction', (stats.feedback?.satisfactionRate || 0) + '%');
+    setText('anTotalChats', stats.analytics?.totalChats || 0);
+    setText('anTotalAnswers', stats.analytics?.totalAnswers || 0);
+    setText('anRefusals', stats.analytics?.totalRefusals || 0);
+    setText('anAccuracy', (stats.analytics?.accuracyRate || 0) + '%');
+    setText('anMemoryHits', stats.analytics?.totalMemoryHits || 0);
+    setText('anRagHits', stats.analytics?.totalRagHits || 0);
+    setText('anOutOfScope', stats.analytics?.totalOutOfScope || 0);
+    renderFeedbackChart(stats.dailyStats);
+    renderFeedbackPieChart(stats.feedback);
+  } catch (err) { console.error('Gagal load feedback stats:', err); }
+  const el = document.getElementById('feedbackList');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+  try {
+    let endpoint = '/api/admin/feedback/list';
+    if (currentFeedbackFilter === 'good') endpoint = '/api/admin/feedback/good';
+    if (currentFeedbackFilter === 'bad') endpoint = '/api/admin/feedback/bad';
+    const res = await adminFetch(endpoint);
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      el.innerHTML = '<div class="empty-state">Belum ada feedback.</div>';
+      return;
+    }
+    let html = '';
+    data.items.forEach(f => {
+      const date = new Date(f.timestamp).toLocaleString('id-ID');
+      const icon = f.rating === 'good' ? 'thumbs-up' : 'thumbs-down';
+      const badgeClass = f.rating === 'good' ? 'badge-success' : 'badge-danger';
+      html += `<div class="feedback-item feedback-${f.rating}">
+        <div class="feedback-head">
+          <div class="feedback-icon"><i class="fas fa-${icon}"></i></div>
+          <div class="feedback-question">${f.question}</div>
+          <span class="badge ${badgeClass}">${f.rating === 'good' ? '👍 Bagus' : '👎 Kurang'}</span>
+        </div>
+        <div class="feedback-answer">
+          <div class="feedback-label">Jawaban AI:</div>
+          <div class="feedback-answer-text">${f.answer}</div>
+        </div>
+        <div class="feedback-meta">
+          <i class="fas fa-clock"></i> ${date}
+          ${f.provider ? ` • <i class="fas fa-cloud"></i> ${f.provider}` : ''}
+          ${f.source ? ` • <i class="fas fa-tag"></i> ${f.source}` : ''}
+        </div>
+      </div>`;
+    });
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state text-danger">Gagal load: ${err.message}</div>`;
+  }
+}
+let feedbackChartInstance = null;
+function renderFeedbackChart(dailyStats) {
+  const el = document.getElementById('feedbackChart');
+  if (!el || !dailyStats) return;
+  const days = Object.keys(dailyStats).sort().slice(-7);
+  if (days.length === 0) { el.innerHTML = '<div class="empty-state">Belum ada data</div>'; return; }
+  el.innerHTML = '<canvas id="feedbackCanvas"></canvas>';
+  const canvas = document.getElementById('feedbackCanvas');
+  const ctx = canvas.getContext('2d');
+  if (feedbackChartInstance) feedbackChartInstance.destroy();
+  feedbackChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: days.map(d => d.slice(5)),
+      datasets: [
+        {
+          label: 'Bagus 👍', data: days.map(d => dailyStats[d].good || 0),
+          borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          borderWidth: 3, tension: 0.4, fill: true,
+          pointBackgroundColor: '#10b981', pointBorderColor: '#fff',
+          pointBorderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8
+        },
+        {
+          label: 'Kurang 👎', data: days.map(d => dailyStats[d].bad || 0),
+          borderColor: '#dc3545', backgroundColor: 'rgba(220, 53, 69, 0.15)',
+          borderWidth: 3, tension: 0.4, fill: true,
+          pointBackgroundColor: '#dc3545', pointBorderColor: '#fff',
+          pointBorderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: 1000, easing: 'easeOutQuart' },
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true, pointStyle: 'circle', padding: 18,
+            font: { size: 12, weight: '600' }, color: '#5f6368'
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(13, 71, 161, 0.95)', titleColor: '#fff', bodyColor: '#fff',
+          padding: 14, cornerRadius: 10,
+          titleFont: { size: 13, weight: '700' }, bodyFont: { size: 13 }
+        }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#5f6368', font: { size: 11 } } },
+        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false },
+          ticks: { color: '#5f6368', font: { size: 11 }, stepSize: 1, precision: 0, padding: 8 } }
+      }
+    }
+  });
+}
+let feedbackPieChartInstance = null;
+function renderFeedbackPieChart(feedback) {
+  const el = document.getElementById('feedbackPieChart');
+  if (!el) return;
+  if (!feedback || (feedback.total || 0) === 0) {
+    el.innerHTML = '<div class="empty-state">Belum ada feedback</div>';
+    return;
+  }
+  const good = feedback.good || 0;
+  const bad = feedback.bad || 0;
+  const total = feedback.total || (good + bad);
+  const satisfaction = feedback.satisfactionRate || 0;
+  el.innerHTML = `
+    <div style="position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+      <canvas id="feedbackPieCanvas"></canvas>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;">
+        <div style="font-size:32px;font-weight:800;color:#0d47a1;line-height:1;">${satisfaction}%</div>
+        <div style="font-size:11px;color:#5f6368;font-weight:600;letter-spacing:0.5px;margin-top:4px;text-transform:uppercase;">Kepuasan</div>
+      </div>
+    </div>
+  `;
+  const canvas = document.getElementById('feedbackPieCanvas');
+  const ctx = canvas.getContext('2d');
+  if (feedbackPieChartInstance) feedbackPieChartInstance.destroy();
+  feedbackPieChartInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Bagus ', 'Kurang 👎'],
+      datasets: [{
+        data: [good, bad],
+        backgroundColor: ['rgba(16, 185, 129, 0.9)', 'rgba(220, 53, 69, 0.9)'],
+        hoverBackgroundColor: ['rgba(16, 185, 129, 1)', 'rgba(220, 53, 69, 1)'],
+        borderColor: '#ffffff', borderWidth: 3, hoverOffset: 10
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false, cutout: '70%',
+      animation: { animateRotate: true, animateScale: true, duration: 1000, easing: 'easeOutQuart' },
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            usePointStyle: true, pointStyle: 'circle', padding: 16,
+            font: { size: 12, weight: '600' }, color: '#5f6368',
+            generateLabels: (chart) => {
+              const data = chart.data;
+              return data.labels.map((label, i) => ({
+                text: `${label}  (${data.datasets[0].data[i]})`,
+                fillStyle: data.datasets[0].backgroundColor[i],
+                strokeStyle: data.datasets[0].backgroundColor[i],
+                lineWidth: 0, pointStyle: 'circle', hidden: false, index: i
+              }));
+            }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(13, 71, 161, 0.95)', titleColor: '#fff', bodyColor: '#fff',
+          padding: 14, cornerRadius: 10, displayColors: true, boxPadding: 6,
+          titleFont: { size: 13, weight: '700' }, bodyFont: { size: 13 },
+          callbacks: {
+            label: (ctx) => {
+              const value = ctx.parsed;
+              const pct = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+              return ` ${ctx.label}: ${value} (${pct}%)`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+async function clearFeedback() {
+  showConfirm('Hapus semua data feedback? Data tidak dapat dikembalikan.', async () => {
+    try {
+      await adminFetch('/api/admin/feedback/clear', { method: 'POST', body: JSON.stringify({}) });
+      showToast('✅ Semua feedback dihapus', 'success');
+      loadFeedback();
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus Feedback');
+}
+async function clearAnalytics() {
+  showConfirm('Reset semua data analytics? Data tidak dapat dikembalikan.', async () => {
+    try {
+      await adminFetch('/api/admin/feedback/clear', { method: 'POST', body: JSON.stringify({ analytics: true }) });
+      showToast('✅ Analytics direset', 'success');
+      loadFeedback();
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Reset Analytics');
+}
+
+// ============================================================
+// MODAL ANSWER + PIPELINE
+// ============================================================
+function openAnswerModal(id, question, source) {
+  document.getElementById('modal-id').value = id;
+  document.getElementById('modal-question').value = question;
+  document.getElementById('modal-answer').value = '';
+  document.getElementById('modal-category').value = '';
+  document.getElementById('modal-source').value = source;
+  document.getElementById('modalPipelineStatus').innerHTML = '';
+  const btn = document.getElementById('modalSubmitBtn');
+  if (btn) btn.disabled = false;
+  document.getElementById('answerModal').classList.add('show');
+  setTimeout(() => document.getElementById('modal-answer').focus(), 100);
+}
+function closeAnswerModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('answerModal').classList.remove('show');
+}
+async function submitAnswerToKnowledge() {
+  const id = document.getElementById('modal-id').value;
+  const question = document.getElementById('modal-question').value;
+  const answer = document.getElementById('modal-answer').value.trim();
+  const category = document.getElementById('modal-category').value.trim();
+  const source = document.getElementById('modal-source').value;
+  const statusEl = document.getElementById('modalPipelineStatus');
+  const submitBtn = document.getElementById('modalSubmitBtn');
+  if (!answer) return showToast('Jawaban tidak boleh kosong', 'warning');
+  if (answer.length < 20) return showToast('Jawaban minimal 20 karakter', 'warning');
+  if (submitBtn) submitBtn.disabled = true;
+  if (statusEl) {
+    statusEl.innerHTML = `
+      <div class="pipeline-step pending"><i class="fas fa-spinner fa-spin"></i> Menyimpan ke Buku Pengetahuan...</div>
+      <div class="pipeline-step pending"><i class="fas fa-circle"></i> Update Knowledge Graph...</div>
+      <div class="pipeline-step pending"><i class="fas fa-circle"></i> Tandai resolved (3 fitur)...</div>
+      <div class="pipeline-step pending"><i class="fas fa-circle"></i> Semantic Extraction via AI...</div>
+    `;
+  }
+  try {
+    const res = await adminFetch('/api/admin/unified/add-to-knowledge', {
+      method: 'POST', body: JSON.stringify({ id, question, answer, category, source })
+    });
+    const data = await res.json();
+    if (data.success) {
+      const s = data.steps || {};
+      if (statusEl) {
+        statusEl.innerHTML = `
+          <div class="pipeline-step ${s.savedToKnowledge ? 'success' : 'failed'}">
+            <i class="fas fa-${s.savedToKnowledge ? 'check-circle' : 'times-circle'}"></i>
+            Buku Pengetahuan ${s.savedToKnowledge ? 'terupdate' : 'gagal'}
+          </div>
+          <div class="pipeline-step ${s.graphUpdated ? 'success' : 'failed'}">
+            <i class="fas fa-${s.graphUpdated ? 'check-circle' : 'times-circle'}"></i>
+            Knowledge Graph ${s.graphUpdated ? `+${s.edgesAdded} edges` : 'gagal'}
+          </div>
+          <div class="pipeline-step ${(s.resolvedUnanswered || s.resolvedLearning) ? 'success' : 'pending'}">
+            <i class="fas fa-${(s.resolvedUnanswered || s.resolvedLearning) ? 'check-circle' : 'circle'}"></i>
+            Resolved: ${s.resolvedUnanswered ? 'Tak Terjawab ✓ ' : ''}${s.resolvedLearning ? 'Auto-Learning ✓' : ''}
+          </div>
+          <div class="pipeline-step ${s.triplesExtracted > 0 ? 'success' : 'pending'}">
+            <i class="fas fa-${s.triplesExtracted > 0 ? 'check-circle' : 'circle'}"></i>
+            Semantic: ${s.triplesExtracted || 0} triple diekstrak
+          </div>
+        `;
+      }
+      showToast('✅ Jawaban ditambahkan ke knowledge base', 'success');
+      setTimeout(() => {
+        closeAnswerModal();
+        loadPertanyaanWarga();
+        loadAdminConfig();
+      }, 2000);
+    } else {
+      if (statusEl) statusEl.innerHTML = `<div class="pipeline-step failed"><i class="fas fa-times-circle"></i> Gagal: ${data.message}</div>`;
+      showToast('❌ ' + data.message, 'error');
+      if (submitBtn) submitBtn.disabled = false;
+    }
+  } catch (err) {
+    if (statusEl) statusEl.innerHTML = `<div class="pipeline-step failed"><i class="fas fa-times-circle"></i> Error: ${err.message}</div>`;
+    showToast('Error: ' + err.message, 'error');
+    if (submitBtn) submitBtn.disabled = false;
+  }
+}
+
+// ============================================================
+// LOGO
+// ============================================================
+function updateLogoPreview(url) {
+  const box = document.getElementById('logoPreviewBox');
+  if (!box) return;
+  if (url) box.innerHTML = `<img src="${url}" alt="Logo">`;
+  else box.innerHTML = `<div class="logo-placeholder"><i class="fas fa-image"></i><span>Belum ada logo</span></div>`;
+}
+async function uploadLogo() {
+  const fileInput = document.getElementById('logoFile');
+  const status = document.getElementById('logoStatus');
+  if (!fileInput.files[0]) return showToast('Pilih file logo dulu', 'warning');
+  const formData = new FormData();
+  formData.append('logo', fileInput.files[0]);
+  status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+  try {
+    const res = await fetch('/api/admin/logo/upload', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Authorization': `Bearer ${adminToken}` },
+      body: formData
+    });
+    const data = await res.json();
+    if (data.success) {
+      status.innerHTML = '<span class="text-success">✅ Logo diupload!</span>';
+      updateLogoPreview(data.logoUrl);
+      await loadPublicConfigAdmin();
+      loadAdminConfig();
+      showToast('✅ Logo berhasil diupload', 'success');
+    } else {
+      status.innerHTML = '<span class="text-danger">❌ ' + data.message + '</span>';
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    status.innerHTML = '<span class="text-danger">' + err.message + '</span>';
+    showToast('Error: ' + err.message, 'error');
+  }
+  fileInput.value = '';
+}
+async function deleteLogo() {
+  showConfirm('Hapus logo saat ini?', async () => {
+    const status = document.getElementById('logoStatus');
+    try {
+      const res = await adminFetch('/api/admin/logo/delete', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        status.innerHTML = '<span class="text-success">✅ Logo dihapus</span>';
+        updateLogoPreview('');
+        await loadPublicConfigAdmin();
+        loadAdminConfig();
+        showToast('✅ Logo dihapus', 'success');
+      } else {
+        status.innerHTML = '<span class="text-danger">❌ ' + data.message + '</span>';
+        showToast('❌ ' + data.message, 'error');
+      }
+    } catch (err) {
+      status.innerHTML = '<span class="text-danger">' + err.message + '</span>';
+      showToast('Error: ' + err.message, 'error');
+    }
+  }, 'Hapus Logo');
+}
+
+// ============================================================
+// GENERAL / PROMPT
+// ============================================================
+async function saveGeneral() {
+  const updates = {
+    aiName: document.getElementById('cfg-aiName').value.trim(),
+    tagline: document.getElementById('cfg-tagline').value.trim(),
+    welcomeMessage: document.getElementById('cfg-welcomeMessage').value,
+    contactInfo: {
+      address: document.getElementById('cfg-contact-address').value.trim(),
+      phone: document.getElementById('cfg-contact-phone').value.trim(),
+      whatsapp: document.getElementById('cfg-contact-whatsapp').value.trim(),
+      email: document.getElementById('cfg-contact-email').value.trim(),
+      hours: document.getElementById('cfg-contact-hours').value.trim()
+    }
+  };
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify(updates)
+    });
+    const data = await res.json();
+    if (data.success) {
+      await loadPublicConfigAdmin();
+      showToast('✅ Pengaturan umum disimpan', 'success');
+    } else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+async function savePrompt() {
+  const systemInstruction = document.getElementById('cfg-systemInstruction').value;
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify({ systemInstruction })
+    });
+    const data = await res.json();
+    if (data.success) showToast('✅ Prompt AI disimpan', 'success');
+    else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+
+// ============================================================
+// KNOWLEDGE
+// ============================================================
+function renderKnowledgeFiles(files, chunks) {
+  const el = document.getElementById('knowledgeFilesList');
+  if (!el) return;
+  if (files.length === 0) { el.innerHTML = '<div class="empty-state">Belum ada file pengetahuan</div>'; return; }
+  let html = `<p class="text-muted small">Total ${chunks} chunk aktif</p>`;
+  html += '<div class="table-wrap"><table class="data-table"><thead><tr><th>Nama</th><th>Ukuran</th><th>Aksi</th></tr></thead><tbody>';
+  files.forEach(f => {
+    html += `<tr><td>${f.name}</td><td>${(f.size / 1024).toFixed(1)} KB</td><td><button class="btn-icon-sm btn-danger" onclick="deleteKnowledge('${f.name}')"><i class="fas fa-trash"></i></button></td></tr>`;
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+async function uploadKnowledge() {
+  const fileInput = document.getElementById('knowledgeFile');
+  if (!fileInput.files[0]) return showToast('Pilih file dulu', 'warning');
+  const formData = new FormData();
+  formData.append('file', fileInput.files[0]);
+  const status = document.getElementById('uploadStatus');
+  status.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupload...';
+  try {
+    const res = await fetch('/api/admin/knowledge/upload', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Authorization': `Bearer ${adminToken}` },
+      body: formData
+    });
+    const data = await res.json();
+    if (data.success) {
+      status.innerHTML = '<span class="text-success">✅ ' + data.message + '</span>';
+      fileInput.value = '';
+      loadAdminConfig();
+      showToast('✅ File pengetahuan ditambahkan', 'success');
+    } else {
+      status.innerHTML = '<span class="text-danger">❌ ' + data.message + '</span>';
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    status.innerHTML = '<span class="text-danger">' + err.message + '</span>';
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+async function deleteKnowledge(name) {
+  showConfirm(`Hapus file "${name}"?`, async () => {
+    try {
+      const res = await adminFetch('/api/admin/knowledge/delete', {
+        method: 'POST', body: JSON.stringify({ name })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ File dihapus', 'success');
+        loadAdminConfig();
+      } else showToast(data.message, 'error');
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus File Pengetahuan');
+}
+async function reloadKnowledge() {
+  showToast('Sedang reload knowledge...', 'info');
+  try {
+    const res = await adminFetch('/api/admin/knowledge/reload', { method: 'POST' });
+    const data = await res.json();
+    showToast(`✅ Reload selesai. Total ${data.chunks} chunk.`, 'success');
+    loadAdminConfig();
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+
+// ============================================================
+// MEMORY — v3 (pakai /api/admin/memory/:index untuk edit)
+// ============================================================
+async function loadMemoryList() {
+  const el = document.getElementById('memoryList');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Memuat...</div>';
+  try {
+    const res = await adminFetch('/api/admin/memory');
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      el.innerHTML = '<div class="empty-state"><i class="fas fa-brain memory-empty-icon"></i><br>Belum ada memori AI</div>';
+      return;
+    }
+    let html = `<div class="memory-header-info">
+      <i class="fas fa-database"></i>
+      Total: <strong>${data.items.length}</strong> memori tersimpan
+    </div>`;
+    html += '<div class="memory-grid">';
+    data.items.forEach((m, i) => {
+      const date = new Date(m.timestamp).toLocaleString('id-ID', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+      const variantsHtml = (m.variants || []).length > 0
+        ? `<div class="memory-variants">
+            <div class="memory-variant-label"><i class="fas fa-sync-alt"></i> Variasi:</div>
+            <div class="memory-variant-list">${m.variants.map(v => `<span class="memory-variant-tag">${v}</span>`).join('')}</div>
+           </div>`
+        : '';
+      const keywordsHtml = (m.keywords || []).length > 0
+        ? `<div class="memory-keywords">
+            <div class="memory-keyword-label"><i class="fas fa-tags"></i> Keywords:</div>
+            <div class="memory-keyword-list">${m.keywords.map(k => `<span class="memory-keyword-tag">${k}</span>`).join('')}</div>
+           </div>`
+        : '';
+      html += `
+        <div class="memory-card">
+          <div class="memory-card-header">
+            <div class="memory-card-date">
+              <i class="fas fa-clock"></i> ${date}
+            </div>
+            <div class="memory-card-actions">
+              <button class="memory-btn memory-btn-edit" onclick="openEditMemory(${i})" title="Edit Memori">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="memory-btn memory-btn-delete" onclick="deleteMemory(${i})" title="Hapus Memori">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="memory-card-body">
+            <div class="memory-question">
+              <i class="fas fa-question-circle"></i> ${m.question}
+            </div>
+            <div class="memory-answer">
+              <i class="fas fa-comment-dots"></i> ${m.answer}
+            </div>
+            ${variantsHtml}
+            ${keywordsHtml}
+          </div>
+          <div class="memory-card-footer">
+            <span class="memory-hit-badge">
+              <i class="fas fa-fire"></i> Hit: <strong>${m.hit || 0}</strong>
+            </span>
+          </div>
+        </div>
+      `;
+    });
+    html += '</div>';
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state text-danger"><i class="fas fa-exclamation-triangle"></i> Gagal load: ${err.message}</div>`;
+  }
+}
+
+async function openEditMemory(index) {
+  try {
+    const res = await adminFetch(`/api/admin/memory/${index}`);
+    const data = await res.json();
+    if (!data.success) return showToast(data.message || 'Gagal load memori', 'error');
+
+    const m = data.item;
+    document.getElementById('editMemoryIndex').value = index;
+    document.getElementById('editMemoryQuestion').value = m.question || '';
+    document.getElementById('editMemoryAnswer').value = m.answer || '';
+    document.getElementById('editMemoryVariants').value = (m.variants || []).join(', ');
+    document.getElementById('editMemoryKeywords').value = (m.keywords || []).join(', ');
+
+    document.getElementById('editMemoryModal').classList.add('show');
+    setTimeout(() => document.getElementById('editMemoryQuestion').focus(), 100);
+  } catch (err) {
+    showToast('Gagal load data memori: ' + err.message, 'error');
+  }
+}
+
+function closeEditMemory(event) {
+  if (event && event.target !== event.currentTarget) return;
+  document.getElementById('editMemoryModal').classList.remove('show');
+}
+
+async function saveEditMemory() {
+  const index = parseInt(document.getElementById('editMemoryIndex').value);
+  const question = document.getElementById('editMemoryQuestion').value.trim();
+  const answer = document.getElementById('editMemoryAnswer').value.trim();
+  const variants = document.getElementById('editMemoryVariants').value.trim();
+  const keywords = document.getElementById('editMemoryKeywords').value.trim();
+
+  if (!question) return showToast('Pertanyaan wajib diisi', 'warning');
+  if (!answer) return showToast('Jawaban wajib diisi', 'warning');
+  if (answer.length < 20) return showToast('Jawaban minimal 20 karakter', 'warning');
+
+  const btn = document.getElementById('editMemorySaveBtn');
+  if (btn) btn.disabled = true;
+
+  try {
+    const res = await adminFetch('/api/admin/memory/update', {
+      method: 'POST',
+      body: JSON.stringify({ index, question, answer, variants, keywords })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Memori diperbarui', 'success');
+      closeEditMemory();
+      loadMemoryList();
+    } else {
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function deleteMemory(index) {
+  showConfirm('Hapus memori ini? Tindakan ini tidak dapat dibatalkan.', async () => {
+    try {
+      const res = await adminFetch('/api/admin/memory/delete', {
+        method: 'POST',
+        body: JSON.stringify({ index })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ Memori dihapus', 'success');
+        loadMemoryList();
+        loadAdminConfig();
+      } else {
+        showToast('❌ ' + data.message, 'error');
+      }
+    } catch (err) {
+      showToast('Error: ' + err.message, 'error');
+    }
+  }, 'Hapus Memori');
+}
+
+async function clearMemory() {
+  const confirmed = await showConfirmAsync(
+    '⚠️ HAPUS SEMUA MEMORI AI?\n\nSemua data memori akan hilang PERMANEN dan tidak dapat dikembalikan.\n\nKlik "Ya, Hapus Semua" jika Anda yakin.',
+    'Hapus Semua Memori',
+    'Ya, Hapus Semua'
+  );
+  if (!confirmed) return;
+  try {
+    showToast('Menghapus semua memori...', 'info');
+    const res = await adminFetch('/api/admin/memory/clear', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Semua memori dihapus', 'success');
+      loadMemoryList();
+      loadAdminConfig();
+    } else {
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+async function reloadMemory() {
+  showToast('Sedang reload memori...', 'info');
+  try {
+    const res = await adminFetch('/api/admin/memory/reload', { method: 'POST' });
+    const data = await res.json();
+    showToast(`✅ Reload selesai. Total ${data.total} memori.`, 'success');
+    loadMemoryList();
+    loadAdminConfig();
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+
+async function saveMemorySettings() {
+  const updates = {
+    memoryEnabled: document.getElementById('memoryEnabled').checked,
+    memoryMinScore: parseInt(document.getElementById('memoryMinScore').value) || 75,
+    memorySaveThreshold: parseInt(document.getElementById('memorySaveThreshold').value) || 55
+  };
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify(updates)
+    });
+    const data = await res.json();
+    if (data.success) showToast('✅ Pengaturan memori disimpan', 'success');
+    else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+
+async function saveConversationSettings() {
+  const updates = {
+    conversationHistoryEnabled: document.getElementById('convEnabled').checked,
+    conversationHistorySize: parseInt(document.getElementById('convSize').value) || 20,
+    rateLimitPerSession: parseInt(document.getElementById('rateLimitPerSession').value) || 20
+  };
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify(updates)
+    });
+    const data = await res.json();
+    if (data.success) showToast('✅ Pengaturan konteks disimpan', 'success');
+    else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+
+// ============================================================
+// SESSIONS
+// ============================================================
+async function loadSessions() {
+  const el = document.getElementById('sessionsList');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+  try {
+    const res = await adminFetch('/api/admin/sessions');
+    const data = await res.json();
+    if (!data.sessions || data.sessions.length === 0) {
+      el.innerHTML = '<div class="empty-state">Tidak ada sesi aktif.</div>';
+      return;
+    }
+    let html = '<div class="table-wrap"><table class="data-table"><thead><tr><th>Mulai</th><th>Aktif Terakhir</th><th>Pesan</th><th>Pesan Terakhir</th></tr></thead><tbody>';
+    data.sessions.forEach(s => {
+      const c = new Date(s.createdAt).toLocaleString('id-ID');
+      const l = new Date(s.lastActivity).toLocaleString('id-ID');
+      html += `<tr><td>${c}</td><td>${l}</td><td>${s.messageCount}</td><td style="font-size:12px">${s.lastMessage || '-'}</td></tr>`;
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state text-danger">Gagal: ${err.message}</div>`;
+  }
+}
+async function clearSessions() {
+  showConfirm('Hapus semua sesi percakapan?', async () => {
+    try {
+      const res = await adminFetch('/api/admin/sessions/clear', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        showToast('✅ Semua sesi dihapus', 'success');
+        loadSessions();
+        loadAdminConfig();
+      } else showToast(data.message, 'error');
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus Semua Sesi');
+}
+
+// ============================================================
+// NOTIFICATIONS FULL PAGE
+// ============================================================
+async function loadNotifications() {
+  const el = document.getElementById('notificationsList');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+  try {
+    const res = await adminFetch('/api/admin/notifications');
+    const data = await res.json();
+    await loadNotificationsBadge();
+    if (!data.items || data.items.length === 0) {
+      el.innerHTML = '<div class="empty-state">Tidak ada notifikasi.</div>';
+      return;
+    }
+    let html = '';
+    data.items.forEach(n => {
+      const date = new Date(n.timestamp).toLocaleString('id-ID');
+      const icon = n.level === 'danger' ? 'exclamation-triangle' : (n.level === 'warning' ? 'exclamation-circle' : 'info-circle');
+      html += `<div class="notif-item notif-${n.level} ${n.read ? 'notif-read' : ''}">
+        <div class="notif-head">
+          <span class="notif-icon"><i class="fas fa-${icon}"></i></span>
+          <span class="notif-title">${n.title}</span>
+          ${!n.read ? '<span class="badge badge-primary">BARU</span>' : ''}
+        </div>
+        <div class="notif-msg">${n.message}</div>
+        <div class="notif-date">${date}</div>
+      </div>`;
+    });
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state text-danger">Gagal: ${err.message}</div>`;
+  }
+}
+async function markAllRead() {
+  try {
+    await adminFetch('/api/admin/notifications/read', { method: 'POST', body: JSON.stringify({}) });
+    showToast('✅ Semua notifikasi ditandai sudah dibaca', 'success');
+    loadNotifications();
+    loadNotificationsBadge();
+    loadNotificationsDropdown();
+  } catch (err) { showToast(err.message, 'error'); }
+}
+async function clearNotifications() {
+  showConfirm('Hapus semua notifikasi?', async () => {
+    try {
+      await adminFetch('/api/admin/notifications/clear', { method: 'POST' });
+      showToast('✅ Semua notifikasi dihapus', 'success');
+      loadNotifications();
+      loadNotificationsBadge();
+      loadNotificationsDropdown();
+    } catch (err) { showToast(err.message, 'error'); }
+  }, 'Hapus Notifikasi');
+}
+
+// ============================================================
+// BACKUP
+// ============================================================
+async function runBackupNow() {
+  const el = document.getElementById('backupsList');
+  if (el) el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Membuat backup...</div>';
+  showToast('Sedang membuat backup...', 'info');
+  try {
+    const res = await adminFetch('/api/admin/backup', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ ' + data.message, 'success');
+      loadBackups();
+    } else showToast('❌ ' + data.message, 'error');
+  } catch (err) { showToast('Error: ' + err.message, 'error'); }
+}
+async function loadBackups() {
+  const el = document.getElementById('backupsList');
+  if (!el) return;
+  el.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i></div>';
+  try {
+    const res = await adminFetch('/api/admin/backups');
+    const data = await res.json();
+    if (!data.items || data.items.length === 0) {
+      el.innerHTML = '<div class="empty-state">Belum ada backup.</div>';
+      return;
+    }
+    let html = '<div class="table-wrap"><table class="data-table"><thead><tr>';
+    html += '<th>Nama File</th><th>Tanggal</th><th>Ukuran</th><th>Aksi</th>';
+    html += '</tr></thead><tbody>';
+    data.items.forEach(b => {
+      const d = new Date(b.created).toLocaleString('id-ID');
+      const size = (b.size / 1024).toFixed(1) + ' KB';
+      html += `<tr>
+        <td><code>${b.name}</code></td>
+        <td>${d}</td>
+        <td>${size}</td>
+        <td class="backup-item-actions">
+          <button class="btn-icon-sm btn-primary" onclick="downloadBackup('${b.name}')" title="Download">
+            <i class="fas fa-download"></i>
+          </button>
+        </td>
+      </tr>`;
+    });
+    html += '</tbody></table></div>';
+    el.innerHTML = html;
+  } catch (err) {
+    el.innerHTML = `<div class="empty-state text-danger">Gagal: ${err.message}</div>`;
+  }
+}
+async function downloadBackup(filename) {
+  showToast('Memulai download...', 'info');
+  try {
+    const res = await fetch(`/api/admin/backup/download/${encodeURIComponent(filename)}`, {
+      credentials: 'include', headers: { 'Authorization': `Bearer ${adminToken}` }
+    });
+    if (!res.ok) throw new Error('Gagal download (HTTP ' + res.status + ')');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('✅ Download selesai', 'success');
+  } catch (err) {
+    showToast('❌ Gagal download: ' + err.message, 'error');
+  }
+}
+async function startRestore() {
+  const fileInput = document.getElementById('restoreFile');
+  const statusEl = document.getElementById('restoreStatus');
+  const btn = document.getElementById('restoreBtn');
+  if (!fileInput.files[0]) return showToast('Pilih file backup dulu', 'warning');
+  const file = fileInput.files[0];
+  if (!file.name.endsWith('.zip.enc')) return showToast('File harus berformat .zip.enc', 'error');
+  showConfirm(`⚠️ Restore dari file:\n${file.name}\n\nData lama akan di-backup dulu.\nSetelah restore, WAJIB restart server.`, async () => {
+    if (btn) btn.disabled = true;
+    statusEl.innerHTML = `
+      <div class="pipeline-step pending"><i class="fas fa-spinner fa-spin"></i> Mengupload file...</div>
+      <div class="pipeline-step pending"><i class="fas fa-circle"></i> Decrypt backup...</div>
+      <div class="pipeline-step pending"><i class="fas fa-circle"></i> Extract & restore data...</div>
+    `;
+    try {
+      const formData = new FormData();
+      formData.append('backup', file);
+      const res = await fetch('/api/admin/backup/restore', {
+        method: 'POST', credentials: 'include',
+        headers: { 'Authorization': `Bearer ${adminToken}` },
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        const steps = data.steps || {};
+        statusEl.innerHTML = `
+          <div class="pipeline-step success"><i class="fas fa-check-circle"></i> Decrypt berhasil</div>
+          <div class="pipeline-step success"><i class="fas fa-check-circle"></i> Extract berhasil</div>
+          <div class="pipeline-step success"><i class="fas fa-check-circle"></i> ${steps.restoredFiles?.length || 0} file di-restore</div>
+          <div class="pipeline-step success"><i class="fas fa-info-circle"></i> <b>Restart server untuk apply!</b></div>
+        `;
+        fileInput.value = '';
+        showConfirm('✅ Restore berhasil!\n\nSekarang RESTART server:\n1. Buka terminal npm start\n2. Tekan Ctrl+C\n3. Ketik: npm start\n\nKlik OK untuk reload halaman.', () => {
+          location.reload();
+        }, 'Restart Server');
+      } else {
+        statusEl.innerHTML = `<div class="pipeline-step failed"><i class="fas fa-times-circle"></i> Gagal: ${data.message}</div>`;
+        showToast('❌ ' + data.message, 'error');
+        if (btn) btn.disabled = false;
+      }
+    } catch (err) {
+      statusEl.innerHTML = `<div class="pipeline-step failed"><i class="fas fa-times-circle"></i> Error: ${err.message}</div>`;
+      showToast('Error: ' + err.message, 'error');
+      if (btn) btn.disabled = false;
+    }
+  }, 'Restore Backup');
+}
+
+// ============================================================
+// SECURITY
+// ============================================================
+async function changePassword() {
+  const oldPassword = document.getElementById('oldPassword').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const status = document.getElementById('passwordStatus');
+  if (!oldPassword || !newPassword) {
+    status.innerHTML = '<span class="text-danger">Isi semua field</span>';
+    return showToast('Isi semua field password', 'warning');
+  }
+  if (newPassword.length < 8) {
+    status.innerHTML = '<span class="text-danger">Password minimal 8 karakter</span>';
+    return showToast('Password minimal 8 karakter', 'warning');
+  }
+  try {
+    const res = await adminFetch('/api/admin/change-password', {
+      method: 'POST', body: JSON.stringify({ oldPassword, newPassword })
+    });
+    const data = await res.json();
+    if (data.success) {
+      status.innerHTML = '<span class="text-success">✅ ' + data.message + '</span>';
+      document.getElementById('oldPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      showToast('✅ Password berhasil diubah', 'success');
+    } else {
+      status.innerHTML = '<span class="text-danger">❌ ' + data.message + '</span>';
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    status.innerHTML = '<span class="text-danger">' + err.message + '</span>';
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// ============================================================
+// KNOWLEDGE GRAPH
+// ============================================================
+async function loadGraphVisualization() {
+  const container = document.getElementById('graphContainer');
+  const statsEl = document.getElementById('graphStats');
+  if (!container) return;
+  const limit = parseInt(document.getElementById('graphLimit')?.value) || 300;
+  const minDegree = parseInt(document.getElementById('graphMinDegree')?.value) || 1;
+  container.classList.add('loading');
+  container.innerHTML = '';
+  if (statsEl) statsEl.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Memuat graph...</div>';
+  try {
+    const res = await adminFetch(`/api/admin/graph/visualize?limit=${limit}&minDegree=${minDegree}`);
+    const data = await res.json();
+    container.classList.remove('loading');
+    if (!data.nodes || data.nodes.length === 0) {
+      container.innerHTML = '<div class="empty-state">Graph kosong. Upload pengetahuan dulu atau rebuild graph.</div>';
+      if (statsEl) statsEl.innerHTML = '';
+      return;
+    }
+    if (statsEl) {
+      statsEl.innerHTML = `
+        <div class="graph-stat-item"><i class="fas fa-circle" style="color:var(--primary)"></i> Node ditampilkan: <strong>${data.stats.shown}</strong></div>
+        <div class="graph-stat-item"><i class="fas fa-link" style="color:var(--success)"></i> Edge: <strong>${data.edges.length}</strong></div>
+        <div class="graph-stat-item"><i class="fas fa-database" style="color:var(--warning)"></i> Total node: <strong>${data.stats.totalNodes}</strong></div>
+        <div class="graph-stat-item"><i class="fas fa-fire" style="color:var(--danger)"></i> Max degree: <strong>${data.stats.maxDegree}</strong></div>
+      `;
+    }
+    graphNodesDataset = new vis.DataSet(data.nodes);
+    graphEdgesDataset = new vis.DataSet(data.edges);
+    const options = {
+      nodes: { shape: 'dot', scaling: { min: 10, max: 40 }, font: { size: 12, face: 'Arial', color: '#202124' } },
+      edges: { color: { color: 'rgba(100,100,100,0.4)', highlight: '#dc3545' }, smooth: { type: 'continuous', roundness: 0.5 }, selectionWidth: 2 },
+      physics: { enabled: true, stabilization: { enabled: true, iterations: 200, updateInterval: 25 }, barnesHut: { gravitationalConstant: -8000, centralGravity: 0.3, springLength: 120, springConstant: 0.04, damping: 0.09 } },
+      interaction: { hover: true, tooltipDelay: 150, navigationButtons: true, keyboard: true },
+      layout: { improvedLayout: true }
+    };
+    if (graphNetwork) graphNetwork.destroy();
+    graphNetwork = new vis.Network(container, { nodes: graphNodesDataset, edges: graphEdgesDataset }, options);
+    graphNetwork.on('click', (params) => {
+      if (params.nodes && params.nodes.length > 0) showGraphNodeDetail(params.nodes[0]);
+    });
+    const searchEl = document.getElementById('graphSearch');
+    if (searchEl && !searchEl._bound) {
+      searchEl._bound = true;
+      searchEl.addEventListener('input', (e) => {
+        const q = e.target.value.toLowerCase().trim();
+        if (!q || !graphNodesDataset) return;
+        const match = graphNodesDataset.get({
+          filter: n => n.label.toLowerCase().includes(q) || n.id.toLowerCase().includes(q)
+        });
+        if (match.length > 0) {
+          graphNetwork.selectNodes([match[0].id]);
+          graphNetwork.focus(match[0].id, { scale: 1.2, animation: true });
+        }
+      });
+    }
+  } catch (err) {
+    container.classList.remove('loading');
+    container.innerHTML = `<div class="empty-state text-danger">Gagal load graph: ${err.message}</div>`;
+    if (statsEl) statsEl.innerHTML = '';
+    showToast('Gagal load graph', 'error');
+  }
+}
+async function showGraphNodeDetail(nodeId) {
+  const detailEl = document.getElementById('graphNodeDetail');
+  const nameEl = document.getElementById('graphNodeName');
+  const bodyEl = document.getElementById('graphNodeBody');
+  if (!detailEl || !bodyEl) return;
+  detailEl.style.display = 'block';
+  nameEl.textContent = nodeId;
+  bodyEl.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Memuat detail...</div>';
+  try {
+    const res = await adminFetch(`/api/admin/graph/node/${encodeURIComponent(nodeId)}`);
+    const data = await res.json();
+    if (!data.found) { bodyEl.innerHTML = '<div class="empty-state">Node tidak ditemukan.</div>'; return; }
+    const n = data.node;
+    let html = `<div class="graph-node-meta">
+      <div class="graph-node-meta-item"><i class="fas fa-project-diagram"></i> Degree: <strong>${n.degree}</strong></div>
+      <div class="graph-node-meta-item"><i class="fas fa-file-alt"></i> Sumber: <strong>${n.sources.length}</strong></div>
+      <div class="graph-node-meta-item"><i class="fas fa-clock"></i> Dibuat: <strong>${new Date(n.createdAt).toLocaleDateString('id-ID')}</strong></div>
+    </div>`;
+    if (n.sources && n.sources.length > 0) {
+      html += `<div style="margin-bottom:12px;"><b>File sumber:</b><br><small>${n.sources.map(s => `• ${s}`).join('<br>')}</small></div>`;
+    }
+    html += `<div style="margin-bottom:8px;"><b>Tetangga (${data.neighbors.length}):</b></div>`;
+    if (data.neighbors.length === 0) html += '<div class="empty-state">Tidak ada tetangga.</div>';
+    else {
+      html += '<div class="graph-neighbors-list">';
+      data.neighbors.forEach(nb => {
+        html += `<span class="graph-neighbor-chip" onclick="showGraphNodeDetail('${nb.id.replace(/'/g, "\\'")}')">${nb.label} <span class="weight-badge">${nb.weight}</span></span>`;
+      });
+      html += '</div>';
+    }
+    bodyEl.innerHTML = html;
+  } catch (err) {
+    bodyEl.innerHTML = `<div class="empty-state text-danger">Gagal load detail: ${err.message}</div>`;
+  }
+}
+function closeGraphNodeDetail() {
+  const el = document.getElementById('graphNodeDetail');
+  if (el) el.style.display = 'none';
+}
+
+// ============================================================
+// GRAPH ENRICH
+// ============================================================
+async function startEnrich() {
+  const btn = document.getElementById('enrichBtn');
+  const statusEl = document.getElementById('enrichStatus');
+  const maxChunks = parseInt(document.getElementById('enrichMaxChunks')?.value) || 30;
+  showConfirm(`Mulai enrich ${maxChunks} chunk? Ini akan memakai token API provider Anda.`, async () => {
+    if (btn) btn.disabled = true;
+    if (statusEl) statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memulai enrich...';
+    try {
+      const res = await adminFetch('/api/admin/graph/enrich', {
+        method: 'POST', body: JSON.stringify({ maxChunks, concurrency: 2 })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        if (statusEl) statusEl.innerHTML = `<span style="color:var(--danger)">❌ ${data.message}</span>`;
+        showToast('❌ ' + data.message, 'error');
+        if (btn) btn.disabled = false;
+        return;
+      }
+      if (enrichPollTimer) clearInterval(enrichPollTimer);
+      enrichPollTimer = setInterval(pollEnrichStatus, 2000);
+      pollEnrichStatus();
+    } catch (err) {
+      if (statusEl) statusEl.innerHTML = `<span style="color:var(--danger)">❌ ${err.message}</span>`;
+      showToast('Error: ' + err.message, 'error');
+      if (btn) btn.disabled = false;
+    }
+  }, 'Enrich Knowledge Graph');
+}
+async function pollEnrichStatus() {
+  const statusEl = document.getElementById('enrichStatus');
+  const btn = document.getElementById('enrichBtn');
+  try {
+    const res = await adminFetch('/api/admin/graph/enrich/status');
+    const data = await res.json();
+    if (!data.inProgress) {
+      if (enrichPollTimer) { clearInterval(enrichPollTimer); enrichPollTimer = null; }
+      if (statusEl) statusEl.innerHTML = `<span style="color:var(--success)">✅ Enrich selesai! Klik "Refresh" untuk lihat hasil.</span>`;
+      showToast('✅ Enrich selesai!', 'success');
+      if (btn) btn.disabled = false;
+      return;
+    }
+    const { done, total } = data.progress;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    if (statusEl) {
+      statusEl.innerHTML = `<div><i class="fas fa-spinner fa-spin"></i> Memproses... ${done}/${total} chunk (${pct}%)</div><div class="enrich-progress-bar"><div class="enrich-progress-fill" style="width:${pct}%"></div></div>`;
+    }
+  } catch (err) {}
+}
+
+// ============================================================
+// SURVEY CONFIG
+// ============================================================
+async function saveSurveyConfig() {
+  const statusEl = document.getElementById('surveyStatus');
+  const updates = {
+    surveyLink: document.getElementById('cfg-surveyLink').value.trim(),
+    surveyIdleMinutes: parseInt(document.getElementById('cfg-surveyIdleMinutes').value) || 3,
+    surveyEnabled: document.getElementById('surveyEnabled').checked
+  };
+  if (updates.surveyIdleMinutes < 1 || updates.surveyIdleMinutes > 30) {
+    if (statusEl) statusEl.innerHTML = '<span class="text-danger">❌ Waktu tunggu 1-30 menit</span>';
+    return showToast('Waktu tunggu harus 1-30 menit', 'warning');
+  }
+  if (updates.surveyEnabled && !updates.surveyLink) {
+    if (statusEl) statusEl.innerHTML = '<span class="text-danger">❌ Link wajib diisi</span>';
+    return showToast('Link survei wajib diisi', 'warning');
+  }
+  if (updates.surveyLink && !/^https?:\/\//i.test(updates.surveyLink)) {
+    if (statusEl) statusEl.innerHTML = '<span class="text-danger">❌ Link harus http:// atau https://</span>';
+    return showToast('Link harus dimulai http:// atau https://', 'warning');
+  }
+  if (statusEl) statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST', body: JSON.stringify(updates)
+    });
+    const data = await res.json();
+    if (data.success) {
+      if (statusEl) statusEl.innerHTML = '<span class="text-success">✅ Tersimpan</span>';
+      showToast('✅ Pengaturan survei disimpan', 'success');
+    } else {
+      if (statusEl) statusEl.innerHTML = '<span class="text-danger">❌ ' + data.message + '</span>';
+      showToast('❌ ' + data.message, 'error');
+    }
+  } catch (err) {
+    if (statusEl) statusEl.innerHTML = '<span class="text-danger"> ' + err.message + '</span>';
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+// ============================================================
+// KEYBOARD SHORTCUT
+// ============================================================
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    document.getElementById('answerModal')?.classList.remove('show');
+    document.getElementById('editMemoryModal')?.classList.remove('show');
+    document.querySelectorAll('.admin-modal-overlay.show').forEach(m => {
+      m.classList.remove('show');
+      setTimeout(() => m.remove(), 300);
+    });
+  }
+});
+
+// ============================================================
+// CUSTOM TOAST & MODAL
+// ============================================================
+function showToast(message, type = 'info') {
+  const existing = document.getElementById('adminToast');
+  if (existing) existing.remove();
+  const colors = {
+    info:    { bg: 'linear-gradient(135deg, #3b82f6, #2563eb)', icon: 'fa-info-circle' },
+    success: { bg: 'linear-gradient(135deg, #10b981, #059669)', icon: 'fa-check-circle' },
+    warning: { bg: 'linear-gradient(135deg, #f59e0b, #d97706)', icon: 'fa-exclamation-triangle' },
+    error:   { bg: 'linear-gradient(135deg, #dc3545, #b91c1c)', icon: 'fa-times-circle' }
+  };
+  const style = colors[type] || colors.info;
+  const toast = document.createElement('div');
+  toast.id = 'adminToast';
+  toast.className = 'admin-toast';
+  toast.innerHTML = `
+    <div class="admin-toast-icon" style="background:${style.bg}">
+      <i class="fas ${style.icon}"></i>
+    </div>
+    <div class="admin-toast-msg">${message}</div>
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.classList.add('show'), 10);
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 400);
+  }, 3000);
+}
+
+function showAlert(message, title = 'Informasi', type = 'info') {
+  const icons = {
+    info:    { bg: 'linear-gradient(135deg, #3b82f6, #2563eb)', icon: 'fa-info-circle' },
+    success: { bg: 'linear-gradient(135deg, #10b981, #059669)', icon: 'fa-check-circle' },
+    warning: { bg: 'linear-gradient(135deg, #f59e0b, #d97706)', icon: 'fa-exclamation-triangle' },
+    error:   { bg: 'linear-gradient(135deg, #dc3545, #b91c1c)', icon: 'fa-times-circle' }
+  };
+  const style = icons[type] || icons.info;
+  const overlay = document.createElement('div');
+  overlay.className = 'admin-modal-overlay';
+  overlay.innerHTML = `
+    <div class="admin-modal-card">
+      <div class="admin-modal-icon" style="background:${style.bg}">
+        <i class="fas ${style.icon}"></i>
+      </div>
+      <h3 class="admin-modal-title">${title}</h3>
+      <p class="admin-modal-msg">${message.replace(/\n/g, '<br>')}</p>
+      <div class="admin-modal-actions">
+        <button class="admin-modal-btn admin-modal-btn-primary" id="alertOk">OK</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.classList.add('show'), 10);
+  const close = () => {
+    overlay.classList.remove('show');
+    setTimeout(() => overlay.remove(), 300);
+  };
+  document.getElementById('alertOk').onclick = close;
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+}
+
+function showConfirm(message, onConfirm, title = 'Konfirmasi') {
+  const overlay = document.createElement('div');
+  overlay.className = 'admin-modal-overlay';
+  overlay.innerHTML = `<div class="admin-modal-card">
+    <div class="admin-modal-icon" style="background:linear-gradient(135deg, #f59e0b, #d97706)">
+      <i class="fas fa-question-circle"></i>
+    </div>
+    <h3 class="admin-modal-title">${title}</h3>
+    <p class="admin-modal-msg">${message.replace(/\n/g, '<br>')}</p>
+    <div class="admin-modal-actions">
+      <button class="admin-modal-btn admin-modal-btn-cancel" id="confirmCancel">Batal</button>
+      <button class="admin-modal-btn admin-modal-btn-primary" id="confirmOk">Ya, Lanjutkan</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => overlay.classList.add('show'), 10);
+  const close = () => {
+    overlay.classList.remove('show');
+    setTimeout(() => overlay.remove(), 300);
+  };
+  document.getElementById('confirmCancel').onclick = close;
+  document.getElementById('confirmOk').onclick = () => {
+    close();
+    if (onConfirm) onConfirm();
+  };
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+}
+
+function showPrompt(message, defaultValue, onSubmit, title = 'Input') {
+  const overlay = document.createElement('div');
+  overlay.className = 'admin-modal-overlay';
+  overlay.innerHTML = `<div class="admin-modal-card">
+    <div class="admin-modal-icon" style="background:linear-gradient(135deg, #0d47a1, #1565c0)">
+      <i class="fas fa-edit"></i>
+    </div>
+    <h3 class="admin-modal-title">${title}</h3>
+    <p class="admin-modal-msg">${message}</p>
+    <input type="text" class="admin-modal-input" id="promptInput" value="${defaultValue || ''}">
+    <div class="admin-modal-actions">
+      <button class="admin-modal-btn admin-modal-btn-cancel" id="promptCancel">Batal</button>
+      <button class="admin-modal-btn admin-modal-btn-primary" id="promptOk">Simpan</button>
+    </div>
+  </div>`;
+  document.body.appendChild(overlay);
+  setTimeout(() => {
+    overlay.classList.add('show');
+    const input = document.getElementById('promptInput');
+    input.focus();
+    input.select();
+  }, 10);
+  const close = () => {
+    overlay.classList.remove('show');
+    setTimeout(() => overlay.remove(), 300);
+  };
+  document.getElementById('promptCancel').onclick = close;
+  document.getElementById('promptOk').onclick = () => {
+    const val = document.getElementById('promptInput').value.trim();
+    close();
+    if (onSubmit && val) onSubmit(val);
+  };
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  document.getElementById('promptInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('promptOk').click();
+  });
+}
+
+// ============================================================
+// SHOW CONFIRM ASYNC — Promise-based confirm (untuk hapus semua)
+// ============================================================
+function showConfirmAsync(message, title = 'Konfirmasi', okLabel = 'Ya, Lanjutkan') {
+  return new Promise((resolve) => {
+    const overlay = document.createElement('div');
+    overlay.className = 'admin-modal-overlay';
+    overlay.innerHTML = `<div class="admin-modal-card">
+      <div class="admin-modal-icon" style="background:linear-gradient(135deg, #dc3545, #b91c1c)">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <h3 class="admin-modal-title">${title}</h3>
+      <p class="admin-modal-msg">${message.replace(/\n/g, '<br>')}</p>
+      <div class="admin-modal-actions">
+        <button class="admin-modal-btn admin-modal-btn-cancel" id="confirmAsyncCancel">Batal</button>
+        <button class="admin-modal-btn admin-modal-btn-primary" id="confirmAsyncOk" style="background:linear-gradient(135deg, #dc3545, #b91c1c);">${okLabel}</button>
+      </div>
+    </div>`;
+    document.body.appendChild(overlay);
+
+    setTimeout(() => overlay.classList.add('show'), 10);
+
+    const close = (result) => {
+      overlay.classList.remove('show');
+      setTimeout(() => overlay.remove(), 300);
+      resolve(result);
+    };
+
+    document.getElementById('confirmAsyncCancel').onclick = () => close(false);
+    document.getElementById('confirmAsyncOk').onclick = () => close(true);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close(false);
+    });
+  });
+}

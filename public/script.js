@@ -4,6 +4,8 @@
 
 let chatSessionId = null;
 let currentTheme = null;
+let surveyTimer = null;
+let surveyShown = false;
 
 // ============================================================
 // INIT
@@ -82,6 +84,25 @@ function applyLogoSize(size) {
 }
 
 // ============================================================
+// GREETING OTOMATIS BERDASARKAN WAKTU
+// ============================================================
+function getGreeting() {
+    const jam = new Date().getHours();
+    if (jam >= 4 && jam < 11) return 'Selamat pagi';
+    if (jam >= 11 && jam < 15) return 'Selamat siang';
+    if (jam >= 15 && jam < 18) return 'Selamat sore';
+    return 'Selamat malam';
+}
+
+function getGreetingIcon() {
+    const jam = new Date().getHours();
+    if (jam >= 4 && jam < 11) return 'fa-sun';
+    if (jam >= 11 && jam < 15) return 'fa-cloud-sun';
+    if (jam >= 15 && jam < 18) return 'fa-cloud-sun';
+    return 'fa-moon';
+}
+
+// ============================================================
 // LOAD PUBLIC CONFIG
 // ============================================================
 async function loadPublicConfig() {
@@ -89,13 +110,20 @@ async function loadPublicConfig() {
         const res = await fetch('/api/config/public');
         const cfg = await res.json();
 
-        document.getElementById('headerTitle').textContent = cfg.aiName || 'SIVT AI';
-        document.getElementById('headerTagline').innerHTML =
-            `<i class="fas fa-robot me-1"></i>${cfg.tagline || ''}`;
+        // ✅ AUTO-UPDATE JUDUL TAB BROWSER (WARGA)
+        document.title = `${cfg.aiName || 'SIVT AI'} - Asisten Warga`;
 
+        document.getElementById('headerTitle').textContent = cfg.aiName || 'SIVT AI';
+        document.getElementById('headerTagline').textContent = cfg.tagline || '';
+
+        // ✅ LOGO HTML — dipakai berulang (header + bot icon)
         const logoHtml = cfg.logoUrl
             ? `<img src="${cfg.logoUrl}" alt="logo">`
             : '<i class="fas fa-robot"></i>';
+
+        // ✅ SIMPAN KE WINDOW BIAR BISA DIPAKAI DI SEMUA TEMPAT
+        window.SIVT_LOGO_HTML = logoHtml;
+        window.SIVT_AI_NAME = cfg.aiName || 'SIVT AI';
 
         document.getElementById('logoIcon').innerHTML = logoHtml;
         applyLogoSize(cfg.logoSize || 'medium');
@@ -114,11 +142,26 @@ async function loadPublicConfig() {
             fav.href = cfg.logoUrl;
         }
 
+        // === SIMPAN LINK SURVEI ===
+        window.SURVEY_LINK = cfg.surveyLink || '';
+        window.SURVEY_ENABLED = cfg.surveyEnabled !== false;
+        window.SURVEY_IDLE_MS = (cfg.surveyIdleMinutes || 3) * 60 * 1000;
+
+        // === WELCOME MESSAGE DENGAN GREETING OTOMATIS ===
+        const welcome = cfg.welcomeMessage || '';
+        const greet = getGreeting();
+        const greetIcon = getGreetingIcon();
+
+        const welcomeFormatted = welcome.replace(/^(Halo|Hai|Hi|Hello)[!.,]?\s*/i, '');
+
         const chatBox = document.getElementById('chatBox');
         chatBox.innerHTML = `
           <div class="bubble bubble-bot">
-            <div class="bot-name"><i class="fas fa-robot"></i> ${cfg.aiName || 'SIVT AI'}</div>
-            <div>${(cfg.welcomeMessage || '').replace(/\n/g, '<br>')}</div>
+            <div class="bot-name"><span class="bot-icon">${logoHtml}</span> ${cfg.aiName || 'SIVT AI'}</div>
+            <div class="greeting-line">
+              <i class="fas ${greetIcon}"></i> ${greet}, ada yang bisa saya bantu?
+            </div>
+            <div>${welcomeFormatted.replace(/\n/g, '<br>')}</div>
             <div class="bubble-time">Online</div>
           </div>
         `;
@@ -215,11 +258,18 @@ function sendMessage() {
 
     input.value = '';
     if (window.resetChatInputHeight) window.resetChatInputHeight();
+
+    // Reset timer survei saat user kirim pesan baru
+    stopSurveyTimer();
+    surveyShown = false;
+
     addMessage(msg, 'user');
     getBotResponse(msg);
 }
 
 function sendQuickQuestion(q) {
+    stopSurveyTimer();
+    surveyShown = false;
     addMessage(q, 'user');
     getBotResponse(q);
 }
@@ -231,7 +281,8 @@ function addMessage(text, sender) {
     if (sender === 'bot') {
         const botName = document.createElement('div');
         botName.className = 'bot-name';
-        botName.innerHTML = `<i class="fas fa-robot"></i> SIVT AI`;
+        // ✅ Pakai LOGO dari config, bukan icon robot hardcoded
+        botName.innerHTML = `<span class="bot-icon">${window.SIVT_LOGO_HTML || '<i class="fas fa-robot"></i>'}</span> ${window.SIVT_AI_NAME || 'SIVT AI'}`;
         bubble.appendChild(botName);
         const t = document.createElement('div');
         t.textContent = text;
@@ -255,7 +306,8 @@ function addEmptyBotMessage() {
     bubble.className = 'bubble bubble-bot';
     const botName = document.createElement('div');
     botName.className = 'bot-name';
-    botName.innerHTML = `<i class="fas fa-robot"></i> SIVT AI`;
+    // ✅ Pakai LOGO dari config, bukan icon robot hardcoded
+    botName.innerHTML = `<span class="bot-icon">${window.SIVT_LOGO_HTML || '<i class="fas fa-robot"></i>'}</span> ${window.SIVT_AI_NAME || 'SIVT AI'}`;
     bubble.appendChild(botName);
     const textNode = document.createElement('div');
     textNode.className = 'stream-text';
@@ -350,6 +402,11 @@ async function getBotResponse(question) {
         if (pendingSuggestions && Array.isArray(pendingSuggestions) && pendingSuggestions.length > 0) {
             showSuggestions(pendingSuggestions);
         }
+
+        // === MULAI TIMER SURVEI SETELAH AI JAWAB ===
+        if (!isError && fullText.length > 20 && metaInfo.source !== 'redirect') {
+            startSurveyTimer();
+        }
     } catch (err) {
         isError = true;
         botTextEl.textContent = 'Maaf, terjadi kesalahan: ' + err.message;
@@ -429,9 +486,139 @@ function showSuggestions(suggestions) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+// ============================================================
+// RESET CHAT
+// ============================================================
 function resetChat() {
-    if (!confirm('Reset percakapan?')) return;
-    chatSessionId = null;
-    localStorage.removeItem('sivt_sessionId');
-    loadPublicConfig();
+    showConfirmModal('Reset Percakapan?', 'Semua riwayat chat akan dihapus.', () => {
+        chatSessionId = null;
+        localStorage.removeItem('sivt_sessionId');
+        stopSurveyTimer();
+        surveyShown = false;
+        loadPublicConfig();
+    });
+}
+
+// ============================================================
+// SURVEY TIMER — Muncul setelah user idle
+// ============================================================
+function startSurveyTimer() {
+    if (!window.SURVEY_ENABLED) return;
+    stopSurveyTimer();
+    surveyShown = false;
+
+    surveyTimer = setTimeout(() => {
+        if (!surveyShown) {
+            showSurveyModal();
+        }
+    }, window.SURVEY_IDLE_MS || 180000);
+}
+
+function stopSurveyTimer() {
+    if (surveyTimer) {
+        clearTimeout(surveyTimer);
+        surveyTimer = null;
+    }
+}
+
+function showSurveyModal() {
+    surveyShown = true;
+    const overlay = document.getElementById('surveyOverlay');
+    if (!overlay) return;
+    overlay.classList.add('show');
+}
+
+function closeSurvey() {
+    const overlay = document.getElementById('surveyOverlay');
+    if (overlay) overlay.classList.remove('show');
+    stopSurveyTimer();
+    startSurveyTimer();
+}
+
+function openSurvey() {
+    const overlay = document.getElementById('surveyOverlay');
+    if (overlay) overlay.classList.remove('show');
+
+    const link = window.SURVEY_LINK;
+    if (link) {
+        window.open(link, '_blank', 'noopener,noreferrer');
+    } else {
+        showToastModal('Link survei belum diatur oleh admin.', 'info');
+    }
+
+    stopSurveyTimer();
+}
+
+// ============================================================
+// TOAST MODAL KEREN
+// ============================================================
+function showToastModal(message, type = 'info') {
+    const existing = document.getElementById('customToast');
+    if (existing) existing.remove();
+
+    const colors = {
+        info: { bg: '#3b82f6', icon: 'fa-info-circle' },
+        success: { bg: '#10b981', icon: 'fa-check-circle' },
+        warning: { bg: '#f59e0b', icon: 'fa-exclamation-triangle' },
+        error: { bg: '#dc3545', icon: 'fa-times-circle' }
+    };
+    const style = colors[type] || colors.info;
+
+    const toast = document.createElement('div');
+    toast.id = 'customToast';
+    toast.className = 'custom-toast';
+    toast.innerHTML = `
+        <div class="custom-toast-icon" style="background:${style.bg}">
+            <i class="fas ${style.icon}"></i>
+        </div>
+        <div class="custom-toast-msg">${message}</div>
+    `;
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.classList.add('show'), 10);
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// ============================================================
+// CONFIRM MODAL KEREN
+// ============================================================
+function showConfirmModal(title, message, onConfirm) {
+    const existing = document.getElementById('customConfirm');
+    if (existing) existing.remove();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'customConfirm';
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+        <div class="confirm-card">
+            <div class="confirm-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <h3 class="confirm-title">${title}</h3>
+            <p class="confirm-msg">${message}</p>
+            <div class="confirm-actions">
+                <button class="confirm-btn confirm-btn-cancel" id="confirmCancel">Batal</button>
+                <button class="confirm-btn confirm-btn-ok" id="confirmOk">Ya, Lanjutkan</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add('show'), 10);
+
+    const close = () => {
+        overlay.classList.remove('show');
+        setTimeout(() => overlay.remove(), 250);
+    };
+
+    document.getElementById('confirmCancel').onclick = close;
+    document.getElementById('confirmOk').onclick = () => {
+        close();
+        if (onConfirm) onConfirm();
+    };
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) close();
+    });
 }

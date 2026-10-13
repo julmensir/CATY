@@ -1,0 +1,1626 @@
+/* ============================================================
+SIVT AI — Admin CSS (FINAL v4)
+Sidebar Off-Canvas + Responsive Lengkap
+============================================================ */
+
+/* ============================================================
+THEME VARIABLE — Fallback
+============================================================ */
+:root {
+  --tblr-primary: #0d47a1;
+  --tblr-primary-darken: #0a3a8a;
+  --tblr-pink: #ec4899;
+}
+
+/* ============================================================
+LOGIN PAGE — Modern, Keren, Memukau
+============================================================ */
+#loginPage {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0a3a8a 0%, #0d47a1 35%, #1565c0 70%, #1976d2 100%) !important;
+  background-size: 200% 200% !important;
+  animation: loginGradientShift 15s ease infinite;
+}
+
+@keyframes loginGradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%      { background-position: 100% 50%; }
+}
+
+/* ===== ORB BACKGROUND — Animated Blobs ===== */
+#loginPage::before,
+#loginPage::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+#loginPage::before {
+  width: 600px;
+  height: 600px;
+  top: -250px;
+  left: -250px;
+  background: radial-gradient(circle, #60a5fa 0%, transparent 70%);
+  animation: orbFloat1 20s ease-in-out infinite;
+}
+
+#loginPage::after {
+  width: 500px;
+  height: 500px;
+  bottom: -200px;
+  right: -200px;
+  background: radial-gradient(circle, #ec4899 0%, transparent 70%);
+  animation: orbFloat2 24s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(150px, 100px) scale(1.2); }
+  66%      { transform: translate(80px, 200px) scale(0.9); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-150px, -100px) scale(1.25); }
+}
+
+/* Container — z-index di atas orb */
+#loginPage .container-tight {
+  position: relative;
+  z-index: 1;
+  animation: loginFadeIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes loginFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== BRAND SECTION ===== */
+.login-brand-section {
+  padding-bottom: 8px;
+}
+
+/* ===== LOGO — Keren & Bercahaya ===== */
+.login-logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.login-logo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+  animation: logoGlow 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes logoGlow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.15); }
+}
+
+.login-logo-img {
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: 900;
+  color: #ffffff;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible;
+  position: relative;
+}
+
+.login-logo-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  filter: drop-shadow(0 12px 30px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 40px rgba(96, 165, 250, 0.5));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+  animation: logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.login-logo-img img:hover {
+  transform: scale(1.08) translateY(-6px);
+  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 60px rgba(96, 165, 250, 0.8));
+}
+
+/* ===== JUDUL & SUBTITLE ===== */
+#loginPage #loginTitle,
+#loginPage h1 {
+  color: #ffffff !important;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 4px;
+}
+
+#loginPage .login-subtitle,
+#loginPage .text-secondary {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== CARD LOGIN — Glassmorphism + Modern ===== */
+.login-card {
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  border-radius: 24px !important;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+  overflow: hidden;
+  position: relative;
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
+  background-size: 200% 100%;
+  border-radius: 24px 24px 0 0;
+  animation: borderShimmer 3s linear infinite;
+}
+
+@keyframes borderShimmer {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+
+.login-card .card-body {
+  padding: 36px 32px !important;
+}
+
+.login-card .form-label {
+  color: #374151 !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+/* ===== INPUT WRAPPER ===== */
+.input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 16px;
+  font-size: 18px;
+  color: #9ca3af;
+  pointer-events: none;
+  transition: color 0.2s ease;
+  z-index: 2;
+}
+
+.login-input {
+  padding-left: 48px !important;
+  padding-right: 48px !important;
+  background: #f9fafb !important;
+  border: 2px solid #e5e7eb !important;
+  color: #1f2937 !important;
+  border-radius: 12px !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+  font-size: 14.5px !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.login-input::placeholder {
+  color: #9ca3af !important;
+}
+
+.login-input:hover {
+  border-color: #d1d5db !important;
+}
+
+.login-input:focus {
+  background: #ffffff !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), 0 4px 12px rgba(59, 130, 246, 0.1) !important;
+  color: #1f2937 !important;
+  transform: translateY(-1px);
+}
+
+.input-icon-wrap:focus-within .input-icon-left {
+  color: #3b82f6;
+}
+
+/* ===== PASSWORD TOGGLE ===== */
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.password-toggle:hover {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.password-toggle:active {
+  transform: scale(0.9);
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.login-submit-btn {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%) !important;
+  background-size: 200% 100% !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  border-radius: 12px !important;
+  padding: 14px !important;
+  font-size: 15.5px !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-submit-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: btnShine 3s ease-in-out infinite;
+}
+
+@keyframes btnShine {
+  0%   { left: -100%; }
+  50%  { left: 100%; }
+  100% { left: 100%; }
+}
+
+.login-submit-btn:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.6) !important;
+  background-position: 100% 50% !important;
+}
+
+.login-submit-btn:active {
+  transform: translateY(-1px) !important;
+}
+
+/* ===== BACK LINK ===== */
+.login-back-link {
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.2s ease;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.login-back-link:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-4px);
+}
+
+/* ===== ERROR ALERT ===== */
+.login-card .alert-danger {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  border-radius: 10px;
+  font-size: 13px;
+  padding: 12px 16px;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%      { transform: translateX(-6px); }
+  75%      { transform: translateX(6px); }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 480px) {
+  #loginPage #loginTitle,
+  #loginPage h1 {
+    font-size: 26px;
+  }
+
+  .login-logo-img {
+    width: 90px;
+    height: 90px;
+    font-size: 40px;
+  }
+
+  .login-card .card-body {
+    padding: 28px 22px !important;
+  }
+
+  .login-card {
+    border-radius: 20px !important;
+  }
+
+  #loginPage::before,
+  #loginPage::after {
+    filter: blur(60px);
+    opacity: 0.4;
+  }
+}
+
+/* ============================================================
+SIDEBAR LOGO — Mengikuti bentuk logo
+============================================================ */
+.sidebar-logo-img {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  /* ❌ Hapus background, border, border-radius, overflow */
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  flex-shrink: 0;
+}
+
+.sidebar-logo-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.sidebar-logo-img img:hover {
+  transform: scale(1.08);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+}
+
+/* ============================================================
+NAV SECTION
+============================================================ */
+.nav-section {
+  padding: 12px 16px 4px;
+}
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ============================================================
+SIDEBAR FOOTER — User Card Aesthetic
+============================================================ */
+.sidebar-footer-tabler {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-user-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+}
+
+.sidebar-user-card:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.sidebar-user-card .user-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--tblr-primary, #0d47a1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-user-card .user-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sidebar-user-card .user-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 2px;
+}
+
+.sidebar-user-card .user-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.2px;
+}
+
+.sidebar-logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5 !important;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.sidebar-logout-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.sidebar-logout-btn i {
+  font-size: 15px;
+}
+
+/* ============================================================
+SIDEBAR OVERLAY
+============================================================ */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1040;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sidebar-overlay.show {
+  display: block;
+  opacity: 1;
+}
+
+/* ============================================================
+HERO CARD
+============================================================ */
+.hero-card {
+  background: linear-gradient(135deg,
+    var(--tblr-primary) 0%,
+    var(--tblr-primary-darken, #0a3a8a) 100%) !important;
+  color: white;
+  border: none;
+  box-shadow: 0 10px 30px rgba(13, 71, 161, 0.2);
+}
+.hero-card h1,
+.hero-card .text-secondary {
+  color: white !important;
+}
+.hero-card .card-sm {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.hero-card .text-primary { color: #c9dcff !important; }
+.hero-card .text-green { color: #a7f3d0 !important; }
+
+/* ============================================================
+HERO CARD — Clock Card (Jam & Uptime Aesthetic)
+============================================================ */
+.hero-card .clock-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  min-width: 200px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card .clock-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  animation: clockShine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes clockShine {
+  0%   { left: -100%; }
+  50%  { left: 100%; }
+  100% { left: 100%; }
+}
+
+.hero-card .clock-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.hero-card .clock-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.hero-card .clock-icon.uptime {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.hero-card .clock-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.hero-card .clock-time {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hero-card .clock-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ============================================================
+KPI CARD
+============================================================ */
+.kpi-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(13, 71, 161, 0.15);
+}
+.kpi-icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+GRAPH CONTAINER
+============================================================ */
+.graph-container-tabler {
+  border: 1px solid var(--tblr-border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ============================================================
+LOGO PREVIEW
+============================================================ */
+.logo-preview-tabler {
+  width: 120px;
+  height: 120px;
+  border: 2px dashed var(--tblr-border-color);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--tblr-bg-surface-secondary);
+}
+.logo-preview-tabler img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+/* ============================================================
+NOTIF DROPDOWN — MODERN
+============================================================ */
+.dropdown-menu.dropdown-menu-end {
+  min-width: 380px !important;
+  max-width: 90vw !important;
+  border-radius: 16px !important;
+  border: none !important;
+  box-shadow:
+    0 20px 60px rgba(13, 71, 161, 0.15),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 0 0 1px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+.dropdown-menu .dropdown-header {
+  padding: 16px 20px !important;
+  background: linear-gradient(135deg, #fafbff 0%, #f5f7fa 100%) !important;
+  border-bottom: 1px solid rgba(13, 71, 161, 0.08) !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  color: #0a3a8a !important;
+}
+.dropdown-menu .list-group-item {
+  padding: 14px 20px !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+  transition: background 0.15s !important;
+}
+.dropdown-menu .list-group-item:hover {
+  background: rgba(13, 71, 161, 0.03) !important;
+}
+.dropdown-menu .list-group-item:last-child {
+  border-bottom: none !important;
+}
+.dropdown-menu .dropdown-footer {
+  padding: 12px 20px !important;
+  background: linear-gradient(135deg, #fafbff 0%, #f5f7fa 100%) !important;
+  border-top: 1px solid rgba(13, 71, 161, 0.08) !important;
+  text-align: center !important;
+}
+.dropdown-menu .dropdown-footer a {
+  color: #0d47a1 !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  text-decoration: none !important;
+}
+.dropdown-menu .dropdown-footer a:hover {
+  color: #0a3a8a !important;
+  text-decoration: underline !important;
+}
+
+/* ============================================================
+SPINNER
+============================================================ */
+.ti-spin {
+  display: inline-block;
+  animation: ti-spin 1s linear infinite;
+}
+@keyframes ti-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+PROMPT TEXTAREA
+============================================================ */
+#cfg-systemInstruction {
+  width: 100% !important;
+  padding: 20px 22px !important;
+  border: 2px solid var(--tblr-border-color) !important;
+  border-radius: 14px !important;
+  font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
+  font-size: 13.5px !important;
+  line-height: 1.75 !important;
+  color: #1f2937 !important;
+  background: #fafbfc !important;
+  resize: vertical !important;
+  min-height: 400px !important;
+  max-height: 70vh !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  letter-spacing: 0.1px;
+}
+#cfg-systemInstruction:focus {
+  border-color: var(--tblr-primary) !important;
+  background: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(13, 71, 161, 0.08) !important;
+}
+
+/* ============================================================
+CHART WRAPPER
+============================================================ */
+#sessionsChart, #sourceChart, #feedbackTrendChart,
+#categoryChart, #feedbackPieChart, #feedbackChart {
+  position: relative;
+  width: 100%;
+}
+#sessionsChart canvas, #sourceChart canvas,
+#feedbackTrendChart canvas, #categoryChart canvas,
+#feedbackPieChart canvas, #feedbackChart canvas {
+  max-width: 100% !important;
+}
+
+/* ============================================================
+OVERRIDE TABLER SIDEBAR (Warna Custom)
+============================================================ */
+.navbar-vertical.navbar-dark {
+  background: linear-gradient(180deg,
+    var(--tblr-primary-darken, #0a3a8a) 0%,
+    var(--tblr-primary, #0d47a1) 50%,
+    var(--tblr-primary-darken, #082d6e) 100%) !important;
+  border-right: none;
+}
+.navbar-vertical.navbar-dark .nav-link {
+  color: rgba(255,255,255,0.8) !important;
+}
+.navbar-vertical.navbar-dark .nav-link:hover {
+  color: white !important;
+  background: rgba(255,255,255,0.06);
+}
+.navbar-vertical.navbar-dark .nav-link.active {
+  color: white !important;
+  background: rgba(255,255,255,0.15);
+  font-weight: 700;
+}
+.navbar-vertical.navbar-dark .navbar-brand,
+.navbar-vertical.navbar-dark .navbar-brand-autodark {
+  color: white !important;
+}
+.navbar-vertical.navbar-dark .text-secondary {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+/* ============================================================
+⚠️ MOBILE — SIDEBAR OFF-CANVAS (KUNCI!)
+============================================================ */
+@media (max-width: 991.98px) {
+
+  #adminSidebar.navbar-vertical {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    z-index: 1050 !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.3) !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  #adminSidebar.navbar-vertical.show-mobile {
+    transform: translateX(0) !important;
+  }
+
+  #adminSidebar .navbar-collapse {
+    display: block !important;
+    flex-basis: auto !important;
+  }
+
+  .page-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .navbar-toggler {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #adminSidebar .navbar-toggler {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+DESKTOP — Sidebar Normal
+============================================================ */
+@media (min-width: 992px) {
+  .navbar-toggler { display: none !important; }
+  .sidebar-overlay { display: none !important; }
+
+  #adminSidebar.navbar-vertical {
+    position: fixed !important;
+    top: 0; left: 0; bottom: 0;
+    width: 260px !important;
+    transform: none !important;
+  }
+  .page-wrapper {
+    margin-left: 260px !important;
+  }
+}
+
+/* ============================================================
+RESPONSIVE MOBILE (HP) — LENGKAP
+============================================================ */
+@media (max-width: 768px) {
+
+  /* HEADER */
+  .navbar {
+    padding: 8px 12px !important;
+    min-height: 56px !important;
+  }
+  .navbar-toggler {
+    padding: 4px 8px !important;
+    font-size: 20px !important;
+    margin-right: 8px !important;
+  }
+  .navbar-brand {
+    font-size: 16px !important;
+    max-width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: auto !important;
+  }
+  .navbar .nav-item .btn-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 14px !important;
+  }
+  .navbar-nav.flex-row { gap: 2px !important; }
+
+  /* CONTAINER */
+  .page-body { padding: 12px 0 !important; }
+  .container-xl {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  /* HERO */
+  .hero-card .card-body { padding: 16px !important; }
+  .hero-card h1 { font-size: 18px !important; line-height: 1.3; }
+  .hero-card .text-secondary.small { font-size: 11px; }
+  .hero-card .row > [class*="col-"] {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  .hero-card .d-flex.gap-2 {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px !important;
+    width: 100%;
+  }
+  .hero-card .card-sm {
+    flex: 1 1 calc(50% - 3px);
+    min-width: 0;
+  }
+  .hero-card .card-sm .card-body { padding: 8px 10px !important; }
+  .hero-card .card-sm .fw-bold { font-size: 13px !important; }
+  .hero-card .card-sm .text-secondary.small { font-size: 10px !important; }
+  .hero-card .card-sm i { font-size: 14px !important; }
+
+  /* Clock Card Mobile */
+  .hero-card .clock-card {
+    min-width: 0;
+    padding: 10px 12px;
+    gap: 10px;
+    flex: 1 1 calc(50% - 3px);
+  }
+  .hero-card .clock-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 17px;
+  }
+  .hero-card .clock-time {
+    font-size: 16px;
+  }
+  .hero-card .clock-label {
+    font-size: 10px;
+  }
+
+  /* PERIOD */
+  .dash-period-btn {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+  }
+  .btn-group { flex-wrap: wrap; }
+
+  /* KPI 2 KOLOM */
+  .row-cards > .col-sm-6,
+  .row-cards > [class*="col-lg-3"] {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+  .kpi-card .card-body { padding: 12px !important; }
+  .kpi-card .h1 { font-size: 20px !important; line-height: 1.1; }
+  .kpi-card .h3 { font-size: 18px !important; }
+  .kpi-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 16px !important;
+  }
+  .kpi-card .text-uppercase { font-size: 9px !important; }
+  .kpi-card .text-secondary.small { font-size: 10px !important; }
+
+  /* CHART */
+  #sessionsChart, #sourceChart, #feedbackTrendChart,
+  #categoryChart, #feedbackPieChart, #feedbackChart {
+    min-height: 220px !important;
+    height: 220px !important;
+    max-height: 220px !important;
+  }
+  .card-header { padding: 12px 14px !important; }
+  .card-title { font-size: 13px !important; }
+  .card-body { padding: 14px !important; }
+
+  /* TABLES */
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+  }
+  .table { font-size: 12px; min-width: 600px; }
+  .table th, .table td { padding: 8px 6px !important; }
+
+  /* QUICK ACTIONS 2 KOLOM */
+  .card .row-cards > .col-6 {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+  }
+  .btn-ghost-primary, .btn-ghost-green, .btn-ghost-purple,
+  .btn-ghost-orange, .btn-ghost-red, .btn-ghost-blue {
+    padding: 12px 4px !important;
+    font-size: 10px !important;
+  }
+
+  /* MEMORY CARD 1 KOLOM */
+  .row-cards > [class*="col-md-6"],
+  .row-cards > [class*="col-lg-4"] {
+    width: 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* FORM */
+  .form-control, .form-select { font-size: 14px !important; }
+  .btn { font-size: 13px; }
+
+  /* GRAPH */
+  .graph-container-tabler { height: 320px !important; }
+
+  /* BUTTONS CARD ACTIONS */
+  .card-actions { flex-wrap: wrap; gap: 4px; }
+  .card-actions .btn { padding: 4px 8px !important; font-size: 11px !important; }
+
+  /* ALERT */
+  .alert { padding: 10px 12px !important; font-size: 13px; }
+
+  /* NOTIF DROPDOWN MOBILE */
+  .dropdown-menu.dropdown-menu-end {
+    min-width: 300px !important;
+    max-width: calc(100vw - 20px) !important;
+  }
+
+  /* GLOBAL OVERFLOW PREVENTION */
+  html, body { overflow-x: hidden !important; max-width: 100vw !important; }
+}
+
+/* ============================================================
+EXTRA SMALL HP
+============================================================ */
+@media (max-width: 480px) {
+  .navbar-brand { font-size: 14px !important; }
+  .hero-card h1 { font-size: 16px !important; }
+  .kpi-card .h1 { font-size: 18px !important; }
+  .kpi-icon { width: 30px !important; height: 30px !important; font-size: 14px !important; }
+  .dash-period-btn { padding: 3px 6px !important; font-size: 10px !important; }
+  .card-title { font-size: 12px !important; }
+  .card-body { padding: 12px !important; }
+  .card-header { padding: 10px 12px !important; }
+  .dropdown-menu.dropdown-menu-end {
+    min-width: 280px !important;
+  }
+}
+
+/* ============================================================
+DARK MODE
+============================================================ */
+[data-bs-theme="dark"] .hero-card {
+  background: linear-gradient(135deg,
+    var(--tblr-primary-darken, #0a3a8a) 0%,
+    #082d6e 100%) !important;
+}
+[data-bs-theme="dark"] .kpi-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+[data-bs-theme="dark"] .dropdown-menu {
+  background: #1a1d21 !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+}
+[data-bs-theme="dark"] .dropdown-menu .dropdown-header {
+  background: linear-gradient(135deg, #1f2328 0%, #1a1d21 100%) !important;
+  color: #93c5fd !important;
+  border-bottom-color: rgba(255,255,255,0.06) !important;
+}
+[data-bs-theme="dark"] .dropdown-menu .list-group-item {
+  color: #e5e7eb !important;
+  border-bottom-color: rgba(255,255,255,0.04) !important;
+}
+[data-bs-theme="dark"] .dropdown-menu .dropdown-footer {
+  background: linear-gradient(135deg, #1f2328 0%, #1a1d21 100%) !important;
+  border-top-color: rgba(255,255,255,0.06) !important;
+}
+[data-bs-theme="dark"] .dropdown-menu .dropdown-footer a {
+  color: #93c5fd !important;
+}
+[data-bs-theme="dark"] #cfg-systemInstruction {
+  background: #1a1d21 !important;
+  color: #e5e7eb !important;
+  border-color: #2d3136 !important;
+}
+
+/* User Card — Dark Mode (tetap kontras di sidebar gelap) */
+[data-bs-theme="dark"] .sidebar-user-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+[data-bs-theme="dark"] .sidebar-user-card:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+[data-bs-theme="dark"] .sidebar-user-card .user-avatar {
+  background: linear-gradient(135deg, #f3f4f6 0%, #d1d5db 100%);
+  color: #1f2937;
+}
+[data-bs-theme="dark"] .sidebar-user-card .user-name {
+  color: #ffffff;
+}
+
+/* ============================================================
+PRINT
+============================================================ */
+@media print {
+  .admin-sidebar, .navbar, .footer, .btn, .nav-tabs,
+  .card-actions, .dash-period-btn, .sidebar-overlay {
+    display: none !important;
+  }
+  .page-wrapper { margin: 0 !important; }
+  .page-section { display: block !important; }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* ============================================================
+SCROLLBAR
+============================================================ */
+.sidebar-nav::-webkit-scrollbar { width: 5px; }
+.sidebar-nav::-webkit-scrollbar-track { background: transparent; }
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* ============================================================
+FIXED NAVBAR — Header selalu di atas saat scroll
+============================================================ */
+.page-wrapper > header.navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 260px !important;
+  right: 0 !important;
+  z-index: 1030 !important;
+  background: var(--tblr-bg-surface, #ffffff) !important;
+  border-bottom: 1px solid var(--tblr-border-color, rgba(0,0,0,0.08)) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  transition: background 0.2s ease, box-shadow 0.2s ease, left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.page-wrapper > .page-body {
+  padding-top: 70px !important;
+}
+
+[data-bs-theme="dark"] .page-wrapper > header.navbar {
+  background: rgba(31, 41, 55, 0.85) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.page-wrapper > header.navbar.scrolled {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+}
+[data-bs-theme="dark"] .page-wrapper > header.navbar.scrolled {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Mobile: header full width */
+@media (max-width: 991.98px) {
+  .page-wrapper > header.navbar {
+    left: 0 !important;
+  }
+  .page-wrapper > .page-body {
+    padding-top: 64px !important;
+  }
+}
+@media (max-width: 480px) {
+  .page-wrapper > header.navbar {
+    min-height: 56px !important;
+  }
+  .page-wrapper > .page-body {
+    padding-top: 60px !important;
+  }
+}
+
+/* ============================================================
+SIDEBAR FOLDED/MINI — Hanya ikon, expand saat hover
+============================================================ */
+@media (min-width: 992px) {
+
+  /* Sidebar mini default */
+  #adminSidebar.navbar-vertical {
+    width: 72px !important;
+    overflow: visible !important;
+    z-index: 1040 !important;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Sidebar expand saat hover */
+  #adminSidebar.navbar-vertical:hover {
+    width: 260px !important;
+    box-shadow: 6px 0 30px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Page wrapper mengikuti lebar sidebar mini */
+  .page-wrapper {
+    margin-left: 72px !important;
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Header fixed mengikuti sidebar mini */
+  .page-wrapper > header.navbar {
+    left: 72px !important;
+  }
+
+  /* Nav-section (label UTAMA, KONFIGURASI, dll) */
+  #adminSidebar .nav-section {
+    opacity: 0;
+    height: 8px !important;
+    padding: 4px 0 !important;
+    overflow: hidden;
+    transition: opacity 0.15s ease, height 0.25s ease !important;
+  }
+  #adminSidebar:hover .nav-section {
+    opacity: 1;
+    height: auto !important;
+    padding: 12px 16px 4px !important;
+  }
+
+  /* Teks nav-link */
+  #adminSidebar .nav-link-title {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.15s ease !important;
+  }
+  #adminSidebar:hover .nav-link-title {
+    opacity: 1;
+    width: auto;
+  }
+
+  /* Badge (angka di Provider, Pengetahuan, dll) */
+  #adminSidebar .nav-link .badge {
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.15s ease, transform 0.15s ease !important;
+  }
+  #adminSidebar:hover .nav-link .badge {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Nav-link: center ikon saat mini, rapi saat hover */
+  #adminSidebar .nav-link {
+    padding: 10px !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    margin: 2px 8px !important;
+    transition: all 0.15s ease !important;
+  }
+  #adminSidebar:hover .nav-link {
+    padding: 10px 14px !important;
+    justify-content: flex-start !important;
+    margin: 2px 0 !important;
+  }
+
+  /* Ikon nav-link */
+  #adminSidebar .nav-link-icon {
+    margin-right: 0 !important;
+    transition: margin-right 0.15s ease !important;
+  }
+  #adminSidebar:hover .nav-link-icon {
+    margin-right: 12px !important;
+  }
+
+    /* ===== Brand/Logo — logo tetap muncul, hanya teks yang disembunyikan ===== */
+  #adminSidebar .navbar-brand {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.15s ease !important;
+  }
+
+  #adminSidebar:hover .navbar-brand {
+    justify-content: flex-start !important;
+    padding: 0 !important;
+  }
+
+  /* Link pembungkus logo + teks */
+  #adminSidebar .navbar-brand > a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    gap: 0 !important;
+    transition: all 0.15s ease !important;
+  }
+
+  #adminSidebar:hover .navbar-brand > a {
+    justify-content: flex-start !important;
+    gap: 8px !important;
+  }
+
+  /* === LOGO — SELALU TERLIHAT (target id sidebarLogo) === */
+  #adminSidebar #sidebarLogo,
+  #adminSidebar .sidebar-logo-img {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    flex-shrink: 0 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+  }
+
+  /* Logo img di dalam — pastikan terlihat */
+  #adminSidebar #sidebarLogo img,
+  #adminSidebar .sidebar-logo-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    opacity: 1 !important;
+    display: block !important;
+  }
+
+  /* === TEKS di samping logo — hanya teks ini yang disembunyikan === */
+  #adminSidebar .navbar-brand > a > .ms-2 {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.15s ease, width 0.15s ease !important;
+  }
+
+  #adminSidebar:hover .navbar-brand > a > .ms-2 {
+    opacity: 1;
+    width: auto;
+  }
+
+    /* ===== Sidebar Footer Container — rapi & konsisten ===== */
+  #adminSidebar .sidebar-footer-tabler {
+    padding: 8px !important;
+    transition: padding 0.25s ease !important;
+  }
+  #adminSidebar:hover .sidebar-footer-tabler {
+    padding: 16px !important;
+  }
+
+  /* ===== Icon User — SIMPLE seperti nav-link ===== */
+  #adminSidebar .sidebar-user-card {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: 10px !important;
+    margin: 0 0 4px 0 !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    border: none !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer;
+  }
+
+  #adminSidebar .sidebar-user-card:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  #adminSidebar:hover .sidebar-user-card {
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+  }
+
+  /* Avatar icon — samain ukuran dengan nav-link-icon */
+  #adminSidebar .sidebar-user-card .user-avatar {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    border-radius: 6px !important;
+    flex-shrink: 0 !important;
+    font-size: 14px !important;
+    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%) !important;
+    color: var(--tblr-primary, #0d47a1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* User info — sembunyikan saat mini */
+  #adminSidebar .sidebar-user-card .user-info {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: opacity 0.15s ease !important;
+  }
+  #adminSidebar:hover .sidebar-user-card .user-info {
+    opacity: 1;
+    width: auto;
+  }
+
+  /* ===== Tombol Logout — SIMPLE seperti nav-link, warna merah ===== */
+  #adminSidebar .sidebar-logout-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: 10px !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: 40px !important;
+    border-radius: 8px !important;
+    background: transparent !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-size: 20px !important;
+    cursor: pointer;
+    transition: all 0.15s ease !important;
+  }
+
+  #adminSidebar .sidebar-logout-btn:hover {
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #fca5a5 !important;
+  }
+
+  #adminSidebar:hover .sidebar-logout-btn {
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    color: #fca5a5 !important;
+    font-weight: 700 !important;
+  }
+
+  /* Icon logout — samain ukuran nav-link-icon */
+  #adminSidebar .sidebar-logout-btn i {
+    font-size: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: font-size 0.15s ease !important;
+  }
+
+  #adminSidebar:hover .sidebar-logout-btn i {
+    font-size: 16px !important;
+  }
+
+  /* Teks Logout — sembunyikan saat mini */
+  #adminSidebar .sidebar-logout-btn span {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    transition: opacity 0.15s ease !important;
+  }
+  #adminSidebar:hover .sidebar-logout-btn span {
+    opacity: 1;
+    width: auto;
+  }
+
+  /* Scrollbar sidebar */
+  #adminSidebar::-webkit-scrollbar { width: 4px; }
+  #adminSidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+  }
+  #adminSidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Mobile: jangan ubah (tetap off-canvas penuh) */
+@media (max-width: 991.98px) {
+  .page-wrapper {
+    margin-left: 0 !important;
+  }
+  .page-wrapper > header.navbar {
+    left: 0 !important;
+  }
+}
+
+/* Cegah horizontal scroll */
+#adminSidebar.navbar-vertical {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+#adminSidebar .navbar-collapse {
+  overflow-x: hidden !important;
+}
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* ============================================================
+PRINT STYLES
+============================================================ */
+@media print {
+  #adminSidebar,
+  header.navbar,
+  footer.footer,
+  .btn,
+  .card-actions,
+  .sivt-toast,
+  .modal,
+  .sidebar-overlay,
+  #reportCustomRange,
+  .dropdown-menu {
+    display: none !important;
+  }
+  .page-wrapper {
+    margin-left: 0 !important;
+  }
+  .page-section:not(#page-report) {
+    display: none !important;
+  }
+  #page-report {
+    display: block !important;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    page-break-inside: avoid;
+  }
+  body {
+    background: white !important;
+  }
+}

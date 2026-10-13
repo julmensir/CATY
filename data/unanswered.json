@@ -1,1 +1,113 @@
-[]
+[
+  {
+    "id": "uq_1791543717304_uc7s",
+    "question": "apa sarat untuk nikah?",
+    "sessionId": "sess_1791535864226_q4ke8z8y",
+    "count": 25,
+    "firstAsked": "2026-10-09T11:01:57.304Z",
+    "lastAsked": "2026-10-09T11:49:14.686Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791546568813_splr",
+    "question": "apa bisa di sini beli sayur",
+    "sessionId": "sess_1791546531286_73ynmfty",
+    "count": 1,
+    "firstAsked": "2026-10-09T11:49:28.813Z",
+    "lastAsked": "2026-10-09T11:49:28.813Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791546580201_rcjm",
+    "question": "apa di kemetrrina ada uang",
+    "sessionId": "sess_1791546531286_73ynmfty",
+    "count": 1,
+    "firstAsked": "2026-10-09T11:49:40.201Z",
+    "lastAsked": "2026-10-09T11:49:40.201Z",
+    "resolved": true,
+    "resolvedAt": "2026-10-11T17:45:11.475Z"
+  },
+  {
+    "id": "uq_1791546599485_jkyt",
+    "question": "bagimana cara membat KTP baru?",
+    "sessionId": "sess_1791546531286_73ynmfty",
+    "count": 2,
+    "firstAsked": "2026-10-09T11:49:59.485Z",
+    "lastAsked": "2026-10-09T11:51:03.964Z",
+    "resolved": true,
+    "resolvedAt": "2026-10-11T17:45:02.607Z"
+  },
+  {
+    "id": "uq_1791739627129_2lk6",
+    "question": "cuaca hari ini",
+    "sessionId": "sess_1791719540860_x66gomoy",
+    "count": 1,
+    "firstAsked": "2026-10-11T17:27:07.129Z",
+    "lastAsked": "2026-10-11T17:27:07.129Z",
+    "resolved": true,
+    "resolvedAt": "2026-10-11T17:44:53.038Z"
+  },
+  {
+    "id": "uq_1791773434370_4viz",
+    "question": "syarat unuk membuat ktp yang sudah hilang",
+    "sessionId": "sess_1791773242057_j3ub82bl",
+    "count": 1,
+    "firstAsked": "2026-10-12T02:50:34.370Z",
+    "lastAsked": "2026-10-12T02:50:34.370Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791773968152_o4j3",
+    "question": "Okey Terimakasih sayang",
+    "sessionId": "sess_1791773242057_j3ub82bl",
+    "count": 1,
+    "firstAsked": "2026-10-12T02:59:28.152Z",
+    "lastAsked": "2026-10-12T02:59:28.152Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791773995920_7km5",
+    "question": "disini jual sayur ngak",
+    "sessionId": "sess_1791773242057_j3ub82bl",
+    "count": 1,
+    "firstAsked": "2026-10-12T02:59:55.920Z",
+    "lastAsked": "2026-10-12T02:59:55.920Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791774556027_w2p0",
+    "question": "syarata buat KTP baru",
+    "sessionId": "sess_1791774248831_0vbw41jw",
+    "count": 1,
+    "firstAsked": "2026-10-12T03:09:16.027Z",
+    "lastAsked": "2026-10-12T03:09:16.027Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791774649194_myaf",
+    "question": "buat ktp baru",
+    "sessionId": "sess_1791774248831_0vbw41jw",
+    "count": 1,
+    "firstAsked": "2026-10-12T03:10:49.194Z",
+    "lastAsked": "2026-10-12T03:10:49.194Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791774664498_1yd9",
+    "question": "syarat KTP  baru",
+    "sessionId": "sess_1791774248831_0vbw41jw",
+    "count": 1,
+    "firstAsked": "2026-10-12T03:11:04.498Z",
+    "lastAsked": "2026-10-12T03:11:04.498Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1791859373879_c9kx",
+    "question": "Syarat KTP hilang",
+    "sessionId": "sess_1791859039442_ie4qutjf",
+    "count": 1,
+    "firstAsked": "2026-10-13T02:42:53.879Z",
+    "lastAsked": "2026-10-13T02:42:53.879Z",
+    "resolved": false
+  }
+]

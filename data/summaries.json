@@ -21,5 +21,43 @@
       }
     ],
     "timestamp": "2026-09-19T16:00:00.369Z"
+  },
+  {
+    "id": "ins_1791561600080",
+    "date": "2026-10-09",
+    "feedback": {
+      "total": 10,
+      "good": 9,
+      "bad": 1,
+      "satisfaction": "90.0"
+    },
+    "pendingTopics": [],
+    "unansweredCount": 4,
+    "recommendations": [
+      {
+        "level": "success",
+        "message": "Semua berjalan baik. Pertahankan kualitas layanan! ✅"
+      }
+    ],
+    "timestamp": "2026-10-09T16:00:00.080Z"
+  },
+  {
+    "id": "ins_1791734400331",
+    "date": "2026-10-11",
+    "feedback": {
+      "total": 12,
+      "good": 12,
+      "bad": 0,
+      "satisfaction": "100.0"
+    },
+    "pendingTopics": [],
+    "unansweredCount": 4,
+    "recommendations": [
+      {
+        "level": "success",
+        "message": "Semua berjalan baik. Pertahankan kualitas layanan! ✅"
+      }
+    ],
+    "timestamp": "2026-10-11T16:00:00.336Z"
   }
 ]

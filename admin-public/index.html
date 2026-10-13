@@ -1,1363 +1,1887 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" data-bs-theme="light">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>SIVT AI - Sistem Informasi Virtual TEGALREJO</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#0d47a1">
+  <title>SIVT AI - Admin Dashboard</title>
+  <link rel="manifest" href="/admin/manifest-admin.json">
+  <link rel="icon" type="image/png" href="/uploads/logo.png">
+
+  <!-- Tabler CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/css/tabler.min.css">
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- vis-network untuk Graph -->
+  <script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"></script>
+    <!-- jsPDF + AutoTable untuk cetak PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/admin/style-admin.css">
 </head>
 <body>
 
-<div id="loginPage">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="logo-icon" id="loginLogo">S</div>
-      <h2 id="loginTitle">SIVT AI</h2>
-      <p>Admin Dashboard</p>
+<!-- ============================================================
+LOGIN PAGE — Modern
+============================================================ -->
+<div id="loginPage" class="page page-center" style="display:none;">
+  <div class="container container-tight py-4">
+
+    <!-- Logo AI + Brand -->
+    <div class="text-center mb-4 login-brand-section">
+      <div class="login-logo-wrap">
+        <div id="loginLogo" class="login-logo-img">S</div>
+      </div>
+      <h1 class="mt-3 mb-1" id="loginTitle">SIVT AI</h1>
+      <p class="text-secondary mb-0 login-subtitle">Admin Dashboard</p>
     </div>
-    <form onsubmit="doLogin(event)">
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Username</label>
-        <input type="text" class="form-control" id="loginUsername" required autocomplete="username">
+
+    <!-- Card Form -->
+    <div class="card card-md login-card">
+      <div class="card-body">
+        <form onsubmit="doLogin(event)" autocomplete="off">
+          <div class="mb-3">
+            <label class="form-label">Username</label>
+            <div class="input-icon-wrap">
+              <i class="ti ti-user input-icon-left"></i>
+              <input type="text" id="loginUsername" class="form-control login-input"
+                     placeholder="Masukkan username" autocomplete="username" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <div class="input-icon-wrap">
+              <i class="ti ti-lock input-icon-left"></i>
+              <input type="password" id="loginPassword" class="form-control login-input"
+                     placeholder="Masukkan password" autocomplete="current-password" required>
+              <button type="button" class="password-toggle" id="passwordToggle" tabindex="-1"
+                      aria-label="Toggle password visibility">
+                <i class="ti ti-eye-off" id="passwordToggleIcon"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="loginError" class="alert alert-danger" style="display:none;"></div>
+
+          <div class="form-footer">
+            <button type="submit" class="btn btn-primary w-100 login-submit-btn">
+              <i class="ti ti-login me-2"></i>Login
+            </button>
+          </div>
+        </form>
       </div>
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Password</label>
-        <input type="password" class="form-control" id="loginPassword" required autocomplete="current-password">
-      </div>
-      <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt me-2"></i> Login</button>
-      <div class="mt-3 text-center">
-        <a href="/" class="btn-back">
-          <i class="fas fa-arrow-left me-1"></i> Ke Halaman Warga
-        </a>
-      </div>
-      <div id="loginError" class="alert alert-danger mt-3" style="display: none; font-size: 13px;"></div>
-    </form>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/" class="login-back-link">
+        <i class="ti ti-arrow-left me-1"></i> Ke Halaman Warga
+      </a>
+    </div>
   </div>
 </div>
 
-<div id="adminPage">
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<!-- ============================================================
+ADMIN PAGE
+============================================================ -->
+<div id="adminPage" class="page" style="display:none;">
 
-  <aside class="admin-sidebar" id="adminSidebar">
-    <div class="sidebar-brand">
-      <div class="brand-logo" id="sidebarLogo">S</div>
-      <div class="brand-text">
-        <div class="brand-name" id="sidebarAiName">SIVT AI</div>
-        <div class="brand-sub">Admin Panel</div>
-      </div>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section">UTAMA</div>
-      <a class="nav-item active" data-page="dashboard">
-        <i class="fas fa-chart-line"></i><span>Dashboard</span>
-      </a>
-      <a class="nav-item" data-page="general">
-        <i class="fas fa-sliders-h"></i><span>Umum</span>
-      </a>
-      <a class="nav-item" data-page="logo">
-        <i class="fas fa-image"></i><span>Logo & Branding</span>
-      </a>
-      <a class="nav-item" data-page="theme">
-        <i class="fas fa-palette"></i><span>Warna Tema</span>
-      </a>
-
-      <div class="nav-section">SISTEM</div>
-      <a class="nav-item" data-page="providers">
-        <i class="fas fa-cloud"></i><span>Provider AI</span>
-        <span class="nav-badge" id="badgeProviders">0</span>
-      </a>
-      <a class="nav-item" data-page="prompt">
-        <i class="fas fa-comment-dots"></i><span>Prompt AI</span>
-      </a>
-
-      <div class="nav-section">OTAK AI</div>
-      <a class="nav-item" data-page="knowledge">
-        <i class="fas fa-book"></i><span>Pengetahuan</span>
-        <span class="nav-badge" id="badgeKnowledge">0</span>
-      </a>
-      <a class="nav-item" data-page="graph">
-        <i class="fas fa-project-diagram"></i><span>Knowledge Graph</span>
-        <span class="nav-badge" id="badgeGraph">0</span>
-      </a>
-      <a class="nav-item" data-page="unanswered">
-        <i class="fas fa-question-circle"></i><span>Tak Terjawab</span>
-        <span class="nav-badge nav-badge-warning" id="badgeUnanswered">0</span>
-      </a>
-      <a class="nav-item" data-page="learning">
-        <i class="fas fa-brain"></i><span>Auto-Learning</span>
-        <span class="nav-badge nav-badge-warning" id="badgeLearning">0</span>
-      </a>
-      <a class="nav-item" data-page="feedback">
-        <i class="fas fa-star"></i><span>Feedback & Akurasi</span>
-      </a>
-      <a class="nav-item" data-page="memory">
-        <i class="fas fa-lightbulb"></i><span>Memori AI</span>
-        <span class="nav-badge" id="badgeMemory">0</span>
-      </a>
-      <a class="nav-item" data-page="sessions">
-        <i class="fas fa-comments"></i><span>Percakapan</span>
-        <span class="nav-badge" id="badgeSessions">0</span>
-      </a>
-
-      <div class="nav-section">PENGATURAN</div>
-      <a class="nav-item" data-page="backup">
-        <i class="fas fa-database"></i><span>Backup</span>
-      </a>
-      <a class="nav-item" data-page="security">
-        <i class="fas fa-shield-alt"></i><span>Keamanan</span>
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="admin-info">
-        <i class="fas fa-user-circle"></i>
-        <span id="adminUsername">admin</span>
-      </div>
-      <button class="btn-logout-sidebar" onclick="doLogout()">
-        <i class="fas fa-sign-out-alt"></i> Logout
+  <!-- SIDEBAR -->
+  <aside class="navbar navbar-vertical navbar-expand-lg navbar-dark" id="adminSidebar">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu">
+        <span class="navbar-toggler-icon"></span>
       </button>
+      <h1 class="navbar-brand navbar-brand-autodark">
+        <a href="#" class="d-flex align-items-center text-decoration-none">
+          <div id="sidebarLogo" class="sidebar-logo-img">S</div>
+          <div class="ms-2">
+            <div class="fw-bold" id="sidebarAiName">SIVT AI</div>
+            <div class="text-secondary small">Admin Panel</div>
+          </div>
+        </a>
+      </h1>
+
+      <div class="collapse navbar-collapse" id="sidebar-menu">
+        <ul class="navbar-nav pt-lg-3">
+          <li class="nav-item nav-section"><span class="nav-section-label">Utama</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="dashboard">
+              <span class="nav-link-icon"><i class="ti ti-dashboard"></i></span>
+              <span class="nav-link-title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-section"><span class="nav-section-label">Konfigurasi</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="general">
+              <span class="nav-link-icon"><i class="ti ti-settings"></i></span>
+              <span class="nav-link-title">Umum</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="logo">
+              <span class="nav-link-icon"><i class="ti ti-photo"></i></span>
+              <span class="nav-link-title">Logo & Branding</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="theme">
+              <span class="nav-link-icon"><i class="ti ti-palette"></i></span>
+              <span class="nav-link-title">Warna Tema</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="prompt">
+              <span class="nav-link-icon"><i class="ti ti-terminal"></i></span>
+              <span class="nav-link-title">Prompt AI</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-section"><span class="nav-section-label">Provider & Model</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="providers">
+              <span class="nav-link-icon"><i class="ti ti-cloud"></i></span>
+              <span class="nav-link-title">Provider AI</span>
+              <span class="badge bg-blue text-white ms-auto" id="badgeProviders">0</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-section"><span class="nav-section-label">Pengetahuan</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="knowledge">
+              <span class="nav-link-icon"><i class="ti ti-book"></i></span>
+              <span class="nav-link-title">Pengetahuan</span>
+              <span class="badge bg-green text-white ms-auto" id="badgeKnowledge">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="graph">
+              <span class="nav-link-icon"><i class="ti ti-hierarchy-3"></i></span>
+              <span class="nav-link-title">Knowledge Graph</span>
+              <span class="badge bg-purple text-white ms-auto" id="badgeGraph">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="memory">
+              <span class="nav-link-icon"><i class="ti ti-brain"></i></span>
+              <span class="nav-link-title">Memori AI</span>
+              <span class="badge bg-purple text-white ms-auto" id="badgeMemory">0</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-section"><span class="nav-section-label">Monitoring</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="inbox">
+              <span class="nav-link-icon"><i class="ti ti-inbox"></i></span>
+              <span class="nav-link-title">Pertanyaan Warga</span>
+              <span class="badge bg-red text-white ms-auto" id="badgeInbox">0</span>
+            </a>
+          </li>
+                    <li class="nav-item">
+            <a class="nav-link" href="#" data-page="feedback">
+              <span class="nav-link-icon"><i class="ti ti-chart-line"></i></span>
+              <span class="nav-link-title">Feedback & Akurasi</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="report">
+              <span class="nav-link-icon"><i class="ti ti-file-analytics"></i></span>
+              <span class="nav-link-title">Laporan</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="sessions">
+              <span class="nav-link-icon"><i class="ti ti-messages"></i></span>
+              <span class="nav-link-title">Percakapan</span>
+              <span class="badge bg-blue text-white ms-auto" id="badgeSessions">0</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="notifications">
+              <span class="nav-link-icon"><i class="ti ti-bell"></i></span>
+              <span class="nav-link-title">Notifikasi</span>
+            </a>
+          </li>
+
+          <li class="nav-item nav-section"><span class="nav-section-label">Sistem</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="backup">
+              <span class="nav-link-icon"><i class="ti ti-database"></i></span>
+              <span class="nav-link-title">Backup</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-page="security">
+              <span class="nav-link-icon"><i class="ti ti-shield"></i></span>
+              <span class="nav-link-title">Keamanan</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer-tabler">
+          <div class="sidebar-user-card">
+            <div class="user-avatar">
+              <i class="ti ti-user"></i>
+            </div>
+            <div class="user-info">
+              <div class="user-label">Masuk sebagai</div>
+              <div class="user-name" id="adminUsername">admin</div>
+            </div>
+          </div>
+          <button class="sidebar-logout-btn" onclick="doLogout()">
+            <i class="ti ti-logout"></i>
+            <span>Logout</span>
+          </button>
+        </div>
+      </div>
     </div>
   </aside>
 
-  <main class="admin-main">
-    <header class="main-header">
-      <button class="btn-toggle-sidebar" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h2 class="main-title" id="pageTitle">Dashboard</h2>
-      <div class="main-header-right">
-        <button class="btn-icon" onclick="loadCurrentPage()" title="Refresh">
-          <i class="fas fa-sync-alt"></i>
+  <!-- PAGE WRAPPER -->
+   <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebarMobile()"></div>
+  <div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="navbar navbar-expand-md navbar-light d-print-none">
+      <div class="container-xl">
+        <button class="navbar-toggler" type="button" onclick="toggleSidebarMobile()" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="notif-wrapper">
-          <button class="btn-icon notif-bell" onclick="toggleNotifDropdown()" title="Notifikasi">
-            <i class="fas fa-bell"></i>
-            <span class="notif-badge" id="notifBadge" style="display:none;">0</span>
-          </button>
-          <div class="notif-dropdown" id="notifDropdown">
-            <div class="notif-header">
-              <span><i class="fas fa-bell"></i> Notifikasi</span>
-              <div class="notif-header-actions">
-                <button onclick="markAllRead()" title="Tandai semua dibaca">
-                  <i class="fas fa-check-double"></i>
-                </button>
-                <button onclick="clearNotifications()" title="Hapus semua">
-                  <i class="fas fa-trash"></i>
-                </button>
+        <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+          <span id="pageTitle">Dashboard</span>
+        </h1>
+
+        <div class="navbar-nav flex-row order-md-last">
+          <div class="nav-item d-none d-md-flex me-2">
+            <button class="btn btn-icon btn-ghost-secondary" onclick="toggleDarkMode()" title="Dark Mode">
+              <i class="ti ti-moon" id="darkModeIcon"></i>
+            </button>
+          </div>
+          <div class="nav-item d-none d-md-flex me-2">
+            <button class="btn btn-icon btn-ghost-secondary" onclick="refreshCurrentPage()" title="Refresh">
+              <i class="ti ti-refresh"></i>
+            </button>
+          </div>
+          <div class="nav-item dropdown">
+            <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown">
+              <span class="btn btn-icon btn-ghost-secondary position-relative">
+                <i class="ti ti-bell"></i>
+                <span class="badge bg-red text-white badge-notification" id="notifBadge" style="display:none;">0</span>
+              </span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow" style="width: 360px;">
+              <div class="dropdown-header d-flex justify-content-between align-items-center">
+                <span><i class="ti ti-bell me-1"></i> Notifikasi</span>
+                <div>
+                  <button class="btn btn-sm btn-ghost-secondary" onclick="markAllRead()" title="Tandai dibaca">
+                    <i class="ti ti-check"></i>
+                  </button>
+                  <button class="btn btn-sm btn-ghost-danger" onclick="clearNotifications()" title="Hapus">
+                    <i class="ti ti-trash"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="notif-body" id="notifBody">
-              <div class="notif-empty">Belum ada notifikasi</div>
-            </div>
-            <div class="notif-footer">
-              <a href="#" onclick="showPage('notifications'); toggleNotifDropdown(); return false;">
-                Lihat Semua <i class="fas fa-arrow-right"></i>
-              </a>
+              <div class="list-group list-group-flush" id="notifBody" style="max-height: 400px; overflow-y: auto;">
+                <div class="text-center text-secondary py-4">Belum ada notifikasi</div>
+              </div>
+              <div class="dropdown-footer text-center">
+                <a href="#" onclick="showPage('notifications'); return false;">Lihat Semua</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </header>
 
-    <div class="main-content">
+    <!-- PAGE BODY -->
+    <div class="page-body">
+      <div class="container-xl">
 
-      <!-- DASHBOARD -->
-      <div class="page active" id="page-dashboard">
-        <div class="dash-welcome">
-          <div class="dash-welcome-text">
-            <h1>Selamat Datang di <span id="dashAiName">SIVT AI</span> 👋</h1>
-            <p>Dashboard ringkasan semua aktivitas AI Anda</p>
-          </div>
-          <div class="dash-welcome-meta">
-            <div><i class="fas fa-clock"></i> Uptime: <strong id="dashUptime">-</strong></div>
-          </div>
-        </div>
+        <!-- ============================================================
+        PAGE: DASHBOARD
+        ============================================================ -->
+        <div class="page-section active" id="page-dashboard">
 
-        <div class="stat-grid">
-          <div class="stat-card stat-blue">
-            <div class="stat-icon"><i class="fas fa-cloud"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statProviders">0</div>
-              <div class="stat-label">Provider AI</div>
-              <div class="stat-sub" id="statProvidersSub">-</div>
+          <div class="card card-lg mb-3 hero-card">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md">
+                  <div class="text-secondary small mb-1" id="dashGreeting">Selamat Datang 👋</div>
+                  <h1 class="mb-1">Dashboard <span id="dashAiName">SIVT AI</span></h1>
+                  <p class="text-secondary mb-0">Statistik realtime aktivitas AI Anda</p>
+                </div>
+
+                <div class="col-md-auto mt-3 mt-md-0">
+                  <div class="d-flex gap-2">
+                    <!-- Card Jam -->
+                    <div class="clock-card">
+                      <div class="clock-icon">
+                        <i class="ti ti-clock"></i>
+                      </div>
+                      <div class="clock-content">
+                        <div class="clock-time" id="liveClock">--:--:--</div>
+                        <div class="clock-label" id="liveDate">Memuat...</div>
+                      </div>
+                    </div>
+
+                    <!-- Card Uptime -->
+                    <div class="clock-card">
+                      <div class="clock-icon uptime">
+                        <i class="ti ti-server"></i>
+                      </div>
+                      <div class="clock-content">
+                        <div class="clock-time" id="dashUptime">-</div>
+                        <div class="clock-label">Uptime Server</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
 
-          <div class="stat-card stat-green">
-            <div class="stat-icon"><i class="fas fa-book"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statKnowledge">0</div>
-              <div class="stat-label">Chunk Pengetahuan</div>
-              <div class="stat-sub" id="statKnowledgeSub">-</div>
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <span class="text-secondary small fw-bold"><i class="ti ti-calendar"></i> Periode:</span>
+            <div class="btn-group" role="group">
+              <button class="btn btn-sm btn-outline-primary dash-period-btn active" data-period="1d" onclick="changePeriod('1d')">24 Jam</button>
+              <button class="btn btn-sm btn-outline-primary dash-period-btn" data-period="7d" onclick="changePeriod('7d')">7 Hari</button>
+              <button class="btn btn-sm btn-outline-primary dash-period-btn" data-period="30d" onclick="changePeriod('30d')">30 Hari</button>
+              <button class="btn btn-sm btn-outline-primary dash-period-btn" data-period="90d" onclick="changePeriod('90d')">90 Hari</button>
+              <button class="btn btn-sm btn-outline-primary dash-period-btn" data-period="1y" onclick="changePeriod('1y')">1 Tahun</button>
+            </div>
+            <button class="btn btn-sm btn-icon btn-ghost-primary ms-auto" onclick="loadDashboardNew()">
+              <i class="ti ti-refresh"></i>
+            </button>
+          </div>
+
+          <div class="row row-cards mb-3">
+            <div class="col-sm-6 col-lg-3">
+              <div class="card kpi-card" onclick="showPage('providers')">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="kpi-icon bg-blue-lt"><i class="ti ti-cloud"></i></span>
+                    <div class="ms-2 text-secondary small text-uppercase fw-bold">Provider AI</div>
+                  </div>
+                  <div class="h1 mb-1" id="kpiProviders">0</div>
+                  <div class="text-secondary small" id="kpiProvidersSub">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card kpi-card" onclick="showPage('knowledge')">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="kpi-icon bg-green-lt"><i class="ti ti-book"></i></span>
+                    <div class="ms-2 text-secondary small text-uppercase fw-bold">Pengetahuan</div>
+                  </div>
+                  <div class="h1 mb-1" id="kpiKnowledge">0</div>
+                  <div class="text-secondary small" id="kpiKnowledgeSub">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card kpi-card" onclick="showPage('memory')">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="kpi-icon bg-purple-lt"><i class="ti ti-brain"></i></span>
+                    <div class="ms-2 text-secondary small text-uppercase fw-bold">Memori AI</div>
+                  </div>
+                  <div class="h1 mb-1" id="kpiMemory">0</div>
+                  <div class="text-secondary small" id="kpiMemorySub">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card kpi-card" onclick="showPage('sessions')">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="kpi-icon bg-orange-lt"><i class="ti ti-messages"></i></span>
+                    <div class="ms-2 text-secondary small text-uppercase fw-bold">Sesi Aktif</div>
+                  </div>
+                  <div class="h1 mb-1" id="kpiSessions">0</div>
+                  <div class="text-secondary small" id="kpiSessionsSub">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card kpi-card" onclick="showPage('feedback')">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="kpi-icon bg-teal-lt"><i class="ti ti-mood-smile"></i></span>
+                    <div class="ms-2 text-secondary small text-uppercase fw-bold">Kepuasan</div>
+                  </div>
+                  <div class="h1 mb-1" id="kpiSatisfaction">0%</div>
+                  <div class="text-secondary small" id="kpiSatisfactionSub">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card kpi-card" onclick="showPage('notifications')">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-2">
+                    <span class="kpi-icon bg-pink-lt"><i class="ti ti-bell"></i></span>
+                    <div class="ms-2 text-secondary small text-uppercase fw-bold">Notifikasi</div>
+                  </div>
+                  <div class="h1 mb-1" id="kpiNotif">0</div>
+                  <div class="text-secondary small" id="kpiNotifSub">Belum dibaca</div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="stat-card stat-purple">
-            <div class="stat-icon"><i class="fas fa-brain"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statMemory">0</div>
-              <div class="stat-label">Memori AI</div>
-              <div class="stat-sub" id="statMemorySub">-</div>
-            </div>
-          </div>
-
-          <div class="stat-card stat-teal">
-            <div class="stat-icon"><i class="fas fa-comments"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statSessions">0</div>
-              <div class="stat-label">Sesi Aktif</div>
-              <div class="stat-sub" id="statSessionsSub">-</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stat-grid">
-          <div class="stat-card stat-pink">
-            <div class="stat-icon"><i class="fas fa-star"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statFeedback">0%</div>
-              <div class="stat-label">Kepuasan User</div>
-              <div class="stat-sub" id="statFeedbackSub">-</div>
-            </div>
-          </div>
-
-          <div class="stat-card stat-green">
-            <div class="stat-icon"><i class="fas fa-check-double"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statAccuracy">0%</div>
-              <div class="stat-label">Akurasi Jawaban</div>
-              <div class="stat-sub" id="statAccuracySub">-</div>
-            </div>
-          </div>
-
-          <div class="stat-card stat-red">
-            <div class="stat-icon"><i class="fas fa-question-circle"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statUnanswered">0</div>
-              <div class="stat-label">Tak Terjawab</div>
-              <div class="stat-sub" id="statUnansweredSub">-</div>
-            </div>
-          </div>
-
-          <div class="stat-card stat-orange">
-            <div class="stat-icon"><i class="fas fa-bell"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statNotif">0</div>
-              <div class="stat-label">Notifikasi</div>
-              <div class="stat-sub" id="statNotifSub">-</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="stat-grid">
-          <div class="stat-card stat-blue">
-            <div class="stat-icon"><i class="fas fa-project-diagram"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statGraphNodes">0</div>
-              <div class="stat-label">Graph Nodes</div>
-              <div class="stat-sub" id="statGraphNodesSub">-</div>
-            </div>
-          </div>
-
-          <div class="stat-card stat-green">
-            <div class="stat-icon"><i class="fas fa-link"></i></div>
-            <div class="stat-info">
-              <div class="stat-value" id="statGraphEdges">0</div>
-              <div class="stat-label">Graph Edges</div>
-              <div class="stat-sub" id="statGraphEdgesSub">-</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RAG HYBRID STATS -->
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-search-plus"></i><span>RAG Hybrid Stats</span>
-          </div>
-          <div class="card-body">
-            <div id="ragStatsPanel">
-              <div class="empty-state">Memuat...</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="dash-row">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-header">
-              <i class="fas fa-chart-bar"></i><span>Aktivitas 7 Hari Terakhir</span>
+              <h3 class="card-title"><i class="ti ti-chart-line me-2 text-primary"></i>Aktivitas Sesi — <span id="chartPeriodLabel">7 Hari Terakhir</span></h3>
+              <div class="card-actions">
+                <span class="badge bg-green-lt"><span class="status-dot status-dot-animated bg-green me-1"></span>Live</span>
+              </div>
             </div>
             <div class="card-body">
-              <div class="chart-wrap" id="chartWrap">
-                <div class="empty-state">Memuat data...</div>
+              <div id="sessionsChart" style="min-height: 320px; position: relative;"></div>
+            </div>
+          </div>
+
+          <div class="row row-cards mb-3">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-chart-donut me-2 text-primary"></i>Distribusi Sumber Jawaban</h3>
+                </div>
+                <div class="card-body">
+                  <div id="sourceChart" style="min-height: 280px; position: relative;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-flame me-2 text-orange"></i>Topik Populer</h3>
+                  <div class="card-actions">
+                    <button class="btn btn-sm" onclick="showPage('inbox')">Lihat Semua</button>
+                  </div>
+                </div>
+                <div class="card-body" id="topTopicsList">
+                  <div class="text-center text-secondary py-4">Memuat...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row row-cards mb-3">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-mood-smile me-2 text-green"></i>Tren Feedback</h3>
+                </div>
+                <div class="card-body">
+                  <div id="feedbackTrendChart" style="min-height: 280px; position: relative;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-heartbeat me-2 text-red"></i>Provider Health</h3>
+                </div>
+                <div class="card-body" id="providerHealthList">
+                  <div class="text-center text-secondary py-4">Memuat...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row row-cards mb-3">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-tags me-2 text-purple"></i>Kategori Pertanyaan</h3>
+                </div>
+                <div class="card-body">
+                  <div id="categoryChart" style="min-height: 280px; position: relative;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-alert-triangle me-2 text-yellow"></i>Perlu Perhatian</h3>
+                </div>
+                <div class="card-body" id="learningHighlight">
+                  <div class="text-center text-secondary py-4">Memuat...</div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="card">
             <div class="card-header">
-              <i class="fas fa-server"></i><span>Status Provider</span>
+              <h3 class="card-title"><i class="ti ti-bolt me-2 text-yellow"></i>Aksi Cepat</h3>
             </div>
             <div class="card-body">
-              <div id="providerStatusList">
-                <div class="empty-state">Memuat...</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-brain"></i><span>Antrian Belajar AI</span>
-          </div>
-          <div class="card-body">
-            <div id="learningHighlight">
-              <div class="empty-state">Memuat data...</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><i class="fas fa-bolt"></i><span>Aksi Cepat</span></div>
-          <div class="card-body">
-            <div class="quick-actions">
-              <button class="quick-action-btn" onclick="showPage('providers')">
-                <i class="fas fa-plus-circle"></i><span>Tambah Provider</span>
-              </button>
-              <button class="quick-action-btn" onclick="showPage('knowledge')">
-                <i class="fas fa-upload"></i><span>Upload Pengetahuan</span>
-              </button>
-              <button class="quick-action-btn" onclick="showPage('graph')">
-                <i class="fas fa-project-diagram"></i><span>Lihat Graph</span>
-              </button>
-              <button class="quick-action-btn" onclick="showPage('unanswered')">
-                <i class="fas fa-question-circle"></i><span>Pertanyaan Tak Terjawab</span>
-              </button>
-              <button class="quick-action-btn" onclick="showPage('learning')">
-                <i class="fas fa-brain"></i><span>Antrian Belajar</span>
-              </button>
-              <button class="quick-action-btn" onclick="showPage('feedback')">
-                <i class="fas fa-star"></i><span>Lihat Feedback</span>
-              </button>
-              <button class="quick-action-btn" onclick="showPage('sessions')">
-                <i class="fas fa-comments"></i><span>Cek Percakapan</span>
-              </button>
-              <button class="quick-action-btn" onclick="runBackupNow()">
-                <i class="fas fa-download"></i><span>Backup Sekarang</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- GENERAL -->
-      <div class="page" id="page-general">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-tag"></i><span>Identitas AI</span></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Nama AI</label>
-                <input type="text" id="cfg-aiName">
-              </div>
-              <div class="form-group">
-                <label>Tagline</label>
-                <input type="text" id="cfg-tagline">
-              </div>
-              <div class="form-group full">
-                <label>Pesan Sambutan</label>
-                <textarea id="cfg-welcomeMessage" rows="3"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><i class="fas fa-address-book"></i><span>Kontak & Info</span></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group full">
-                <label>Alamat</label>
-                <input type="text" id="cfg-contact-address">
-              </div>
-              <div class="form-group">
-                <label>Telepon</label>
-                <input type="text" id="cfg-contact-phone">
-              </div>
-              <div class="form-group">
-                <label>WhatsApp</label>
-                <input type="text" id="cfg-contact-whatsapp">
-              </div>
-              <div class="form-group">
-                <label>Email</label>
-                <input type="text" id="cfg-contact-email">
-              </div>
-              <div class="form-group">
-                <label>Jam Pelayanan</label>
-                <input type="text" id="cfg-contact-hours">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="action-bar">
-          <button class="btn-primary-lg" onclick="saveGeneral()">
-            <i class="fas fa-save"></i> Simpan Pengaturan
-          </button>
-        </div>
-      </div>
-
-      <!-- LOGO -->
-      <div class="page" id="page-logo">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-image"></i><span>Logo Aplikasi</span></div>
-          <div class="card-body">
-            <p class="text-muted small">Upload sekali, otomatis dipakai di chat header, login, sidebar, favicon.</p>
-            <div class="logo-preview-area">
-              <div class="logo-preview-box" id="logoPreviewBox">
-                <div class="logo-placeholder">
-                  <i class="fas fa-image"></i>
-                  <span>Belum ada logo</span>
+              <div class="row row-cards">
+                <div class="col-6 col-md-4 col-lg-2">
+                  <button class="btn btn-ghost-primary w-100 py-3" onclick="showPage('inbox')">
+                    <i class="ti ti-inbox d-block mb-1" style="font-size: 24px;"></i>
+                    <span class="small">Pertanyaan</span>
+                  </button>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                  <button class="btn btn-ghost-green w-100 py-3" onclick="showPage('knowledge')">
+                    <i class="ti ti-upload d-block mb-1" style="font-size: 24px;"></i>
+                    <span class="small">Upload</span>
+                  </button>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                  <button class="btn btn-ghost-purple w-100 py-3" onclick="showPage('graph')">
+                    <i class="ti ti-hierarchy-3 d-block mb-1" style="font-size: 24px;"></i>
+                    <span class="small">Graph</span>
+                  </button>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                  <button class="btn btn-ghost-orange w-100 py-3" onclick="showPage('providers')">
+                    <i class="ti ti-cloud d-block mb-1" style="font-size: 24px;"></i>
+                    <span class="small">Provider</span>
+                  </button>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                  <button class="btn btn-ghost-red w-100 py-3" onclick="showPage('backup')">
+                    <i class="ti ti-database d-block mb-1" style="font-size: 24px;"></i>
+                    <span class="small">Backup</span>
+                  </button>
+                </div>
+                <div class="col-6 col-md-4 col-lg-2">
+                  <button class="btn btn-ghost-blue w-100 py-3" onclick="showPage('security')">
+                    <i class="ti ti-shield d-block mb-1" style="font-size: 24px;"></i>
+                    <span class="small">Keamanan</span>
+                  </button>
                 </div>
               </div>
-              <div class="logo-upload-info">
-                <h4>Upload Logo</h4>
-                <p>Format: PNG, JPG, GIF, WEBP, SVG. Maksimal 2 MB. Rekomendasi PNG transparan 512×512.</p>
-                <input type="file" id="logoFile" accept="image/*" style="display: none;" onchange="uploadLogo()">
-                <button class="btn-primary-lg" onclick="document.getElementById('logoFile').click()">
-                  <i class="fas fa-upload"></i> Pilih File Logo
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ============================================================
+        PAGE: GENERAL
+        ============================================================ -->
+        <div class="page-section" id="page-general" style="display:none;">
+          <div class="row row-cards">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-settings me-2"></i>Identitas AI</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Nama AI</label>
+                      <input type="text" id="cfg-aiName" class="form-control" placeholder="SIVT AI">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Tagline</label>
+                      <input type="text" id="cfg-tagline" class="form-control" placeholder="Asisten Virtual">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label">Pesan Sambutan</label>
+                      <textarea id="cfg-welcomeMessage" class="form-control" rows="3"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-address-book me-2"></i>Kontak & Info</h3>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-12 mb-3">
+                      <label class="form-label">Alamat</label>
+                      <input type="text" id="cfg-contact-address" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Telepon</label>
+                      <input type="text" id="cfg-contact-phone" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">WhatsApp</label>
+                      <input type="text" id="cfg-contact-whatsapp" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Email</label>
+                      <input type="email" id="cfg-contact-email" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Jam Pelayanan</label>
+                      <input type="text" id="cfg-contact-hours" class="form-control">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary mt-3" onclick="saveGeneral()">
+                    <i class="ti ti-device-floppy me-1"></i> Simpan Pengaturan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: LOGO
+        ============================================================ -->
+        <div class="page-section" id="page-logo" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-photo me-2"></i>Logo Aplikasi</h3>
+            </div>
+            <div class="card-body">
+              <p class="text-secondary">Upload logo sekali, otomatis dipakai di chat header, login, sidebar, favicon.</p>
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <div id="logoPreviewBox" class="logo-preview-tabler">
+                    <i class="ti ti-photo text-secondary" style="font-size: 40px;"></i>
+                  </div>
+                </div>
+                <div class="col">
+                  <input type="file" id="logoFile" accept="image/*" style="display:none;" onchange="uploadLogo()">
+                  <button class="btn btn-primary me-2" onclick="document.getElementById('logoFile').click()">
+                    <i class="ti ti-upload me-1"></i> Pilih File
+                  </button>
+                  <button class="btn btn-outline-danger" onclick="deleteLogo()">
+                    <i class="ti ti-trash me-1"></i> Hapus
+                  </button>
+                  <div id="logoStatus" class="mt-2 small"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: THEME (UPDATED dengan toggle Update ke Warga)
+        ============================================================ -->
+        <div class="page-section" id="page-theme" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-palette me-2"></i>Warna Tema</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Warna Utama</label>
+                  <div class="input-group">
+                    <input type="color" id="theme-primary" class="form-control form-control-color" value="#0d47a1" onchange="previewTheme()">
+                    <input type="text" id="theme-primary-text" class="form-control" value="#0d47a1" oninput="syncColorFromText('primary')">
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Warna Utama Gelap</label>
+                  <div class="input-group">
+                    <input type="color" id="theme-primaryDark" class="form-control form-control-color" value="#0a3a8a" onchange="previewTheme()">
+                    <input type="text" id="theme-primaryDark-text" class="form-control" value="#0a3a8a" oninput="syncColorFromText('primaryDark')">
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Warna Aksen</label>
+                  <div class="input-group">
+                    <input type="color" id="theme-accent" class="form-control form-control-color" value="#ec4899" onchange="previewTheme()">
+                    <input type="text" id="theme-accent-text" class="form-control" value="#ec4899" oninput="syncColorFromText('accent')">
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Sidebar Awal</label>
+                  <div class="input-group">
+                    <input type="color" id="theme-sidebarStart" class="form-control form-control-color" value="#0a3a8a" onchange="previewTheme()">
+                    <input type="text" id="theme-sidebarStart-text" class="form-control" value="#0a3a8a" oninput="syncColorFromText('sidebarStart')">
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Sidebar Akhir</label>
+                  <div class="input-group">
+                    <input type="color" id="theme-sidebarEnd" class="form-control form-control-color" value="#0d47a1" onchange="previewTheme()">
+                    <input type="text" id="theme-sidebarEnd-text" class="form-control" value="#0d47a1" oninput="syncColorFromText('sidebarEnd')">
+                  </div>
+                </div>
+              </div>
+              <label class="form-label mt-3">Preset Cepat:</label>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <button class="btn btn-sm btn-outline-primary" onclick="applyPreset('default')">Biru</button>
+                <button class="btn btn-sm btn-outline-dark" onclick="applyPreset('dark')">Dark</button>
+                <button class="btn btn-sm btn-outline-green" onclick="applyPreset('green')">Hijau</button>
+                <button class="btn btn-sm btn-outline-purple" onclick="applyPreset('purple')">Ungu</button>
+                <button class="btn btn-sm btn-outline-red" onclick="applyPreset('red')">Merah</button>
+                <button class="btn btn-sm btn-outline-teal" onclick="applyPreset('teal')">Teal</button>
+                <button class="btn btn-sm btn-outline-orange" onclick="applyPreset('orange')">Orange</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ============================================================
+          CARD: TOGGLE UPDATE KE WARGA (BARU)
+          ============================================================ -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-world me-2"></i>Sinkronisasi Tema</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="themeApplyToWarga">
+                <label class="form-check-label fw-bold" for="themeApplyToWarga">
+                  <i class="ti ti-share me-1"></i> Update Tema ke Halaman Warga
+                </label>
+              </div>
+              <div class="text-secondary small mt-2">
+                <i class="ti ti-info-circle me-1"></i>
+                <strong>Aktifkan</strong>: tema berlaku di <b>Admin + Warga</b><br>
+                <strong>Matikan</strong>: tema hanya berlaku di <b>Admin</b> saja
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary" onclick="saveTheme()">
+                  <i class="ti ti-device-floppy me-1"></i> Simpan Tema
                 </button>
-                <button class="btn-danger-outline" onclick="deleteLogo()">
-                  <i class="fas fa-trash"></i> Hapus Logo
+                <button class="btn btn-outline-secondary" onclick="resetTheme()">
+                  <i class="ti ti-rotate me-1"></i> Reset
                 </button>
-                <div id="logoStatus" class="status-msg"></div>
-              </div>
-            </div>
-
-            <hr style="margin: 24px 0;">
-
-            <div class="form-group">
-              <label>Ukuran Logo</label>
-              <div class="logo-size-options">
-                <label class="logo-size-option">
-                  <input type="radio" name="logoSize" value="small" onchange="changeLogoSize('small')">
-                  <span>Kecil</span>
-                </label>
-                <label class="logo-size-option">
-                  <input type="radio" name="logoSize" value="medium" onchange="changeLogoSize('medium')">
-                  <span>Sedang</span>
-                </label>
-                <label class="logo-size-option">
-                  <input type="radio" name="logoSize" value="large" onchange="changeLogoSize('large')">
-                  <span>Besar</span>
-                </label>
-                <label class="logo-size-option">
-                  <input type="radio" name="logoSize" value="xlarge" onchange="changeLogoSize('xlarge')">
-                  <span>Extra Besar</span>
-                </label>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- THEME -->
-      <div class="page" id="page-theme">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-palette"></i><span>Warna Tema Aplikasi</span></div>
-          <div class="card-body">
-            <p class="text-muted">Ubah warna sesuai selera. Perubahan langsung terlihat setelah disimpan.</p>
-
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Warna Utama (Primary)</label>
-                <div class="color-input-row">
-                  <input type="color" id="theme-primary" oninput="previewTheme()">
-                  <input type="text" id="theme-primary-text" oninput="syncColorFromText('primary')">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Warna Utama Gelap</label>
-                <div class="color-input-row">
-                  <input type="color" id="theme-primaryDark" oninput="previewTheme()">
-                  <input type="text" id="theme-primaryDark-text" oninput="syncColorFromText('primaryDark')">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Warna Aksen</label>
-                <div class="color-input-row">
-                  <input type="color" id="theme-accent" oninput="previewTheme()">
-                  <input type="text" id="theme-accent-text" oninput="syncColorFromText('accent')">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Sidebar Awal</label>
-                <div class="color-input-row">
-                  <input type="color" id="theme-sidebarStart" oninput="previewTheme()">
-                  <input type="text" id="theme-sidebarStart-text" oninput="syncColorFromText('sidebarStart')">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Sidebar Akhir</label>
-                <div class="color-input-row">
-                  <input type="color" id="theme-sidebarEnd" oninput="previewTheme()">
-                  <input type="text" id="theme-sidebarEnd-text" oninput="syncColorFromText('sidebarEnd')">
-                </div>
-              </div>
+        <!-- ============================================================
+        PAGE: PROMPT
+        ============================================================ -->
+        <div class="page-section" id="page-prompt" style="display:none;">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-terminal me-2"></i>System Instruction</h3>
             </div>
-
-            <hr style="margin: 20px 0;">
-            <h6 class="fw-bold mb-3">Preset Cepat:</h6>
-            <div class="preset-buttons">
-              <button class="preset-btn" onclick="applyPreset('default')">Biru</button>
-              <button class="preset-btn" onclick="applyPreset('dark')">Dark</button>
-              <button class="preset-btn" onclick="applyPreset('green')">Hijau</button>
-              <button class="preset-btn" onclick="applyPreset('purple')">Ungu</button>
-              <button class="preset-btn" onclick="applyPreset('red')">Merah</button>
-              <button class="preset-btn" onclick="applyPreset('teal')">Teal</button>
-              <button class="preset-btn" onclick="applyPreset('orange')">Orange</button>
+            <div class="card-body">
+              <p class="text-secondary">Instruksi ini mengatur kepribadian & aturan AI.</p>
+              <textarea id="cfg-systemInstruction" class="form-control font-monospace" rows="15"></textarea>
+              <button class="btn btn-primary mt-3" onclick="savePrompt()">
+                <i class="ti ti-device-floppy me-1"></i> Simpan Prompt
+              </button>
             </div>
-
-            <div class="action-bar mt-4">
-              <button class="btn-primary-lg" onclick="saveTheme()">
-                <i class="fas fa-save"></i> Simpan Tema
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-checklist me-2"></i>Link Survei Kepuasan</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="surveyEnabled">
+                <label class="form-check-label" for="surveyEnabled">Aktifkan popup survei otomatis</label>
+              </div>
+              <div class="row">
+                <div class="col-md-8 mb-3">
+                  <label class="form-label">Link Survei</label>
+                  <input type="url" id="cfg-surveyLink" class="form-control" placeholder="https://forms.gle/...">
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label class="form-label">Waktu Tunggu (menit)</label>
+                  <input type="number" id="cfg-surveyIdleMinutes" class="form-control" value="3" min="1" max="30">
+                </div>
+              </div>
+              <button class="btn btn-primary" onclick="saveSurveyConfig()">
+                <i class="ti ti-device-floppy me-1"></i> Simpan Pengaturan Survei
               </button>
-              <button class="btn-secondary" onclick="resetTheme()">
-                <i class="fas fa-undo"></i> Reset
-              </button>
+              <span id="surveyStatus" class="ms-2 small"></span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- PROVIDERS -->
-      <div class="page" id="page-providers">
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-info-circle"></i>
-            <span>Panduan Provider Role</span>
+        <!-- ============================================================
+        PAGE: PROVIDERS
+        ============================================================ -->
+        <div class="page-section" id="page-providers" style="display:none;">
+          <div class="alert alert-info mb-3">
+            <h4 class="alert-title"><i class="ti ti-info-circle me-2"></i>Panduan Provider Role</h4>
+            <div class="text-secondary">
+              <ul class="mb-0">
+                <li><strong>chat</strong> — Provider untuk menjawab pertanyaan user</li>
+                <li><strong>embedding</strong> — Provider untuk RAG semantic</li>
+                <li><strong>enrichment</strong> — Provider untuk ekstrak triple ke Knowledge Graph</li>
+                <li><strong>query-rewriter</strong> — Provider untuk rewrite pertanyaan user</li>
+              </ul>
+            </div>
           </div>
-          <div class="card-body">
-            <p class="text-muted small">
-              Setiap provider bisa punya <b>role</b> berbeda. Klik badge role di tabel provider untuk toggle.
-            </p>
-            <ul class="info-list">
-              <li><span class="role-badge chat">chat</span> Provider untuk menjawab pertanyaan user (LLM utama)</li>
-              <li><span class="role-badge embedding">embedding</span> Provider untuk RAG semantic (ubah teks jadi vector)</li>
-              <li><span class="role-badge enrichment">enrichment</span> Provider untuk ekstrak triple ke Knowledge Graph</li>
-              <li><span class="role-badge query-rewriter">query-rewriter</span> Provider untuk rewrite pertanyaan user</li>
-            </ul>
-            <div class="provider-help" style="margin-top:12px;">
-              <strong>Saran kombinasi:</strong>
-              <ul>
-                <li><b>Gemini</b>: chat + embedding + enrichment (paling fleksibel)</li>
-                <li><b>Groq</b>: chat + query-rewriter (tercepat)</li>
-                <li><b>Mistral</b>: chat + enrichment (fallback)</li>
+
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-plus me-2"></i>Tambah Provider AI</h3>
+            </div>
+            <div class="card-body">
+              <ul class="nav nav-tabs mb-3" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" data-bs-toggle="tab" href="#providerBuiltin">Provider Terdaftar</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-bs-toggle="tab" href="#providerCustom">Provider Custom</a>
+                </li>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active" id="providerBuiltin">
+                  <div class="row">
+                    <div class="col-12 mb-3">
+                      <label class="form-label">Provider</label>
+                      <select id="newProviderName" class="form-select">
+                        <option value="gemini">Gemini (Google)</option>
+                        <option value="groq">Groq</option>
+                        <option value="openrouter">OpenRouter</option>
+                        <option value="cerebras">Cerebras</option>
+                        <option value="together">Together AI</option>
+                        <option value="mistral">Mistral AI</option>
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="fireworks">Fireworks AI</option>
+                        <option value="xai">xAI Grok</option>
+                      </select>
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label">API Key</label>
+                      <input type="password" id="newProviderKey" class="form-control" placeholder="Masukkan API key">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label">Role</label>
+                      <div class="d-flex flex-wrap gap-3" id="newProviderRoles">
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="chat" checked>
+                          <span class="form-check-label">chat</span>
+                        </label>
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="embedding">
+                          <span class="form-check-label">embedding</span>
+                        </label>
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="enrichment">
+                          <span class="form-check-label">enrichment</span>
+                        </label>
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="query-rewriter">
+                          <span class="form-check-label">query-rewriter</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Models (pisah koma)</label>
+                      <input type="text" id="newProviderModels" class="form-control" placeholder="gemini-2.0-flash, gemini-1.5-pro">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Embedding Models (opsional)</label>
+                      <input type="text" id="newProviderEmbeddingModels" class="form-control">
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="providerCustom">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Nama Provider *</label>
+                      <input type="text" id="customProviderName" class="form-control" placeholder="my-provider">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Display Name</label>
+                      <input type="text" id="customProviderDisplay" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label">Endpoint *</label>
+                      <input type="text" id="customProviderEndpoint" class="form-control" placeholder="https://api.example.com/v1">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label">API Key *</label>
+                      <input type="password" id="customProviderKey" class="form-control">
+                    </div>
+                    <div class="col-12 mb-3">
+                      <label class="form-label">Role</label>
+                      <div class="d-flex flex-wrap gap-3" id="customProviderRoles">
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="chat" checked>
+                          <span class="form-check-label">chat</span>
+                        </label>
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="embedding">
+                          <span class="form-check-label">embedding</span>
+                        </label>
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="enrichment">
+                          <span class="form-check-label">enrichment</span>
+                        </label>
+                        <label class="form-check">
+                          <input type="checkbox" class="form-check-input" value="query-rewriter">
+                          <span class="form-check-label">query-rewriter</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Models</label>
+                      <input type="text" id="customProviderModels" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Embedding Models</label>
+                      <input type="text" id="customProviderEmbeddingModels" class="form-control">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3">
+                <button class="btn btn-primary" onclick="addProvider()">
+                  <i class="ti ti-plus me-1"></i> Tambah Provider
+                </button>
+                <span id="addProviderStatus" class="ms-2 small"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-list me-2"></i>Daftar Provider</h3>
+            </div>
+            <div class="card-body" id="providersList">
+              <div class="text-center text-secondary py-4">Belum ada provider</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: KNOWLEDGE
+        ============================================================ -->
+        <div class="page-section" id="page-knowledge" style="display:none;">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-upload me-2"></i>Upload File Pengetahuan</h3>
+            </div>
+            <div class="card-body">
+              <p class="text-secondary">Format: .md atau .txt</p>
+              <input type="file" id="knowledgeFile" accept=".md,.txt" style="display:none;" onchange="uploadKnowledge()">
+              <button class="btn btn-primary" onclick="document.getElementById('knowledgeFile').click()">
+                <i class="ti ti-upload me-1"></i> Upload
+              </button>
+              <button class="btn btn-outline-secondary" onclick="reloadKnowledge()">
+                <i class="ti ti-refresh me-1"></i> Reload
+              </button>
+              <span id="uploadStatus" class="ms-2 small"></span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-files me-2"></i>File Pengetahuan</h3>
+            </div>
+            <div class="card-body" id="knowledgeFilesList">
+              <div class="text-center text-secondary py-4">Belum ada file</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: GRAPH
+        ============================================================ -->
+        <div class="page-section" id="page-graph" style="display:none;">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-hierarchy-3 me-2"></i>Knowledge Graph</h3>
+            </div>
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  <label class="form-label">Top N Node</label>
+                  <input type="number" id="graphLimit" class="form-control" value="200" min="10" max="1000">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Min Degree</label>
+                  <input type="number" id="graphMinDegree" class="form-control" value="1" min="1" max="100">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Cari Node</label>
+                  <input type="text" id="graphSearch" class="form-control" placeholder="Ketik nama...">
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                  <button class="btn btn-primary w-100" onclick="loadGraphVisualization()">
+                    <i class="ti ti-refresh"></i> Refresh
+                  </button>
+                </div>
+              </div>
+              <div id="graphStats" class="alert alert-info mb-3" style="display:none;"></div>
+              <div class="graph-container-tabler" id="graphContainer" style="height: 550px; background: #f8f9fa; border-radius: 8px;"></div>
+            </div>
+          </div>
+          <div class="card mb-3" id="graphNodeDetail" style="display:none;">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-circle me-2"></i>Detail Node: <span id="graphNodeName"></span></h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" onclick="closeGraphNodeDetail()"><i class="ti ti-x"></i></button>
+              </div>
+            </div>
+            <div class="card-body" id="graphNodeBody"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-wand me-2"></i>Semantic Enrichment</h3>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-warning">
+                <i class="ti ti-bulb me-2"></i>
+                <strong>Gunakan AI untuk ekstrak relasi (triple).</strong>
+                <p class="mb-0 small">Proses ini memakan token API dan berjalan di background.</p>
+              </div>
+              <div class="d-flex align-items-center gap-2">
+                <input type="number" id="enrichMaxChunks" class="form-control" value="30" min="1" max="100" style="max-width: 100px;">
+                <button class="btn btn-primary" id="enrichBtn" onclick="startEnrich()">
+                  <i class="ti ti-player-play me-1"></i> Mulai Enrich
+                </button>
+              </div>
+              <div class="mt-2 small" id="enrichStatus"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: INBOX
+        ============================================================ -->
+        <div class="page-section" id="page-inbox" style="display:none;">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-inbox me-2"></i>Pertanyaan Warga</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" onclick="loadPertanyaanWarga()">
+                  <i class="ti ti-refresh"></i> Refresh
+                </button>
+                <button class="btn btn-sm" onclick="clearInboxResolved()">
+                  <i class="ti ti-brush"></i> Hapus Selesai
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="clearInboxAll()">
+                  <i class="ti ti-trash"></i> Hapus Semua
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                  <a class="nav-link active" data-inbox-tab="all" onclick="switchInboxTab('all')">
+                    <i class="ti ti-list me-1"></i> Semua <span class="badge bg-blue ms-1" id="inboxTabAllCount">0</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" data-inbox-tab="priority" onclick="switchInboxTab('priority')">
+                    <i class="ti ti-flame me-1"></i> Prioritas <span class="badge bg-orange ms-1" id="inboxTabPriorityCount">0</span>
+                  </a>
+                </li>
+              </ul>
+              <div id="inboxList">
+                <div class="text-center text-secondary py-4">Memuat...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: FEEDBACK
+        ============================================================ -->
+        <div class="page-section" id="page-feedback" style="display:none;">
+          <div class="row row-cards mb-3">
+            <div class="col-sm-6 col-lg-3">
+              <div class="card"><div class="card-body text-center">
+                <div class="h1 mb-1" id="fbTotal">0</div>
+                <div class="text-secondary small">Total Feedback</div>
+              </div></div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card"><div class="card-body text-center">
+                <div class="h1 mb-1 text-green" id="fbGood">0</div>
+                <div class="text-secondary small">👍 Bagus</div>
+              </div></div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card"><div class="card-body text-center">
+                <div class="h1 mb-1 text-red" id="fbBad">0</div>
+                <div class="text-secondary small">👎 Kurang</div>
+              </div></div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+              <div class="card"><div class="card-body text-center">
+                <div class="h1 mb-1 text-purple" id="fbSatisfaction">0%</div>
+                <div class="text-secondary small">Kepuasan</div>
+              </div></div>
+            </div>
+          </div>
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-chart-pie me-2"></i>Analitik</h3>
+            </div>
+            <div class="card-body">
+              <div class="row row-cards mb-3">
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm"><div class="card-body text-center">
+                    <div class="h3 mb-0" id="anTotalChats">0</div>
+                    <div class="text-secondary small">Total Chat</div>
+                  </div></div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm"><div class="card-body text-center">
+                    <div class="h3 mb-0 text-green" id="anTotalAnswers">0</div>
+                    <div class="text-secondary small">Jawaban</div>
+                  </div></div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm"><div class="card-body text-center">
+                    <div class="h3 mb-0 text-red" id="anRefusals">0</div>
+                    <div class="text-secondary small">Penolakan</div>
+                  </div></div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                  <div class="card card-sm"><div class="card-body text-center">
+                    <div class="h3 mb-0 text-purple" id="anAccuracy">0%</div>
+                    <div class="text-secondary small">Akurasi</div>
+                  </div></div>
+                </div>
+              </div>
+              <div class="row row-cards">
+                <div class="col-lg-6">
+                  <div class="card">
+                    <div class="card-header"><h3 class="card-title">Kepuasan User</h3></div>
+                    <div class="card-body">
+                      <div id="feedbackPieChart" style="min-height: 260px; position: relative;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="card">
+                    <div class="card-header"><h3 class="card-title">Tren 7 Hari</h3></div>
+                    <div class="card-body">
+                      <div id="feedbackChart" style="min-height: 260px; position: relative;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Feedback List</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" onclick="loadFeedback()"><i class="ti ti-refresh"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="clearFeedback()"><i class="ti ti-trash"></i></button>
+                <button class="btn btn-sm btn-outline-warning" onclick="clearAnalytics()"><i class="ti ti-rotate"></i></button>
+              </div>
+            </div>
+            <div class="card-body" id="feedbackList">
+              <div class="text-center text-secondary py-4">Memuat...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: MEMORY
+        ============================================================ -->
+        <div class="page-section" id="page-memory" style="display:none;">
+          <div class="row row-cards mb-3">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-brain me-2"></i>Pengaturan Memori</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="memoryEnabled" checked>
+                    <label class="form-check-label">Aktifkan memori otomatis</label>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Min skor pakai memori</label>
+                      <input type="number" id="memoryMinScore" class="form-control" value="75" min="0" max="100">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Min skor simpan baru</label>
+                      <input type="number" id="memorySaveThreshold" class="form-control" value="55" min="0" max="100">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" onclick="saveMemorySettings()">
+                    <i class="ti ti-device-floppy me-1"></i> Simpan
+                  </button>
+                  <button class="btn btn-outline-secondary" onclick="reloadMemory()">
+                    <i class="ti ti-refresh me-1"></i> Reload
+                  </button>
+                  <button class="btn btn-outline-danger" onclick="clearMemory()">
+                    <i class="ti ti-trash me-1"></i> Hapus Semua
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-message me-2"></i>Konteks Percakapan</h3>
+                </div>
+                <div class="card-body">
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="convEnabled" checked>
+                    <label class="form-check-label">Aktifkan konteks percakapan</label>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Pesan diingat</label>
+                      <input type="number" id="convSize" class="form-control" value="20" min="5" max="50">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label class="form-label">Rate limit per-sesi</label>
+                      <input type="number" id="rateLimitPerSession" class="form-control" value="20" min="5" max="100">
+                    </div>
+                  </div>
+                  <button class="btn btn-primary" onclick="saveConversationSettings()">
+                    <i class="ti ti-device-floppy me-1"></i> Simpan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-list me-2"></i>Daftar Memori</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" onclick="loadMemoryList()">
+                  <i class="ti ti-refresh"></i> Refresh
+                </button>
+              </div>
+            </div>
+            <div class="card-body" id="memoryList">
+              <div class="text-center text-secondary py-4">Memuat...</div>
+            </div>
+          </div>
+        </div>
+
+                <!-- ============================================================
+        PAGE: LAPORAN (BARU)
+        ============================================================ -->
+        <div class="page-section" id="page-report" style="display:none;">
+
+        <!-- Filter Periode -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-calendar-stats me-2"></i>Filter Periode Laporan</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm btn-outline-secondary" onclick="printReport()" title="Print browser">
+                  <i class="ti ti-printer me-1"></i> Print
+                </button>
+                <button class="btn btn-sm btn-danger" onclick="openPdfModal()" title="Cetak PDF">
+                  <i class="ti ti-file-type-pdf me-1"></i> Cetak PDF
+                </button>
+                <button class="btn btn-sm btn-primary" onclick="loadReport()">
+                  <i class="ti ti-refresh me-1"></i> Refresh
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row g-2 align-items-end">
+                <div class="col-md-4">
+                  <label class="form-label">Periode</label>
+                  <select id="reportRange" class="form-select" onchange="toggleCustomRange(); loadReport();">
+                    <option value="today">Hari Ini</option>
+                    <option value="7d">7 Hari Terakhir</option>
+                    <option value="30d" selected>30 Hari Terakhir</option>
+                    <option value="90d">90 Hari Terakhir</option>
+                    <option value="1y">1 Tahun Terakhir</option>
+                    <option value="custom">Custom Range</option>
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <div id="reportCustomRange" class="d-flex gap-2" style="display: none;">
+                    <div class="flex-fill">
+                      <label class="form-label">Dari</label>
+                      <input type="date" id="reportFrom" class="form-control">
+                    </div>
+                    <div class="flex-fill">
+                      <label class="form-label">Sampai</label>
+                      <input type="date" id="reportTo" class="form-control">
+                    </div>
+                    <div style="align-self: flex-end;">
+                      <button class="btn btn-primary" onclick="loadReport()">
+                        <i class="ti ti-search"></i> Terapkan
+                      </button>
+                    </div>
+                  </div>
+                  <div class="text-secondary small">
+                    <i class="ti ti-info-circle me-1"></i>
+                    Periode aktif: <strong id="reportRangeDisplay">-</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Export Buttons -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-download me-2"></i>Export Data (CSV)</h3>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-outline-primary" onclick="exportReport('sessions')">
+                  <i class="ti ti-messages me-1"></i> Sesi
+                </button>
+                <button class="btn btn-outline-primary" onclick="exportReport('unanswered')">
+                  <i class="ti ti-help-circle me-1"></i> Pertanyaan Warga
+                </button>
+                <button class="btn btn-outline-primary" onclick="exportReport('feedback')">
+                  <i class="ti ti-mood-smile me-1"></i> Feedback
+                </button>
+                <button class="btn btn-outline-primary" onclick="exportReport('memory')">
+                  <i class="ti ti-brain me-1"></i> Memori
+                </button>
+                <button class="btn btn-outline-primary" onclick="exportReport('providers')">
+                  <i class="ti ti-cloud me-1"></i> Provider
+                </button>
+                <button class="btn btn-outline-primary" onclick="exportReport('knowledge')">
+                  <i class="ti ti-book me-1"></i> Pengetahuan
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Overview Cards -->
+          <div id="reportOverview">
+            <div class="text-center text-secondary py-4">
+              <i class="ti ti-loader-2 ti-spin"></i> Memuat laporan...
+            </div>
+          </div>
+
+          <!-- Chart Harian -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-chart-line me-2 text-primary"></i>Aktivitas Harian</h3>
+            </div>
+            <div class="card-body">
+              <div id="reportChart" style="min-height: 320px; position: relative;"></div>
+            </div>
+          </div>
+
+           <!-- Distribusi Sumber Jawaban -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-chart-donut me-2 text-orange"></i>Distribusi Sumber Jawaban</h3>
+            </div>
+            <div class="card-body">
+              <div id="reportSourceChart" style="min-height: 320px; position: relative;"></div>
+            </div>
+          </div>
+
+          <!-- Top Topics & Kategori -->
+          <div class="row row-cards mb-3">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-flame me-2 text-orange"></i>Topik Populer</h3>
+                </div>
+                <div class="card-body" id="reportTopTopics">
+                  <div class="text-center text-secondary py-4">Memuat...</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-tags me-2 text-purple"></i>Kategori Pertanyaan</h3>
+                </div>
+                <div class="card-body">
+                  <div id="reportCategoryChart" style="min-height: 280px; position: relative;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+                    <!-- Knowledge & Memory -->
+          <div class="row row-cards mb-3">
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-book me-2 text-cyan"></i>Pengetahuan</h3>
+                </div>
+                <div class="card-body" id="reportKnowledge">
+                  <div class="text-center text-secondary py-3">Memuat...</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card h-100">
+                <div class="card-header">
+                  <h3 class="card-title"><i class="ti ti-brain me-2 text-purple"></i>Memori AI</h3>
+                </div>
+                <div class="card-body" id="reportMemory">
+                  <div class="text-center text-secondary py-3">Memuat...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Providers -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-cloud me-2 text-teal"></i>Provider AI</h3>
+            </div>
+            <div class="card-body" id="reportProviders">
+              <div class="text-center text-secondary py-3">Memuat...</div>
+            </div>
+          </div>
+
+
+          <!-- Detail Tables -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-messages me-2 text-blue"></i>Detail Sesi</h3>
+            </div>
+            <div class="card-body" id="reportSessions">
+              <div class="text-center text-secondary py-3">Memuat...</div>
+            </div>
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-help-circle me-2 text-orange"></i>Detail Pertanyaan Warga</h3>
+            </div>
+            <div class="card-body" id="reportUnanswered">
+              <div class="text-center text-secondary py-3">Memuat...</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-mood-smile me-2 text-green"></i>Detail Feedback</h3>
+            </div>
+            <div class="card-body" id="reportFeedback">
+              <div class="text-center text-secondary py-3">Memuat...</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ============================================================
+        PAGE: SESSIONS
+        ============================================================ -->
+        <div class="page-section" id="page-sessions" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-messages me-2"></i>Percakapan Aktif</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" onclick="loadSessions()"><i class="ti ti-refresh"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="clearSessions()">
+                  <i class="ti ti-trash"></i> Hapus Semua
+                </button>
+              </div>
+            </div>
+            <div class="card-body" id="sessionsList">
+              <div class="text-center text-secondary py-4">Memuat...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: NOTIFICATIONS
+        ============================================================ -->
+        <div class="page-section" id="page-notifications" style="display:none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-bell me-2"></i>Notifikasi Sistem</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" onclick="loadNotifications()"><i class="ti ti-refresh"></i></button>
+                <button class="btn btn-sm" onclick="markAllRead()"><i class="ti ti-check"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="clearNotifications()"><i class="ti ti-trash"></i></button>
+              </div>
+            </div>
+            <div class="card-body" id="notificationsList">
+              <div class="text-center text-secondary py-4">Memuat...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: BACKUP
+        ============================================================ -->
+        <div class="page-section" id="page-backup" style="display:none;">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-database me-2"></i>Backup Otomatis</h3>
+            </div>
+            <div class="card-body">
+              <p class="text-secondary">Backup otomatis setiap hari jam 02.00. File dienkripsi AES-256. Retensi: 4 hari terakhir.</p>
+              <div class="mb-3">
+                <button class="btn btn-primary" onclick="runBackupNow()">
+                  <i class="ti ti-download me-1"></i> Backup Sekarang
+                </button>
+                <button class="btn btn-outline-secondary" onclick="loadBackups()">
+                  <i class="ti ti-refresh me-1"></i> Refresh
+                </button>
+              </div>
+              <div id="backupsList">
+                <div class="text-center text-secondary py-4">Memuat...</div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-upload me-2"></i>Restore dari Backup</h3>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-warning">
+                <i class="ti ti-alert-triangle me-2"></i>
+                <strong>⚠️ PERHATIAN</strong>
+                <p class="mb-0 small">Restore akan MENIMPA data yang ada. Data lama akan di-backup otomatis ke folder pre_restore_*.</p>
+              </div>
+              <input type="file" id="restoreFile" accept=".zip.enc" style="display:none;">
+              <button class="btn btn-primary" onclick="document.getElementById('restoreFile').click()">
+                <i class="ti ti-file-zip me-1"></i> Pilih File Backup
+              </button>
+              <button class="btn btn-outline-danger" id="restoreBtn" onclick="startRestore()">
+                <i class="ti ti-upload me-1"></i> Mulai Restore
+              </button>
+              <div id="restoreStatus" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================================
+        PAGE: SECURITY
+        ============================================================ -->
+        <div class="page-section" id="page-security" style="display:none;">
+          <div class="card mb-3">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-key me-2"></i>Ganti Password Admin</h3>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Password Lama</label>
+                  <input type="password" id="oldPassword" class="form-control">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Password Baru (min 8 karakter)</label>
+                  <input type="password" id="newPassword" class="form-control">
+                </div>
+              </div>
+              <button class="btn btn-primary" onclick="changePassword()">
+                <i class="ti ti-device-floppy me-1"></i> Ganti Password
+              </button>
+              <span id="passwordStatus" class="ms-2 small"></span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><i class="ti ti-shield me-2"></i>Info Keamanan</h3>
+            </div>
+            <div class="card-body">
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>Login pakai JWT (30 hari) + bcrypt</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>Sesi login tersimpan</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>API key terenkripsi AES-256-GCM</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>Backup dienkripsi AES-256</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>Multi-provider fallback</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>Provider Role System</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>RAG Hybrid (BM25 + Embedding + RRF)</li>
+                <li class="mb-2"><i class="ti ti-check text-green me-2"></i>Knowledge Graph aktif</li>
               </ul>
             </div>
           </div>
         </div>
 
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-plus"></i>
-            <span>Tambah Provider AI</span>
-          </div>
-          <div class="card-body">
-            <p class="text-muted">
-              Pilih provider terdaftar, atau tambahkan <b>provider custom</b> dengan
-              <b>Custom Endpoint</b> jika ingin pakai provider OpenAI-compatible lainnya.
-            </p>
-
-            <div class="filter-tabs" style="margin-bottom:20px;">
-              <button class="filter-tab active" data-mode="builtin" onclick="switchProviderMode('builtin')">
-                <i class="fas fa-list"></i> Provider Terdaftar
-              </button>
-              <button class="filter-tab" data-mode="custom" onclick="switchProviderMode('custom')">
-                <i class="fas fa-cog"></i> Provider Custom
-              </button>
-            </div>
-
-            <div id="providerMode-builtin">
-              <div class="provider-help">
-                <strong>Cara dapat API key gratis:</strong>
-                <ul>
-                  <li><b>Gemini</b>: <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a></li>
-                  <li><b>Groq</b>: <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></li>
-                  <li><b>OpenRouter</b>: <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></li>
-                  <li><b>Cerebras</b>: <a href="https://cloud.cerebras.ai" target="_blank">cloud.cerebras.ai</a></li>
-                  <li><b>Together</b>: <a href="https://api.together.xyz" target="_blank">api.together.xyz</a></li>
-                  <li><b>Mistral</b>: <a href="https://console.mistral.ai" target="_blank">console.mistral.ai</a></li>
-                  <li><b>DeepSeek</b>: <a href="https://platform.deepseek.com" target="_blank">platform.deepseek.com</a></li>
-                  <li><b>xAI Grok</b>: <a href="https://console.x.ai" target="_blank">console.x.ai</a></li>
-                </ul>
-              </div>
-
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Provider</label>
-                  <select id="newProviderName">
-                    <option value="gemini">Gemini (Google)</option>
-                    <option value="groq">Groq</option>
-                    <option value="openrouter">OpenRouter</option>
-                    <option value="cerebras">Cerebras</option>
-                    <option value="together">Together AI</option>
-                    <option value="mistral">Mistral AI</option>
-                    <option value="deepseek">DeepSeek</option>
-                    <option value="fireworks">Fireworks AI</option>
-                    <option value="xai">xAI Grok</option>
-                  </select>
-                </div>
-
-                <div class="form-group">
-                  <label>API Key</label>
-                  <input type="text" id="newProviderKey" placeholder="Tempel API key...">
-                </div>
-
-                <div class="form-group full">
-                  <label>Role <small>(bisa pilih lebih dari 1)</small></label>
-                  <div class="role-checkbox-row" id="newProviderRoles">
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="chat" checked>
-                      <span class="role-badge chat">chat</span>
-                    </label>
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="embedding">
-                      <span class="role-badge embedding">embedding</span>
-                    </label>
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="enrichment">
-                      <span class="role-badge enrichment">enrichment</span>
-                    </label>
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="query-rewriter">
-                      <span class="role-badge query-rewriter">query-rewriter</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="form-group full">
-                  <label>Models <small>(pisah koma, kosongkan untuk default)</small></label>
-                  <input type="text" id="newProviderModels" placeholder="contoh: llama-3.3-70b-versatile,llama-3.1-8b-instant">
-                </div>
-
-                <div class="form-group full">
-                  <label>Embedding Models <small>(opsional, pisah koma)</small></label>
-                  <input type="text" id="newProviderEmbeddingModels" placeholder="contoh: text-embedding-004">
-                </div>
-              </div>
-            </div>
-
-            <div id="providerMode-custom" style="display:none;">
-              <div class="provider-help">
-                <strong>Provider Custom OpenAI-Compatible:</strong>
-                Isi endpoint dengan format <code>https://api.contoh.com/v1</code>.
-                Sistem akan otomatis kirim request ke <code>{endpoint}/chat/completions</code>.
-              </div>
-
-              <div class="form-grid">
-                <div class="form-group">
-                  <label>Nama Provider <span class="text-danger">*</span></label>
-                  <input type="text" id="customProviderName" placeholder="contoh: myprovider">
-                </div>
-
-                <div class="form-group">
-                  <label>Display Name</label>
-                  <input type="text" id="customProviderDisplay" placeholder="contoh: My AI Provider">
-                </div>
-
-                <div class="form-group full">
-                  <label>Custom Endpoint <span class="text-danger">*</span></label>
-                  <input type="text" id="customProviderEndpoint" placeholder="https://api.contoh.com/v1">
-                </div>
-
-                <div class="form-group full">
-                  <label>API Key <span class="text-danger">*</span></label>
-                  <input type="text" id="customProviderKey" placeholder="Tempel API key...">
-                </div>
-
-                <div class="form-group full">
-                  <label>Role</label>
-                  <div class="role-checkbox-row" id="customProviderRoles">
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="chat" checked>
-                      <span class="role-badge chat">chat</span>
-                    </label>
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="embedding">
-                      <span class="role-badge embedding">embedding</span>
-                    </label>
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="enrichment">
-                      <span class="role-badge enrichment">enrichment</span>
-                    </label>
-                    <label class="role-checkbox">
-                      <input type="checkbox" value="query-rewriter">
-                      <span class="role-badge query-rewriter">query-rewriter</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="form-group full">
-                  <label>Models <small>(pisah koma)</small></label>
-                  <input type="text" id="customProviderModels" placeholder="contoh: gpt-4,gpt-3.5-turbo">
-                </div>
-
-                <div class="form-group full">
-                  <label>Embedding Models <small>(opsional, pisah koma)</small></label>
-                  <input type="text" id="customProviderEmbeddingModels" placeholder="contoh: text-embedding-3-small">
-                </div>
-              </div>
-            </div>
-
-            <div class="action-bar">
-              <button class="btn-primary-lg" onclick="addProvider()">
-                <i class="fas fa-plus"></i> Tambah Provider
-              </button>
-            </div>
-
-            <div id="addProviderStatus" class="status-msg"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-list"></i><span>Daftar Provider</span>
-          </div>
-          <div class="card-body" id="providersList"></div>
-        </div>
       </div>
-
-      <!-- PROMPT -->
-      <div class="page" id="page-prompt">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-comment-dots"></i><span>System Instruction</span></div>
-          <div class="card-body">
-            <p class="text-muted">Instruksi ini mengatur kepribadian & aturan AI. Semakin ketat aturannya, semakin akurat jawabannya.</p>
-            <textarea id="cfg-systemInstruction" rows="20" class="prompt-textarea"></textarea>
-            <button class="btn-primary-lg" onclick="savePrompt()">
-              <i class="fas fa-save"></i> Simpan Prompt
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- KNOWLEDGE -->
-      <div class="page" id="page-knowledge">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-upload"></i><span>Upload File Pengetahuan</span></div>
-          <div class="card-body">
-            <p class="text-muted">Format: <b>.md</b> atau <b>.txt</b>. Setiap topik dipisah baris kosong atau heading <code>##</code>.</p>
-            <input type="file" id="knowledgeFile" accept=".md,.txt" class="form-input">
-            <div class="action-bar">
-              <button class="btn-primary-lg" onclick="uploadKnowledge()">
-                <i class="fas fa-upload"></i> Upload
-              </button>
-              <button class="btn-secondary" onclick="reloadKnowledge()">
-                <i class="fas fa-sync"></i> Reload
-              </button>
-            </div>
-            <div id="uploadStatus" class="status-msg"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><i class="fas fa-file-alt"></i><span>File Pengetahuan</span></div>
-          <div class="card-body" id="knowledgeFilesList"></div>
-        </div>
-      </div>
-
-      <!-- KNOWLEDGE GRAPH -->
-      <div class="page" id="page-graph">
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-project-diagram"></i>
-            <span>Knowledge Graph Visualization</span>
-          </div>
-          <div class="card-body">
-
-            <div class="enrich-panel">
-              <div class="enrich-info">
-                <i class="fas fa-magic"></i>
-                <div>
-                  <strong>Semantic Enrichment (Beta)</strong>
-                  <p>Gunakan AI untuk mengekstrak relasi mendalam (triple) dari pengetahuan Anda. Proses ini memakan token API dan berjalan di background.</p>
-                </div>
-              </div>
-              <div class="enrich-actions">
-                <input type="number" id="enrichMaxChunks" value="30" min="5" max="200" step="5" title="Jumlah chunk yang diproses">
-                <button class="btn-primary-lg" id="enrichBtn" onclick="startEnrich()">
-                  <i class="fas fa-magic"></i> Mulai Enrich
-                </button>
-              </div>
-              <div id="enrichStatus" class="enrich-status"></div>
-            </div>
-
-            <div class="graph-controls">
-              <div class="graph-control-item">
-                <label>Jumlah Node (Top N)</label>
-                <input type="number" id="graphLimit" value="300" min="20" max="2000" step="20">
-              </div>
-              <div class="graph-control-item">
-                <label>Minimal Degree</label>
-                <input type="number" id="graphMinDegree" value="1" min="1" max="20">
-              </div>
-              <div class="graph-control-item">
-                <label>Cari Node</label>
-                <input type="text" id="graphSearch" placeholder="Ketik nama node...">
-              </div>
-              <div class="graph-control-item">
-                <button class="btn-primary-lg" onclick="loadGraphVisualization()">
-                  <i class="fas fa-sync"></i> Refresh
-                </button>
-              </div>
-            </div>
-
-            <div class="graph-stats" id="graphStats">
-              <div class="empty-state">Memuat graph...</div>
-            </div>
-
-            <div class="graph-container" id="graphContainer"></div>
-
-            <div class="graph-legend">
-              <div class="legend-title">Keterangan:</div>
-              <div class="legend-items">
-                <span class="legend-item"><span class="legend-dot" style="background:#1e64c8"></span> Node biasa</span>
-                <span class="legend-item"><span class="legend-dot" style="background:#dc3545"></span> Node penting (degree tinggi)</span>
-                <span class="legend-item"><i class="fas fa-circle" style="color:#0d47a1;font-size:8px"></i> Ukuran = Degree</span>
-                <span class="legend-item"><i class="fas fa-minus" style="color:#666"></i> Ketebalan = Bobot</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" id="graphNodeDetail" style="display:none;">
-          <div class="card-header">
-            <i class="fas fa-info-circle"></i>
-            <span>Detail Node: <span id="graphNodeName"></span></span>
-            <button onclick="closeGraphNodeDetail()" style="margin-left:auto;background:transparent;border:none;color:#666;cursor:pointer;font-size:16px;">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <div class="card-body" id="graphNodeBody"></div>
-        </div>
-      </div>
-
-      <!-- UNANSWERED -->
-      <div class="page" id="page-unanswered">
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-question-circle"></i>
-            <span>Pertanyaan Yang Tidak Terjawab AI</span>
-          </div>
-          <div class="card-body">
-            <p class="text-muted">
-              <b>Fitur Terpadu:</b> Saat Anda jawab di sini, otomatis juga akan:
-              ✅ Masuk ke Buku Pengetahuan · ✅ Update Knowledge Graph · ✅ Tandai resolved di Auto-Learning · ✅ Tambah edge semantic via AI
-            </p>
-
-            <div class="filter-tabs">
-              <button class="filter-tab active" data-filter="pending" onclick="filterUnanswered('pending')">
-                <i class="fas fa-hourglass-half"></i> Belum Dijawab
-                <span id="filterPendingCount" class="filter-count">0</span>
-              </button>
-              <button class="filter-tab" data-filter="resolved" onclick="filterUnanswered('resolved')">
-                <i class="fas fa-check-circle"></i> Sudah Dijawab
-                <span id="filterResolvedCount" class="filter-count">0</span>
-              </button>
-              <button class="filter-tab" data-filter="all" onclick="filterUnanswered('all')">
-                <i class="fas fa-list"></i> Semua
-                <span id="filterAllCount" class="filter-count">0</span>
-              </button>
-            </div>
-
-            <div class="action-bar">
-              <button class="btn-secondary" onclick="loadUnanswered()">
-                <i class="fas fa-sync"></i> Refresh
-              </button>
-              <button class="btn-danger-outline" onclick="clearResolvedUnanswered()">
-                <i class="fas fa-broom"></i> Hapus Yang Sudah Dijawab
-              </button>
-            </div>
-
-            <div id="unansweredList"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- LEARNING -->
-      <div class="page" id="page-learning">
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-brain"></i>
-            <span>Auto-Learning Queue</span>
-          </div>
-          <div class="card-body">
-            <p class="text-muted">
-              <b>Fitur Terpadu:</b> Saat Anda jawab di sini, otomatis juga akan:
-              ✅ Masuk ke Buku Pengetahuan · ✅ Update Knowledge Graph · ✅ Tandai resolved di Tak Terjawab · ✅ Tambah edge semantic via AI
-            </p>
-
-            <div class="stat-grid" style="margin-bottom:20px;">
-              <div class="stat-card stat-blue">
-                <div class="stat-icon"><i class="fas fa-list"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="learningTotal">0</div>
-                  <div class="stat-label">Total Antrian</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-orange">
-                <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="learningPending">0</div>
-                  <div class="stat-label">Pending</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-red">
-                <div class="stat-icon"><i class="fas fa-fire"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="learningUrgent">0</div>
-                  <div class="stat-label">Urgent</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-green">
-                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="learningResolved">0</div>
-                  <div class="stat-label">Selesai</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="filter-tabs">
-              <button class="filter-tab active" data-filter="pending" onclick="filterLearning('pending')">
-                <i class="fas fa-hourglass-half"></i> Pending
-                <span id="learningFilterPendingCount" class="filter-count">0</span>
-              </button>
-              <button class="filter-tab" data-filter="urgent" onclick="filterLearning('urgent')">
-                <i class="fas fa-fire"></i> Urgent
-                <span id="learningFilterUrgentCount" class="filter-count">0</span>
-              </button>
-              <button class="filter-tab" data-filter="high" onclick="filterLearning('high')">
-                <i class="fas fa-exclamation-triangle"></i> Prioritas Tinggi
-                <span id="learningFilterHighCount" class="filter-count">0</span>
-              </button>
-              <button class="filter-tab" data-filter="all" onclick="filterLearning('all')">
-                <i class="fas fa-list"></i> Semua
-                <span id="learningFilterAllCount" class="filter-count">0</span>
-              </button>
-            </div>
-
-            <div class="action-bar">
-              <button class="btn-secondary" onclick="loadLearningQueue()">
-                <i class="fas fa-sync"></i> Refresh
-              </button>
-              <button class="btn-secondary" onclick="clearResolvedLearning()">
-                <i class="fas fa-broom"></i> Hapus Yang Selesai
-              </button>
-              <button class="btn-danger-outline" onclick="clearAllLearning()">
-                <i class="fas fa-trash"></i> Hapus Semua
-              </button>
-            </div>
-
-            <div id="learningList"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FEEDBACK -->
-      <div class="page" id="page-feedback">
-        <div class="card">
-          <div class="card-header">
-            <i class="fas fa-star"></i>
-            <span>Feedback & Akurasi AI</span>
-          </div>
-          <div class="card-body">
-            <p class="text-muted">
-              Statistik kepuasan user dan akurasi jawaban AI. Semakin tinggi, semakin pintar AI Anda.
-            </p>
-
-            <div class="stat-grid">
-              <div class="stat-card stat-blue">
-                <div class="stat-icon"><i class="fas fa-comments"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="fbTotal">0</div>
-                  <div class="stat-label">Total Feedback</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-green">
-                <div class="stat-icon"><i class="fas fa-thumbs-up"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="fbGood">0</div>
-                  <div class="stat-label">Bagus 👍</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-red">
-                <div class="stat-icon"><i class="fas fa-thumbs-down"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="fbBad">0</div>
-                  <div class="stat-label">Kurang 👎</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-purple">
-                <div class="stat-icon"><i class="fas fa-star"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="fbSatisfaction">0%</div>
-                  <div class="stat-label">Kepuasan</div>
-                </div>
-              </div>
-            </div>
-
-            <h6 class="fw-bold mt-4 mb-3" style="color:var(--primary-dark);">
-              <i class="fas fa-chart-pie"></i> Analytics
-            </h6>
-            <div class="stat-grid">
-              <div class="stat-card stat-blue">
-                <div class="stat-icon"><i class="fas fa-comment-dots"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anTotalChats">0</div>
-                  <div class="stat-label">Total Chat</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-green">
-                <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anTotalAnswers">0</div>
-                  <div class="stat-label">Jawaban Diberikan</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-red">
-                <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anRefusals">0</div>
-                  <div class="stat-label">Penolakan</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-purple">
-                <div class="stat-icon"><i class="fas fa-bullseye"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anAccuracy">0%</div>
-                  <div class="stat-label">Akurasi</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-teal">
-                <div class="stat-icon"><i class="fas fa-brain"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anMemoryHits">0</div>
-                  <div class="stat-label">Memory Hits</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-orange">
-                <div class="stat-icon"><i class="fas fa-book"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anRagHits">0</div>
-                  <div class="stat-label">RAG Hits</div>
-                </div>
-              </div>
-
-              <div class="stat-card stat-pink">
-                <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
-                <div class="stat-info">
-                  <div class="stat-value" id="anOutOfScope">0</div>
-                  <div class="stat-label">Out of Scope</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="card" style="margin-top:20px;">
-              <div class="card-header">
-                <i class="fas fa-chart-bar"></i><span>Feedback 7 Hari Terakhir</span>
-              </div>
-              <div class="card-body">
-                <div class="chart-wrap" id="feedbackChart">
-                  <div class="empty-state">Memuat data...</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="filter-tabs" style="margin-top:20px;">
-              <button class="filter-tab active" data-filter="all" onclick="filterFeedback('all')">
-                <i class="fas fa-list"></i> Semua
-              </button>
-              <button class="filter-tab" data-filter="good" onclick="filterFeedback('good')">
-                <i class="fas fa-thumbs-up"></i> Bagus
-              </button>
-              <button class="filter-tab" data-filter="bad" onclick="filterFeedback('bad')">
-                <i class="fas fa-thumbs-down"></i> Kurang
-              </button>
-            </div>
-
-            <div class="action-bar">
-              <button class="btn-secondary" onclick="loadFeedback()">
-                <i class="fas fa-sync"></i> Refresh
-              </button>
-              <button class="btn-danger-outline" onclick="clearFeedback()">
-                <i class="fas fa-trash"></i> Hapus Feedback
-              </button>
-              <button class="btn-danger-outline" onclick="clearAnalytics()">
-                <i class="fas fa-redo"></i> Reset Analytics
-              </button>
-            </div>
-
-            <div id="feedbackList"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- MEMORY -->
-      <div class="page" id="page-memory">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-lightbulb"></i><span>Pengaturan Memori</span></div>
-          <div class="card-body">
-            <div class="switch-row">
-              <label class="switch">
-                <input type="checkbox" id="memoryEnabled">
-                <span class="slider"></span>
-              </label>
-              <span>Aktifkan memori otomatis</span>
-            </div>
-
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Min skor pakai memori <small>(default 75)</small></label>
-                <input type="number" id="memoryMinScore">
-              </div>
-              <div class="form-group">
-                <label>Min skor simpan baru <small>(default 55)</small></label>
-                <input type="number" id="memorySaveThreshold">
-              </div>
-            </div>
-
-            <div class="action-bar">
-              <button class="btn-primary-lg" onclick="saveMemorySettings()">
-                <i class="fas fa-save"></i> Simpan
-              </button>
-              <button class="btn-secondary" onclick="reloadMemory()">
-                <i class="fas fa-sync"></i> Reload
-              </button>
-              <button class="btn-danger-outline" onclick="clearMemory()">
-                <i class="fas fa-trash"></i> Hapus Semua
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><i class="fas fa-comments"></i><span>Konteks Percakapan</span></div>
-          <div class="card-body">
-            <div class="switch-row">
-              <label class="switch">
-                <input type="checkbox" id="convEnabled">
-                <span class="slider"></span>
-              </label>
-              <span>Aktifkan konteks percakapan</span>
-            </div>
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Jumlah pesan diingat</label>
-                <input type="number" id="convSize" min="2" max="30">
-              </div>
-              <div class="form-group">
-                <label>Rate limit per-sesi (pesan/menit)</label>
-                <input type="number" id="rateLimitPerSession" min="5" max="100">
-              </div>
-            </div>
-            <button class="btn-primary-lg" onclick="saveConversationSettings()">
-              <i class="fas fa-save"></i> Simpan
-            </button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><i class="fas fa-list"></i><span>Daftar Memori</span></div>
-          <div class="card-body" id="memoryList"></div>
-        </div>
-      </div>
-
-      <!-- SESSIONS -->
-      <div class="page" id="page-sessions">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-comments"></i><span>Percakapan Aktif</span></div>
-          <div class="card-body">
-            <p class="text-muted">Sesi percakapan (2 jam terakhir).</p>
-            <div class="action-bar">
-              <button class="btn-secondary" onclick="loadSessions()">
-                <i class="fas fa-sync"></i> Refresh
-              </button>
-              <button class="btn-danger-outline" onclick="clearSessions()">
-                <i class="fas fa-trash"></i> Hapus Semua
-              </button>
-            </div>
-            <div id="sessionsList"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- NOTIFICATIONS -->
-      <div class="page" id="page-notifications">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-bell"></i><span>Notifikasi Sistem</span></div>
-          <div class="card-body">
-            <div class="action-bar">
-              <button class="btn-secondary" onclick="loadNotifications()">
-                <i class="fas fa-sync"></i> Refresh
-              </button>
-              <button class="btn-primary" onclick="markAllRead()">
-                <i class="fas fa-check"></i> Tandai Dibaca
-              </button>
-              <button class="btn-danger-outline" onclick="clearNotifications()">
-                <i class="fas fa-trash"></i> Hapus
-              </button>
-            </div>
-            <div id="notificationsList"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- BACKUP -->
-      <div class="page" id="page-backup">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-database"></i><span>Backup Otomatis</span></div>
-          <div class="card-body">
-            <p class="text-muted">Backup otomatis setiap hari jam 02.00. File dienkripsi AES-256. Termasuk knowledge graph & embedding cache.</p>
-            <div class="action-bar">
-              <button class="btn-primary-lg" onclick="runBackupNow()">
-                <i class="fas fa-download"></i> Backup Sekarang
-              </button>
-              <button class="btn-secondary" onclick="loadBackups()">
-                <i class="fas fa-list"></i> Lihat Daftar
-              </button>
-            </div>
-            <div id="backupsList"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECURITY -->
-      <div class="page" id="page-security">
-        <div class="card">
-          <div class="card-header"><i class="fas fa-key"></i><span>Ganti Password Admin</span></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Password Lama</label>
-                <input type="password" id="oldPassword">
-              </div>
-              <div class="form-group">
-                <label>Password Baru (min 8 karakter)</label>
-                <input type="password" id="newPassword">
-              </div>
-            </div>
-            <button class="btn-primary-lg" onclick="changePassword()">
-              <i class="fas fa-key"></i> Ganti Password
-            </button>
-            <div id="passwordStatus" class="status-msg"></div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header"><i class="fas fa-info-circle"></i><span>Info Keamanan</span></div>
-          <div class="card-body">
-            <ul class="info-list">
-              <li><i class="fas fa-check-circle text-success"></i> Login pakai JWT (30 hari) + bcrypt</li>
-              <li><i class="fas fa-check-circle text-success"></i> Sesi login tersimpan</li>
-              <li><i class="fas fa-check-circle text-success"></i> API key terenkripsi AES-256-GCM</li>
-              <li><i class="fas fa-check-circle text-success"></i> Backup dienkripsi AES-256</li>
-              <li><i class="fas fa-check-circle text-success"></i> Multi-provider dengan fallback otomatis</li>
-              <li><i class="fas fa-check-circle text-success"></i> Provider Role System (chat/embedding/enrichment/query-rewriter)</li>
-              <li><i class="fas fa-check-circle text-success"></i> RAG Hybrid (BM25 + Embedding + RRF)</li>
-              <li><i class="fas fa-check-circle text-success"></i> Query Rewriting otomatis</li>
-              <li><i class="fas fa-check-circle text-success"></i> Unified Learning Pipeline</li>
-              <li><i class="fas fa-check-circle text-success"></i> Knowledge Graph (Graph RAG) aktif</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </main>
+
+    <footer class="footer footer-transparent d-print-none">
+      <div class="container-xl">
+        <div class="text-center text-secondary">
+          SIVT AI Admin Dashboard &copy; <span id="footerYear"></span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
 </div>
 
-<div class="modal-overlay" id="answerModal" onclick="closeAnswerModal(event)">
-  <div class="modal-card">
-    <div class="modal-header">
-      <h3><i class="fas fa-magic"></i> Jawab & Update Semua Otomatis</h3>
-      <button class="modal-close" onclick="closeAnswerModal()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div class="unified-info-box">
-        <i class="fas fa-info-circle"></i>
-        <div>
-          <strong>Satu kali jawab, semua terupdate otomatis:</strong>
-          <ul>
-            <li>📚 Masuk ke <b>Buku Pengetahuan</b></li>
-            <li>🕸️ Update <b>Knowledge Graph</b> (incremental, tanpa rebuild)</li>
-            <li>🧠 <b>Auto-Learning Queue</b> ditandai resolved</li>
-            <li>❓ <b>Tak Terjawab</b> ditandai resolved</li>
-            <li>✨ <b>Semantic Extraction</b> via AI (triple baru)</li>
-          </ul>
+<!-- ============================================================
+MODAL: ANSWER
+============================================================ -->
+<div class="modal modal-blur fade" id="answerModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-plus me-2"></i>Pertanyaan Warga</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-id">
+        <input type="hidden" id="modal-source">
+        <div class="mb-3">
+          <label class="form-label">Pertanyaan Warga</label>
+          <input type="text" id="modal-question" class="form-control" readonly>
         </div>
+        <div class="mb-3">
+          <label class="form-label">Kategori (opsional)</label>
+          <input type="text" id="modal-category" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jawaban Lengkap *</label>
+          <textarea id="modal-answer" class="form-control" rows="6"></textarea>
+        </div>
+        <div id="modalPipelineStatus"></div>
       </div>
-
-      <div class="form-group">
-        <label>Pertanyaan Warga</label>
-        <input type="text" id="modal-question" readonly>
+      <div class="modal-footer">
+        <button class="btn btn-link link-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-primary" id="modalSubmitBtn" onclick="submitAnswerToKnowledge()">
+          <i class="ti ti-device-floppy me-1"></i> Simpan & Update
+        </button>
       </div>
-      <div class="form-group">
-        <label>Kategori <small>(opsional)</small></label>
-        <input type="text" id="modal-category" placeholder="contoh: Administrasi Kependudukan">
-      </div>
-      <div class="form-group">
-        <label>Jawaban Lengkap <span class="text-danger">*</span></label>
-        <textarea id="modal-answer" rows="8" placeholder="Tulis jawaban lengkap untuk pertanyaan ini... Minimal 20 karakter."></textarea>
-      </div>
-      <input type="hidden" id="modal-id">
-      <input type="hidden" id="modal-source">
-
-      <div id="modalPipelineStatus" class="pipeline-status"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-secondary" onclick="closeAnswerModal()">Batal</button>
-      <button class="btn-primary-lg" id="modalSubmitBtn" onclick="submitAnswerToKnowledge()">
-        <i class="fas fa-magic"></i> Simpan & Update Semua
-      </button>
     </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
-<script src="script.js"></script>
+<!-- ============================================================
+MODAL: CETAK PDF
+============================================================ -->
+<div class="modal modal-blur fade" id="pdfModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-file-type-pdf me-2"></i>Cetak Laporan PDF</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Pilih Mode -->
+        <label class="form-label fw-bold">Mode Laporan</label>
+        <div class="row g-2 mb-4">
+          <div class="col-md-6">
+            <label class="form-selectgroup-item w-100" style="cursor: pointer;">
+              <input type="radio" name="pdfMode" value="quick" class="form-selectgroup-input" checked
+                     onchange="updatePdfPreview()">
+              <span class="form-selectgroup-label d-flex align-items-center p-3">
+                <span class="me-3">
+                  <span class="form-selectgroup-check"></span>
+                </span>
+                <span>
+                  <strong><i class="ti ti-file-text me-1"></i> Cepat</strong>
+                  <div class="text-secondary small">Ringkasan 1 halaman - semua fitur utama</div>
+                </span>
+              </span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-selectgroup-item w-100" style="cursor: pointer;">
+              <input type="radio" name="pdfMode" value="detail" class="form-selectgroup-input"
+                     onchange="updatePdfPreview()">
+              <span class="form-selectgroup-label d-flex align-items-center p-3">
+                <span class="me-3">
+                  <span class="form-selectgroup-check"></span>
+                </span>
+                <span>
+                  <strong><i class="ti ti-file-analytics me-1"></i> Detail</strong>
+                  <div class="text-secondary small">Lengkap dengan semua tabel data</div>
+                </span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Pilih Section -->
+        <label class="form-label fw-bold">Section yang Disertakan</label>
+        <div class="row g-2 mb-4">
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionOverview" checked>
+              <span class="form-check-label">Ringkasan (Overview)</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionSessions" checked>
+              <span class="form-check-label">Statistik Sesi</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionFeedback" checked>
+              <span class="form-check-label">Feedback & Kepuasan</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionUnanswered" checked>
+              <span class="form-check-label">Pertanyaan Warga</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionTopTopics" checked>
+              <span class="form-check-label">Topik Populer</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionCategories" checked>
+              <span class="form-check-label">Kategori Pertanyaan</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionKnowledge" checked>
+              <span class="form-check-label">Pengetahuan</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionMemory" checked>
+              <span class="form-check-label">Memori AI</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionProviders" checked>
+              <span class="form-check-label">Provider AI</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionGraph" checked>
+              <span class="form-check-label">Knowledge Graph</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionAnalytics" checked>
+              <span class="form-check-label">Analytics</span>
+            </label>
+          </div>
+          <div class="col-md-6">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="pdfSectionSources" checked>
+              <span class="form-check-label">Distribusi Sumber Jawaban</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Info -->
+        <div class="alert alert-info">
+          <i class="ti ti-info-circle me-2"></i>
+          <strong>Info:</strong> PDF akan dicetak dengan <strong>data realtime</strong> periode
+          <span id="pdfPeriodInfo">-</span>. Proses membutuhkan 3-10 detik.
+        </div>
+
+        <!-- Progress -->
+        <div id="pdfProgress" style="display: none;">
+          <div class="progress mb-2">
+            <div class="progress-bar progress-bar-indeterminate bg-red"></div>
+          </div>
+          <div class="text-center text-secondary small">
+            <i class="ti ti-loader-2 ti-spin me-1"></i>
+            <span id="pdfProgressText">Menyiapkan laporan...</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link link-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-danger" id="pdfGenerateBtn" onclick="generatePDF()">
+          <i class="ti ti-download me-1"></i> Download PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+MODAL: EDIT MEMORY
+============================================================ -->
+<div class="modal modal-blur fade" id="editMemoryModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="ti ti-edit me-2"></i>Edit Memori</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editMemoryIndex">
+        <div class="mb-3">
+          <label class="form-label">Pertanyaan *</label>
+          <input type="text" id="editMemoryQuestion" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Jawaban *</label>
+          <textarea id="editMemoryAnswer" class="form-control" rows="6"></textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Variasi (pisah koma)</label>
+          <input type="text" id="editMemoryVariants" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Keywords (pisah koma)</label>
+          <input type="text" id="editMemoryKeywords" class="form-control">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link link-secondary" data-bs-dismiss="modal">Batal</button>
+        <button class="btn btn-primary" id="editMemorySaveBtn" onclick="saveEditMemory()">
+          <i class="ti ti-device-floppy me-1"></i> Simpan Perubahan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tabler JS -->
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta20/dist/js/tabler.min.js"></script>
+
+<!-- Custom Script -->
+<script src="/admin/script-admin.js"></script>
+
+<!-- Laporan Module -->
+<script src="/lib/cetak-laporan.js"></script>
+<script src="/admin/laporan.js"></script>
+
+<!-- Dashboard Module -->
+<script src="/admin/dashboard.js"></script>
+
 <script>
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw-admin.js', { scope: '/admin/' })
-            .then(reg => console.log('[PWA-Admin] SW terdaftar:', reg.scope))
-            .catch(err => console.warn('[PWA-Admin] Gagal:', err));
-    });
-}
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+  function toggleSidebarMobile() {
+    const sidebar = document.getElementById('adminSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (!sidebar || !overlay) return;
+    const isOpen = sidebar.classList.contains('show-mobile');
+    if (isOpen) {
+      sidebar.classList.remove('show-mobile');
+      overlay.classList.remove('show');
+      document.body.style.overflow = '';
+    } else {
+      sidebar.classList.add('show-mobile');
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeSidebarMobile() {
+    const sidebar = document.getElementById('adminSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.remove('show-mobile');
+    if (overlay) overlay.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', function(e) {
+    if (window.innerWidth >= 992) return;
+    const navLink = e.target.closest('.nav-link[data-page]');
+    if (navLink) setTimeout(closeSidebarMobile, 200);
+  });
+
+  window.addEventListener('resize', function() {
+    if (window.innerWidth >= 992) closeSidebarMobile();
+  });
 </script>
+
 </body>
 </html>

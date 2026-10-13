@@ -1,0 +1,705 @@
+================================================================================
+                    PROMPT PERBAIKAN APLIKASI SIVT AI
+                         Format: Text File (.txt)
+                    Untuk: AI Assistant (Deepsek)
+================================================================================
+
+
+================================================================================
+                           BAGIAN 1: PENDAHULUAN
+================================================================================
+
+Halo AI,
+
+Saya memiliki aplikasi web bernama "SIVT AI" yang saat ini memiliki beberapa bug
+dan masalah fungsional. Saya membutuhkan bantuan Anda untuk menganalisis dan
+memperbaiki aplikasi ini.
+
+ATURAN PENTING YANG HARUS ANDA IKUTI:
+1. JAWAB dalam Bahasa Indonesia
+2. TUNGGU sampai saya kirim file yang Anda butuhkan (jangan berasumsi)
+3. BERIKAN kode dalam format "KODE LAMA" vs "KODE BARU" yang jelas
+4. JANGAN pernah ubah API contract yang sudah ada (kecuali ditambah)
+5. JANGAN break fitur yang sudah berjalan
+6. JELASKAN setiap perubahan: file mana, baris berapa, ganti apa
+7. TES setiap perbaikan sebelum lanjut ke masalah berikutnya
+
+Tujuan akhir: Semua 9 masalah yang saya jelaskan di bawah bisa diperbaiki
+satu per satu, dengan verifikasi di setiap langkah.
+
+
+================================================================================
+                       BAGIAN 2: RINGKASAN APLIKASI
+================================================================================
+
+NAMA APLIKASI: SIVT AI (Sistem Informasi Virtual Tegalrejo)
+FUNGSI: Asisten virtual berbasis AI untuk layanan administrasi Kemantren
+        Tegalrejo Yogyakarta
+USER: 2 jenis user
+      a) ADMIN - mengelola AI, knowledge, provider, dll via dashboard
+      b) WARGA - chat dengan AI untuk tanya layanan administrasi
+
+STACK TEKNOLOGI:
+- Backend   : Node.js, Express.js, ESM modules (import/export)
+- Frontend  : Vanilla JS, HTML5, CSS3
+- UI Library: Tabler UI (admin), custom CSS (warga)
+- Chart     : Chart.js 4.4.0
+- PDF       : jsPDF + jspdf-autotable (client-side)
+- Storage   : JSON files (tanpa database)
+- Timezone  : Server WIB (UTC+7), User Indonesia
+
+STRUKTUR FOLDER:
+/
+├── index.js                              [BACKEND UTAMA]
+├── .env                                  [KONFIGURASI RAHASIA]
+├── package.json
+│
+├── lib/                                  [MODUL BACKEND]
+│   ├── feedback.js                       [TRACK FEEDBACK & ANALYTICS]
+│   ├── dashboard-stats.js                [HITUNG STATISTIK]
+│   ├── cetak-laporan.js                  [GENERATOR PDF]
+│   ├── learning.js                       [AUTO-LEARNING QUEUE]
+│   ├── memory.js                         [MEMORI AI]
+│   ├── providers.js                      [PROVIDER AI]
+│   ├── provider-role.js                  [ROLE PROVIDER]
+│   ├── classifier.js                     [KLASIFIKASI PERTANYAAN]
+│   ├── graph-engine.js                   [KNOWLEDGE GRAPH]
+│   ├── graph-enricher.js                 [GRAPH ENRICHMENT]
+│   ├── rag-hybrid.js                     [RAG HYBRID BM25+EMBEDDING]
+│   ├── rag-embedding.js                  [EMBEDDING ENGINE]
+│   ├── unified-learning.js               [UNIFIED LEARNING]
+│   └── summarizer.js                     [SUMMARIZER]
+│
+├── admin-public/                         [PANEL ADMIN]
+│   ├── index.html                        [UI ADMIN]
+│   ├── script-admin.js                   [LOGIC ADMIN]
+│   ├── dashboard.js                      [CHART & STATS DASHBOARD]
+│   ├── laporan.js                        [UI LAPORAN]
+│   └── style-admin.css                   [CSS ADMIN]
+│
+├── public/                               [HALAMAN WARGA]
+│   ├── index.html                        [UI CHAT WARGA]
+│   ├── script.js                         [LOGIC CHAT WARGA]
+│   ├── style.css                         [CSS WARGA]
+│   ├── sw.js                             [SERVICE WORKER]
+│   └── manifest.json                     [PWA MANIFEST]
+│
+├── data/                                 [DATA STORAGE]
+│   ├── config.json                       [KONFIGURASI APP]
+│   ├── providers.json.enc                [PROVIDER (ENCRYPTED)]
+│   ├── feedback.json                     [DATA FEEDBACK]
+│   ├── analytics.json                    [EVENT ANALYTICS]
+│   ├── unanswered.json                   [PERTANYAAN TAK TERJAWAB]
+│   ├── learning-queue.json               [ANTRIAN LEARNING]
+│   ├── knowledge-graph.json              [KNOWLEDGE GRAPH]
+│   └── embedding-cache.json              [CACHE EMBEDDING]
+│
+├── knowledge/                            [DOKUMEN PENGETAHUAN]
+│   ├── buku-pengetahuan.md
+│   └── [file .md / .txt lainnya]
+│
+├── memory/
+│   ├── memory.md                         [MEMORI AI]
+│   └── sessions/                         [SESI CHAT]
+│
+└── logs/
+    └── notifications.json                [LOG NOTIFIKASI]
+
+
+================================================================================
+                       BAGIAN 3: 9 MASALAH YANG HARUS DIPERBAIKI
+================================================================================
+
+################ MASALAH #1: TIMEZONE FILTER TANGGAL DI LAPORAN ################
+
+PRIORITAS  : SANGAT KRITIS
+FILE TERKAIT:
+  - admin-public/laporan.js (fungsi getReportRange)
+  - index.js (endpoint /api/admin/report/summary)
+
+GEJALA:
+  Ketika user pilih filter "Hari Ini" di menu Laporan, range tanggal yang
+  muncul = KEMARIN (bukan hari ini).
+  
+  Contoh: Hari ini 12/10/2026 jam 08:00 WIB, tapi range muncul:
+  "11/10/2026 - 11/10/2026"  SALAH
+
+AKAR MASALAH:
+  Kode pakai `new Date().toISOString().slice(0, 10)` yang menghasilkan
+  tanggal UTC. Karena WIB = UTC+7, kalau jam < 07:00 pagi maka
+  toISOString() menghasilkan tanggal kemarin.
+
+  Contoh detail:
+    Waktu WIB : 12/10/2026 00:27
+    Waktu UTC : 11/10/2026 17:27
+    toISOString() menghasilkan "2026-10-11" SALAH (harusnya "2026-10-12")
+
+LOKASI KODE LAMA:
+
+  #1a. File: admin-public/laporan.js
+  ------------------------------------------------------------
+  function getReportRange() {
+    const preset = document.getElementById('reportRange')?.value || '30d';
+    const now = new Date();
+    let from;
+
+    if (preset === 'today') {
+      from = new Date(now); from.setHours(0, 0, 0, 0);
+    } else if (preset === '7d') {
+      from = new Date(now.getTime() - 7 * 86400000);
+    } else if (preset === '30d') {
+      from = new Date(now.getTime() - 30 * 86400000);
+    } else if (preset === '90d') {
+      from = new Date(now.getTime() - 90 * 86400000);
+    } else if (preset === '1y') {
+      from = new Date(now.getTime() - 365 * 86400000);
+    } else if (preset === 'custom') {
+      const fromVal = document.getElementById('reportFrom')?.value;
+      const toVal = document.getElementById('reportTo')?.value;
+      return {
+        from: fromVal || new Date(now.getTime() - 30 * 86400000).toISOString().slice(0, 10),
+        to: toVal || now.toISOString().slice(0, 10)
+      };
+    } else {
+      from = new Date(now.getTime() - 30 * 86400000);
+    }
+
+    return {
+      from: from.toISOString().slice(0, 10),
+      to: now.toISOString().slice(0, 10)
+    };
+  }
+  ------------------------------------------------------------
+
+  #1b. File: index.js (endpoint /api/admin/report/summary)
+  ------------------------------------------------------------
+  const { from, to } = req.query;
+
+  const now = new Date();
+  const startDate = from ? new Date(from) : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+  const endDate = to ? new Date(to) : now;
+  endDate.setHours(23, 59, 59, 999);
+
+  const startMs = startDate.getTime();
+  const endMs = endDate.getTime();
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+  1. Buat helper `toLocalDateString(date)` yang pakai metode LOCAL:
+     - getFullYear()
+     - getMonth()
+     - getDate()
+  
+  2. Di laporan.js: ganti `toISOString().slice(0, 10)` dengan
+     `toLocalDateString(date)`
+  
+  3. Di index.js: parse `from` dan `to` sebagai LOCAL timezone:
+     const [y, m, d] = from.split('-').map(Number);
+     const startDate = new Date(y, m - 1, d, 0, 0, 0, 0);
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - Filter "Hari Ini" tampil: 12/10/2026 - 12/10/2026
+  - Filter "7 Hari" tampil : 06/10/2026 - 12/10/2026 (H-6 sampai H)
+  - Filter "30 Hari" tampil: 13/09/2026 - 12/10/2026 (H-29 sampai H)
+
+
+################ MASALAH #2: ANALYTICS TERSIMPAN DI TANGGAL SALAH ################
+
+PRIORITAS  : SANGAT KRITIS
+FILE TERKAIT:
+  - lib/feedback.js (fungsi addFeedback & trackEvent)
+
+GEJALA:
+  - Grafik "Aktivitas Sesi" di Dashboard menampilkan data di hari kemarin
+  - Grafik kosong pada jam-jam tertentu (pagi hari)
+
+AKAR MASALAH:
+  Sama seperti masalah #1, pakai `new Date().toISOString().slice(0, 10)`
+  yang hasilkan UTC, bukan WIB.
+
+LOKASI KODE LAMA:
+
+  File: lib/feedback.js
+  ------------------------------------------------------------
+  export function addFeedback(question, answer, rating, sessionId, meta = {}) {
+      const item = {
+          id: 'fb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+          question: question.slice(0, 500),
+          answer: answer.slice(0, 1000),
+          rating: rating,
+          sessionId: sessionId || 'unknown',
+          provider: meta.provider || 'unknown',
+          model: meta.model || 'unknown',
+          source: meta.source || 'ai',
+          timestamp: new Date().toISOString()
+      };
+      feedbackData.push(item);
+
+      const day = new Date().toISOString().slice(0, 10);
+      if (!analyticsData.dailyStats[day]) {
+          analyticsData.dailyStats[day] = { chats: 0, good: 0, bad: 0 };
+      }
+      if (rating === 'good') analyticsData.dailyStats[day].good++;
+      else if (rating === 'bad') analyticsData.dailyStats[day].bad++;
+
+      feedbackSave();
+      analyticsSave();
+      return item;
+  }
+
+  export function trackEvent(type) {
+      analyticsData.totalChats++;
+      if (type === 'refusal') analyticsData.totalRefusals++;
+      if (type === 'memory') analyticsData.totalMemoryHits++;
+      if (type === 'rag') analyticsData.totalRagHits++;
+      if (type === 'out_of_scope') analyticsData.totalOutOfScope++;
+      if (type === 'answer') analyticsData.totalAnswers++;
+
+      const day = new Date().toISOString().slice(0, 10);
+      if (!analyticsData.dailyStats[day]) {
+          analyticsData.dailyStats[day] = { chats: 0, good: 0, bad: 0 };
+      }
+      analyticsData.dailyStats[day].chats++;
+
+      analyticsSave();
+  }
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+  1. Tambah helper `getLocalDateKey()` di atas file:
+     function getLocalDateKey(date = new Date()) {
+         const y = date.getFullYear();
+         const m = String(date.getMonth() + 1).padStart(2, '0');
+         const d = String(date.getDate()).padStart(2, '0');
+         return `${y}-${m}-${d}`;
+     }
+  
+  2. Ganti semua `new Date().toISOString().slice(0, 10)` di file ini
+     dengan `getLocalDateKey()`
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - Data analytics tersimpan di tanggal WIB yang benar
+  - Grafik Aktivitas Sesi menampilkan data hari ini dengan akurat
+
+
+################ MASALAH #3: TRACKEVENT ANSWER TIDAK DIPANGGIL ################
+
+PRIORITAS  : PENTING
+FILE TERKAIT:
+  - index.js (endpoint /api/chat)
+
+GEJALA:
+  - Chart "Distribusi Sumber Jawaban" hanya menampilkan Memory, RAG, Refusal
+  - "AI" dan "Redirect" TIDAK MUNCUL, padahal AI menjawab banyak pertanyaan
+
+AKAR MASALAH:
+  Ketika AI menjawab dengan RAG (confidence >= 70), hanya trackEvent('rag')
+  yang dipanggil. trackEvent('answer') TIDAK dipanggil.
+  
+  Akibatnya: analytics.totalAnswers tidak pernah naik
+           maka chart AI kosong
+
+LOKASI KODE LAMA:
+
+  File: index.js (dalam endpoint /api/chat)
+  ------------------------------------------------------------
+  if (isRefusal) {
+      trackEvent('refusal');
+      unansweredAdd(userText, session.id);
+      recordUnansweredQuestion(userText);
+  } else if (relevantChunks.length > 0 && confidence >= 70) {
+      trackEvent('rag');
+  } else {
+      trackEvent('answer');
+  }
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+
+  Ganti dengan:
+  ------------------------------------------------------------
+  if (isRefusal) {
+      trackEvent('refusal');
+      unansweredAdd(userText, session.id);
+      recordUnansweredQuestion(userText);
+  } else {
+      trackEvent('answer');
+
+      if (relevantChunks.length > 0 && confidence >= 70) {
+          trackEvent('rag');
+      }
+  }
+  ------------------------------------------------------------
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - analytics.totalAnswers naik setiap AI jawab
+  - Chart "Distribusi Sumber Jawaban" menampilkan AI (warna kuning)
+
+
+################ MASALAH #4: GRAFIK TREN 7 HARI KOSONG ################
+
+PRIORITAS  : PENTING
+FILE TERKAIT:
+  - admin-public/dashboard.js (fungsi renderFeedbackTrend)
+  - admin-public/script-admin.js (fungsi loadFeedback)
+  - lib/feedback.js (perlu fungsi getDailyFeedbackStats baru)
+  - index.js (endpoint /api/admin/feedback/stats)
+
+GEJALA:
+  Chart "Tren 7 Hari" di halaman Feedback & Akurasi KOSONG atau hanya
+  menampilkan garis datar (tidak ada variasi per hari).
+
+AKAR MASALAH:
+  Fungsi renderFeedbackTrend() menghitung rata-rata feedback dibagi jumlah
+  hari, sehingga semua hari punya nilai SAMA.
+
+LOKASI KODE LAMA:
+
+  File: admin-public/dashboard.js
+  ------------------------------------------------------------
+  function renderFeedbackTrend(daily, feedback) {
+    const el = document.getElementById('feedbackTrendChart');
+    if (!el) return;
+    if (!daily || daily.length === 0) {
+      el.innerHTML = '<div class="text-center text-secondary py-4">Belum ada data</div>';
+      return;
+    }
+    el.innerHTML = '<canvas></canvas>';
+    const ctx = el.querySelector('canvas').getContext('2d');
+    const good = Math.floor((feedback?.good || 0) / daily.length);
+    const bad = Math.floor((feedback?.bad || 0) / daily.length);
+    if (feedbackTrendChartInstance) feedbackTrendChartInstance.destroy();
+    feedbackTrendChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: daily.map(d => d.day),
+        datasets: [
+          {
+            label: 'Bagus',
+            data: daily.map(() => good),
+          },
+          {
+            label: 'Kurang',
+            data: daily.map(() => bad),
+          }
+        ]
+      }
+    });
+  }
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+  1. Tambah fungsi baru di lib/feedback.js:
+     `getDailyFeedbackStats(days = 7)` yang return array per hari dengan
+     { date, day, good, bad, total }
+
+  2. Ubah endpoint /api/admin/feedback/stats di index.js supaya kirim
+     `dailyFeedback` di response
+
+  3. Ganti renderFeedbackTrend() di dashboard.js untuk pakai data real
+     per hari (bukan rata-rata)
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - Chart Multi-Line dengan 2 garis:
+    Garis HIJAU = feedback Good per hari (data asli)
+    Garis MERAH = feedback Bad per hari (data asli)
+  - X-axis = 7 hari terakhir
+  - Tooltip = tampil tanggal lengkap
+
+
+################ MASALAH #5: WARNA CHART DISTRIBUSI MEMBINGUNGKAN ################
+
+PRIORITAS  : COSMETIC
+FILE TERKAIT:
+  - admin-public/dashboard.js (fungsi renderSourceChart)
+
+GEJALA:
+  - Warna RAG (biru) dan AI (hijau) mirip, susah dibedakan
+  - User minta warna baru yang lebih kontras
+
+LOKASI KODE LAMA:
+
+  File: admin-public/dashboard.js
+  ------------------------------------------------------------
+  function renderSourceChart(analytics) {
+    sourceChartInstance = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Memory', 'RAG', 'AI', 'Refusal', 'Redirect'],
+        datasets: [{
+          data: values,
+          backgroundColor: [
+            '#8b5cf6',
+            '#3b82f6',
+            '#10b981',
+            '#dc3545',
+            '#f59e0b'
+          ],
+          borderColor: '#fff',
+          borderWidth: 3
+        }]
+      }
+    });
+  }
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+
+  Ganti warna dengan urutan baru:
+  ------------------------------------------------------------
+  backgroundColor: [
+    '#ef4444',
+    '#3b82f6',
+    '#f59e0b',
+    '#10b981',
+    '#f97316'
+  ],
+  ------------------------------------------------------------
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - 5 warna berbeda jelas:
+    Memory   = Merah  #ef4444
+    RAG      = Biru   #3b82f6
+    AI       = Kuning #f59e0b
+    Refusal  = Hijau  #10b981
+    Redirect = Jingga #f97316
+
+
+################ MASALAH #6: TOTAL SESI DI LAPORAN = 0 ################
+
+PRIORITAS  : KRITIS (berkaitan dengan #1)
+FILE TERKAIT:
+  - index.js (endpoint /api/admin/report/summary)
+  - admin-public/laporan.js
+
+GEJALA:
+  - Filter "Hari Ini" menghasilkan Total Sesi = 0
+  - Padahal di Dashboard ada sesi aktif 2 dengan 38 pesan
+
+AKAR MASALAH:
+  Filter sesi pakai `inRange(s.lastActivity)` dengan range yang salah
+  (UTC, bukan WIB). Sesi jam 00:27 WIB dianggap di luar range
+  karena range mulai jam 07:00 WIB (UTC offset).
+
+LOKASI KODE LAMA:
+
+  File: index.js
+  ------------------------------------------------------------
+  const inRange = (ts) => {
+      const t = typeof ts === 'number' ? ts : new Date(ts).getTime();
+      return t >= startMs && t <= endMs;
+  };
+
+  const sessionsInRange = Object.values(sessions).filter(s => inRange(s.lastActivity));
+  ------------------------------------------------------------
+
+SOLUSI:
+  Fix masalah #1 terlebih dahulu (parse tanggal sebagai LOCAL timezone),
+  maka masalah #6 akan otomatis terselesaikan.
+
+
+################ MASALAH #7: TABEL AKTIVITAS HARIAN DI PDF TERLALU PANJANG ################
+
+PRIORITAS  : COSMETIC
+FILE TERKAIT:
+  - lib/cetak-laporan.js (section sessions)
+
+GEJALA:
+  - PDF Laporan berisi 90 baris tabel dengan nilai 0 semua
+  - Hanya 2-3 baris yang ada data aktivitas
+  - Boros kertas
+
+LOKASI KODE LAMA:
+
+  File: lib/cetak-laporan.js
+  ------------------------------------------------------------
+  if (data.daily && data.daily.length > 0) {
+    addParagraph('Aktivitas Harian:', { fontSize: 9 });
+    addTable(
+      ['Tanggal', 'Jumlah Sesi', 'Jumlah Pesan'],
+      data.daily.map(d => [
+        formatDate(d.date),
+        formatNumber(d.sessions),
+        formatNumber(d.messages || 0)
+      ])
+    );
+  }
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+
+  Ganti dengan (filter hanya hari yang ada aktivitas):
+  ------------------------------------------------------------
+  if (data.daily && data.daily.length > 0) {
+    const activeDays = data.daily.filter(d =>
+      (d.sessions || 0) > 0 || (d.messages || 0) > 0
+    );
+
+    if (activeDays.length > 0) {
+      addParagraph(`Aktivitas Harian (${activeDays.length} hari dengan aktivitas):`, { fontSize: 9 });
+      addTable(
+        ['Tanggal', 'Jumlah Sesi', 'Jumlah Pesan'],
+        activeDays.map(d => [
+          formatDate(d.date),
+          formatNumber(d.sessions),
+          formatNumber(d.messages || 0)
+        ])
+      );
+    } else {
+      addParagraph('Tidak ada aktivitas pada periode ini.', { boxed: true });
+    }
+  }
+  ------------------------------------------------------------
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - Hanya tampilkan hari yang ada aktivitas
+  - PDF lebih ringkas
+
+
+################ MASALAH #8: GRAFIK AKTIVITAS SESI DI DASHBOARD KOSONG ################
+
+PRIORITAS  : KRITIS (berkaitan dengan #2)
+FILE TERKAIT:
+  - lib/dashboard-stats.js (fungsi calculateDailyActivityFromAnalytics)
+  - admin-public/dashboard.js
+
+GEJALA:
+  - Grafik "Aktivitas Sesi" hanya menampilkan 1 titik di hari "Sen" dengan nilai 0
+  - Tidak ada data hari ini
+
+AKAR MASALAH:
+  Data analytics tersimpan di tanggal salah (UTC, bukan WIB).
+  Fix masalah #2 maka masalah #8 otomatis terselesaikan.
+
+
+################ MASALAH #9: SERVICE WORKER CACHE LAMA ################
+
+PRIORITAS  : PENTING
+FILE TERKAIT:
+  - public/sw.js
+
+GEJALA:
+  - Setelah update file, browser masih pakai versi lama
+  - Harus manual "Unregister Service Worker" di DevTools
+  - Update file script.js/style.css tidak terlihat
+
+AKAR MASALAH:
+  Service Worker cache assets dengan CACHE_NAME. Ketika file diupdate,
+  SW masih serve versi lama dari cache.
+
+LOKASI KODE LAMA:
+
+  File: public/sw.js
+  ------------------------------------------------------------
+  const CACHE_NAME = 'sivt-ai-v3';
+  ------------------------------------------------------------
+
+SOLUSI YANG DIBUTUHKAN:
+  Cara 1: Naikkan versi cache setiap kali update:
+  const CACHE_NAME = 'sivt-ai-v4';
+
+  Cara 2 (lebih baik): Pakai strategi network-first untuk HTML & JS,
+  cache-first hanya untuk asset statis (gambar, font).
+
+YANG SAYA INGINKAN SETELAH PERBAIKAN:
+  - Setelah update file, hard refresh cukup 1x
+  - Tidak perlu manual unregister SW
+
+
+================================================================================
+                       BAGIAN 4: FILE YANG PERLU DIPERIKSA
+================================================================================
+
+Berikut daftar file yang kemungkinan besar perlu diperiksa dan diperbaiki.
+Silakan minta saya kirim file yang Anda butuhkan.
+
+PRIORITAS 1 (WAJIB):
+  1. index.js                          - Backend utama
+  2. lib/feedback.js                   - Track analytics
+  3. admin-public/laporan.js           - UI laporan
+  4. admin-public/dashboard.js         - Chart dashboard
+
+PRIORITAS 2 (PENTING):
+  5. lib/cetak-laporan.js              - Generator PDF
+  6. lib/dashboard-stats.js            - Helper statistik
+  7. admin-public/script-admin.js      - Logic admin
+  8. public/sw.js                      - Service Worker
+
+PRIORITAS 3 (JIKA PERLU):
+  9. lib/learning.js                   - Auto-learning queue
+ 10. lib/graph-engine.js               - Knowledge Graph
+ 11. lib/rag-hybrid.js                 - RAG hybrid
+ 12. lib/classifier.js                 - Klasifikasi pertanyaan
+
+
+================================================================================
+                    BAGIAN 5: FORMAT YANG SAYA HARAPKAN
+================================================================================
+
+Untuk setiap masalah, tolong berikan:
+
+1. RINGKASAN MASALAH
+   Jelaskan singkat apa masalahnya dan mengapa terjadi.
+
+2. KODE LAMA (YANG SALAH)
+   Tampilkan kode lama lengkap dengan lokasi file & baris.
+
+3. KODE BARU (YANG BENAR)
+   Tampilkan kode pengganti lengkap.
+
+4. LANGKAH INSTALASI
+   - File mana yang harus dibuka
+   - Baris berapa yang harus diganti
+   - Ctrl+A lalu paste? Atau ganti baris tertentu?
+
+5. CARA TEST
+   - Langkah-langkah verifikasi setelah perbaikan
+   - Apa yang harus dilihat/diperiksa
+
+6. VERIFIKASI BERHASIL
+   - Apa tanda bahwa perbaikan berhasil
+   - Contoh output yang diharapkan
+
+
+================================================================================
+                     BAGIAN 6: URUTAN PENGERJAAN YANG DISARANKAN
+================================================================================
+
+Saya sarankan urutan berikut (dari paling kritis):
+
+MINGGU 1 - MASALAH KRITIS:
+  [1] Masalah #1 (Timezone filter laporan)
+  [2] Masalah #2 (Analytics tanggal salah)
+  [3] Masalah #6 (Total sesi 0 di laporan) - otomatis fix setelah #1
+  [4] Masalah #8 (Grafik aktivitas kosong) - otomatis fix setelah #2
+
+MINGGU 2 - MASALAH PENTING:
+  [5] Masalah #3 (trackEvent answer)
+  [6] Masalah #4 (Tren 7 hari)
+
+MINGGU 3 - MASALAH COSMETIC:
+  [7] Masalah #5 (Warna chart)
+  [8] Masalah #7 (Tabel PDF)
+  [9] Masalah #9 (Service Worker)
+
+
+================================================================================
+                      BAGIAN 7: KONTAK & KONFIRMASI
+================================================================================
+
+Jika Anda membutuhkan file tertentu, cukup balas dengan:
+
+  "Tolong kirim file [nama-file]"
+
+Jika Anda sudah siap menganalisis, cukup balas dengan:
+
+  "Siap. Silakan kirim file pertama yang perlu saya periksa."
+
+Jika ada bagian yang kurang jelas, tanyakan dulu sebelum mulai.
+
+TERIMA KASIH ATAS BANTUANNYA!
+
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================

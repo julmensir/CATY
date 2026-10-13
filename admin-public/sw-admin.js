@@ -1,5 +1,5 @@
 // Service Worker SIVT AI — Admin
-const CACHE_NAME = 'sivt-admin-v1';
+const CACHE_NAME = 'sivt-admin-v2';
 const ASSETS = [
     '/admin/',
     '/admin/index.html',

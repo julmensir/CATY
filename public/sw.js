@@ -1,5 +1,5 @@
 // Service Worker SIVT AI
-const CACHE_NAME = 'sivt-ai-v3';
+const CACHE_NAME = 'sivt-ai-v4';
 const ASSETS = [
     '/',
     '/index.html',
@@ -32,34 +32,32 @@ self.addEventListener('activate', (event) => {
     self.clients.claim();
 });
 
-// Fetch: network-first untuk API & HTML, cache-first untuk aset statis
+// Fetch: network-first untuk HTML & JS, cache-first untuk aset statis
 self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
 
-    // Jangan cache request API
-    if (url.pathname.startsWith('/api/')) {
-        return;
-    }
+    // Skip API
+    if (url.pathname.startsWith('/api/')) return;
 
-    // Jangan cache CDN eksternal
-    if (url.origin !== self.location.origin) {
-        return;
-    }
+    // Skip CDN eksternal
+    if (url.origin !== self.location.origin) return;
 
-    // Jangan cache upload
-    if (url.pathname.startsWith('/uploads/')) {
-        return;
-    }
+    // Skip uploads
+    if (url.pathname.startsWith('/uploads/')) return;
 
-    // Network-first untuk HTML
-    if (url.pathname === '/' || url.pathname.endsWith('.html')) {
+    const isHTML = url.pathname === '/' || url.pathname.endsWith('.html');
+    const isJS = url.pathname.endsWith('.js');
+    const isCSS = url.pathname.endsWith('.css');
+
+    // ✅ NETWORK-FIRST untuk HTML, JS, CSS (biar update langsung kelihatan)
+    if (isHTML || isJS || isCSS) {
         event.respondWith(
             fetch(event.request)
                 .then((response) => {
-                    const clone = response.clone();
-                    caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, clone);
-                    });
+                    if (response && response.status === 200) {
+                        const clone = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+                    }
                     return response;
                 })
                 .catch(() => caches.match(event.request))
@@ -67,10 +65,11 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Cache-first untuk aset lain
+    // ✅ CACHE-FIRST untuk aset statis (gambar, font, dll)
     event.respondWith(
         caches.match(event.request).then((cached) => {
-            const networkFetch = fetch(event.request).then((response) => {
+            if (cached) return cached;
+            return fetch(event.request).then((response) => {
                 if (response && response.status === 200) {
                     const responseClone = response.clone();
                     caches.open(CACHE_NAME).then((cache) => {
@@ -78,9 +77,7 @@ self.addEventListener('fetch', (event) => {
                     });
                 }
                 return response;
-            }).catch(() => cached);
-
-            return cached || networkFetch;
+            });
         })
     );
 });

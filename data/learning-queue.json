@@ -1,1 +1,139 @@
-[]
+[
+  {
+    "id": "lq_1791543717312_jxab",
+    "question": "apa sarat untuk nikah?",
+    "original": "apa sarat untuk nikah?",
+    "variants": [
+      "apa sarat untuk nikah?"
+    ],
+    "count": 25,
+    "firstAsked": "2026-10-09T11:01:57.312Z",
+    "lastAsked": "2026-10-09T11:49:14.686Z",
+    "priority": "urgent",
+    "resolved": true,
+    "resolvedAt": "2026-10-09T12:20:13.380Z"
+  },
+  {
+    "id": "lq_1791546568814_wj0r",
+    "question": "apa bisa di sini beli sayur",
+    "original": "apa bisa di sini beli sayur",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-09T11:49:28.814Z",
+    "lastAsked": "2026-10-09T11:49:28.814Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791546580202_9qcq",
+    "question": "apa di kemetrrina ada uang",
+    "original": "apa di kemetrrina ada uang",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-09T11:49:40.202Z",
+    "lastAsked": "2026-10-09T11:49:40.202Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791546599487_sk6h",
+    "question": "bagimana cara membat ktp baru?",
+    "original": "bagimana cara membat KTP baru?",
+    "variants": [
+      "bagimana cara membat ktp baru?"
+    ],
+    "count": 2,
+    "firstAsked": "2026-10-09T11:49:59.487Z",
+    "lastAsked": "2026-10-09T11:51:03.965Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791739627137_bbir",
+    "question": "cuaca hari ini",
+    "original": "cuaca hari ini",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-11T17:27:07.137Z",
+    "lastAsked": "2026-10-11T17:27:07.137Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791773434374_cg2o",
+    "question": "syarat unuk membuat ktp yang sudah hilang",
+    "original": "syarat unuk membuat ktp yang sudah hilang",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-12T02:50:34.374Z",
+    "lastAsked": "2026-10-12T02:50:34.374Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791773968153_jp30",
+    "question": "okey terimakasih sayang",
+    "original": "Okey Terimakasih sayang",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-12T02:59:28.153Z",
+    "lastAsked": "2026-10-12T02:59:28.153Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791773995922_axtk",
+    "question": "disini jual sayur ngak",
+    "original": "disini jual sayur ngak",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-12T02:59:55.922Z",
+    "lastAsked": "2026-10-12T02:59:55.922Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791774556027_fx7j",
+    "question": "syarata buat ktp baru",
+    "original": "syarata buat KTP baru",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-12T03:09:16.027Z",
+    "lastAsked": "2026-10-12T03:09:16.027Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791774649195_e49a",
+    "question": "buat ktp baru",
+    "original": "buat ktp baru",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-12T03:10:49.195Z",
+    "lastAsked": "2026-10-12T03:10:49.195Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791774664499_dgca",
+    "question": "syarat ktp  baru",
+    "original": "syarat KTP  baru",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-12T03:11:04.499Z",
+    "lastAsked": "2026-10-12T03:11:04.499Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1791859373890_gwns",
+    "question": "syarat ktp hilang",
+    "original": "Syarat KTP hilang",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-13T02:42:53.890Z",
+    "lastAsked": "2026-10-13T02:42:53.890Z",
+    "priority": "normal",
+    "resolved": false
+  }
+]

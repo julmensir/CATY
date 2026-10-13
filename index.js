@@ -20,7 +20,7 @@ import { classifyQuestion, generateRedirectMessage } from './lib/classifier.js';
 import {
     feedbackInit, addFeedback, trackEvent, getStats,
     getFeedbackList, getBadExamples, getGoodExamples,
-    clearFeedback, clearAnalytics
+    clearFeedback, clearAnalytics, getDailyFeedbackStats
 } from './lib/feedback.js';
 import {
     learningInit, recordUnansweredQuestion, getLearningQueue,
@@ -42,6 +42,13 @@ import {
     normalizeRoles,
     VALID_ROLES
 } from './lib/provider-role.js';
+
+import {
+    calculateTopTopics,
+    calculateDailyActivity,
+    calculateDailyActivityFromAnalytics,
+    calculateCategories
+} from './lib/dashboard-stats.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -696,9 +703,6 @@ function getSuggestedTopics(limit = 8, query = '') {
     return [...availableTopics].sort(() => Math.random() - 0.5).slice(0, limit);
 }
 
-// ============================================================
-// CONFIG
-// ============================================================
 const DEFAULT_CONFIG = {
     aiName: 'SIVT AI',
     tagline: 'Sistem Informasi Virtual TEGALREJO',
@@ -712,7 +716,10 @@ const DEFAULT_CONFIG = {
         sidebarEnd: '#0d47a1',
         accent: '#ec4899'
     },
+    themeApplyToWarga: false,
+    darkMode: 'light',
     welcomeMessage: 'Halo! Saya SIVTY AI, asisten virtual Kemantren Tegalrejo Yogyakarta.\nTanya apa saja tentang layanan administrasi, persyaratan, jadwal, dan info lainnya. Saya siap bantu 24 jam!',
+
     systemInstruction: `Kamu adalah SIVT AI, asisten virtual resmi Kemantren Tegalrejo, Yogyakarta.
 
 ATURAN WAJIB - JANGAN DILANGGAR:
@@ -736,7 +743,10 @@ Info umum:
     conversationHistoryEnabled: true,
     conversationHistorySize: 20,
     rateLimitPerSession: 20,
-    strictMode: true
+    strictMode: true,
+    surveyLink: '',
+    surveyEnabled: true,
+    surveyIdleMinutes: 3
 };
 
 function loadConfig() {
@@ -749,7 +759,9 @@ function loadConfig() {
         return {
             ...DEFAULT_CONFIG,
             ...saved,
-            theme: { ...DEFAULT_CONFIG.theme, ...(saved.theme || {}) }
+            theme: { ...DEFAULT_CONFIG.theme, ...(saved.theme || {}) },
+            themeApplyToWarga: saved.themeApplyToWarga === true,
+            darkMode: saved.darkMode || 'light'
         };
     } catch {
         return { ...DEFAULT_CONFIG };
@@ -819,19 +831,158 @@ async function runBackup() {
 
         console.log(`[BACKUP] Dibuat: ${finalName}`);
 
-        const keepDays = 30;
-        const cutoff = Date.now() - keepDays * 86400000;
-        fs.readdirSync(PATHS.backupsDir).forEach(f => {
-            const p = path.join(PATHS.backupsDir, f);
-            try {
-                const s = fs.statSync(p);
-                if (s.isFile() && f.endsWith('.zip.enc') && s.mtimeMs < cutoff) {
-                    fs.unlinkSync(p);
-                }
-            } catch (_) {}
-        });
+        cleanupOldBackups();
+
     } catch (e) {
         console.error('[BACKUP] Gagal:', e.message);
+    }
+}
+
+function cleanupOldBackups() {
+    try {
+        const keepCount = parseInt(process.env.BACKUP_KEEP_COUNT) || 4;
+
+        const files = fs.readdirSync(PATHS.backupsDir)
+            .filter(f => f.endsWith('.zip.enc'))
+            .map(f => {
+                const p = path.join(PATHS.backupsDir, f);
+                const s = fs.statSync(p);
+                return { name: f, path: p, mtime: s.mtimeMs, size: s.size };
+            })
+            .sort((a, b) => b.mtime - a.mtime);
+
+        console.log(`[BACKUP] Total file backup: ${files.length}`);
+
+        if (files.length <= keepCount) {
+            console.log(`[BACKUP] Semua file tersimpan (<= ${keepCount})`);
+            return;
+        }
+
+        const toDelete = files.slice(keepCount);
+        let deleted = 0;
+        let deletedSize = 0;
+
+        for (const f of toDelete) {
+            try {
+                fs.unlinkSync(f.path);
+                deleted++;
+                deletedSize += f.size;
+                console.log(`[BACKUP] Hapus: ${f.name}`);
+            } catch (err) {
+                console.warn(`[BACKUP] Gagal hapus ${f.name}: ${err.message}`);
+            }
+        }
+
+        const finalCount = files.length - deleted;
+        console.log(`[BACKUP] Cleanup: ${deleted} file dihapus (${(deletedSize / 1024 / 1024).toFixed(2)} MB)`);
+        console.log(`[BACKUP] Sisa: ${finalCount} file backup`);
+    } catch (err) {
+        console.warn('[BACKUP] Cleanup gagal:', err.message);
+    }
+}
+
+function decryptBackupBuffer(encryptedBuffer) {
+    const MAGIC = Buffer.from('SIVTBK01');
+    if (encryptedBuffer.length < 8 + 12 + 16) {
+        throw new Error('File backup terlalu kecil / rusak');
+    }
+
+    const magic = encryptedBuffer.slice(0, 8);
+    if (!magic.equals(MAGIC)) {
+        throw new Error('File bukan backup SIVT AI (magic header salah)');
+    }
+
+    const iv = encryptedBuffer.slice(8, 8 + 12);
+    const authTag = encryptedBuffer.slice(8 + 12, 8 + 12 + 16);
+    const encrypted = encryptedBuffer.slice(8 + 12 + 16);
+
+    const decipher = crypto.createDecipheriv('aes-256-gcm', ENCRYPTION_KEY, iv);
+    decipher.setAuthTag(authTag);
+
+    return Buffer.concat([decipher.update(encrypted), decipher.final()]);
+}
+
+async function restoreBackupFromBuffer(encryptedBuffer, options = {}) {
+    const overwrite = options.overwrite !== false;
+    const steps = {
+        decrypted: false,
+        extracted: false,
+        restoredFiles: [],
+        errors: []
+    };
+
+    try {
+        const zipBuffer = decryptBackupBuffer(encryptedBuffer);
+        steps.decrypted = true;
+
+        const zip = new AdmZip(zipBuffer);
+        const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+        const extractDir = path.join(PATHS.tmp, `restore_${stamp}`);
+        fs.mkdirSync(extractDir, { recursive: true });
+
+        zip.extractAllTo(extractDir, true);
+        steps.extracted = true;
+
+        const fileMapping = [
+            { src: 'config.json', dest: PATHS.config },
+            { src: 'providers.json.enc', dest: PATHS.providers },
+            { src: 'memory.md', dest: PATHS.memoryFile },
+            { src: 'unanswered.json', dest: PATHS.unanswered },
+            { src: 'feedback.json', dest: path.join(PATHS.dataDir, 'feedback.json') },
+            { src: 'learning-queue.json', dest: path.join(PATHS.dataDir, 'learning-queue.json') },
+            { src: 'analytics.json', dest: path.join(PATHS.dataDir, 'analytics.json') },
+            { src: 'knowledge-graph.json', dest: GRAPH_PATH },
+            { src: 'embedding-cache.json', dest: EMBEDDING_CACHE_PATH }
+        ];
+
+        const preRestoreDir = path.join(PATHS.tmp, `pre_restore_${Date.now()}`);
+        fs.mkdirSync(preRestoreDir, { recursive: true });
+
+        for (const map of fileMapping) {
+            const srcPath = path.join(extractDir, map.src);
+            if (!fs.existsSync(srcPath)) continue;
+
+            if (fs.existsSync(map.dest) && overwrite) {
+                try {
+                    fs.copyFileSync(map.dest, path.join(preRestoreDir, path.basename(map.dest)));
+                } catch (_) {}
+            }
+
+            fs.copyFileSync(srcPath, map.dest);
+            steps.restoredFiles.push(map.src);
+        }
+
+        const knowledgeSrc = path.join(extractDir, 'knowledge');
+        if (fs.existsSync(knowledgeSrc)) {
+            if (overwrite && fs.existsSync(PATHS.knowledge)) {
+                fs.readdirSync(PATHS.knowledge).forEach(f => {
+                    try { fs.unlinkSync(path.join(PATHS.knowledge, f)); } catch (_) {}
+                });
+            }
+            fs.readdirSync(knowledgeSrc).forEach(f => {
+                fs.copyFileSync(
+                    path.join(knowledgeSrc, f),
+                    path.join(PATHS.knowledge, f)
+                );
+            });
+            steps.restoredFiles.push('knowledge/*');
+        }
+
+        try { fs.rmSync(extractDir, { recursive: true, force: true }); } catch (_) {}
+
+        return {
+            success: true,
+            steps,
+            preRestoreDir,
+            message: 'Restore berhasil. Restart server untuk apply.'
+        };
+    } catch (err) {
+        steps.errors.push(err.message);
+        return {
+            success: false,
+            steps,
+            message: `Restore gagal: ${err.message}`
+        };
     }
 }
 
@@ -861,7 +1012,7 @@ app.use((req, res, next) => {
     const p = req.path.toLowerCase();
     if (blocked.some(f => p.includes(f))) return res.status(404).end();
     if (p.startsWith('/knowledge/') || p.startsWith('/memory/') || p.startsWith('/data/') ||
-        p.startsWith('/tmp/') || p.startsWith('/node_modules/') || p.startsWith('/lib/')) {
+        p.startsWith('/tmp/') || p.startsWith('/node_modules/')) {
         return res.status(404).end();
     }
     next();
@@ -871,7 +1022,6 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json({ limit: '5mb' }));
 app.use(cookieParser());
 
-// Anti-cache untuk Service Worker supaya update langsung kebaca
 app.use((req, res, next) => {
     if (req.path === '/sw.js' || req.path === '/admin/sw-admin.js') {
         res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -902,12 +1052,26 @@ app.use('/api/admin/login', rateLimit({
     windowMs: 15 * 60 * 1000, max: 10, skipSuccessfulRequests: true
 }));
 
-// ============================================================
-// STATIC FILES — URUTAN PENTING!
-// Admin HARUS didaftarkan SEBELUM public
-// ============================================================
+// Serve file lib untuk frontend (khusus cetak-laporan.js)
+// Taruh DI ATAS middleware blokir /lib/
+app.get('/lib/cetak-laporan.js', (req, res) => {
+    res.sendFile(path.join(__dirname, 'lib', 'cetak-laporan.js'));
+});
 
-// 1. ADMIN — daftar DULU
+// Middleware blokir folder sensitif
+app.use((req, res, next) => {
+    const blocked = ['.env', 'keys.json', 'config.json', 'package.json', 'package-lock.json'];
+    const p = req.path.toLowerCase();
+    if (blocked.some(f => p.includes(f))) return res.status(404).end();
+    if (p.startsWith('/knowledge/') || p.startsWith('/memory/') || p.startsWith('/data/') ||
+        p.startsWith('/tmp/') || p.startsWith('/node_modules/')) {
+        return res.status(404).end();
+    }
+    next();
+});
+// ============================================================
+// STATIC FILES
+// ============================================================
 app.use('/admin', express.static(path.join(__dirname, 'admin-public'), {
     dotfiles: 'deny',
     index: 'index.html',
@@ -921,7 +1085,6 @@ app.use('/admin', express.static(path.join(__dirname, 'admin-public'), {
     }
 }));
 
-// 2. PUBLIC (WARGA) — daftar SETELAH admin
 app.use(express.static(path.join(__dirname, 'public'), {
     dotfiles: 'deny',
     index: 'index.html',
@@ -935,7 +1098,6 @@ app.use(express.static(path.join(__dirname, 'public'), {
     }
 }));
 
-// 3. Fallback admin (SPA-style: /admin/apa-saja → kirim admin index.html)
 app.get('/admin/{*splat}', (req, res) => {
     res.sendFile(path.join(__dirname, 'admin-public', 'index.html'));
 });
@@ -959,14 +1121,28 @@ function authAdmin(req, res, next) {
 // PUBLIC CONFIG
 // ============================================================
 app.get('/api/config/public', (req, res) => {
+    const applyToWarga = CONFIG.themeApplyToWarga === true;
     res.json({
         aiName: CONFIG.aiName,
         tagline: CONFIG.tagline,
         logoUrl: CONFIG.logoUrl,
         logoSize: CONFIG.logoSize,
-        theme: CONFIG.theme,
+        theme: applyToWarga ? CONFIG.theme : null,
+        themeApplyToWarga: applyToWarga,
+        darkMode: applyToWarga ? (CONFIG.darkMode || 'light') : 'light',
         welcomeMessage: CONFIG.welcomeMessage,
-        quickButtons: CONFIG.quickButtons
+        quickButtons: CONFIG.quickButtons,
+        surveyLink: CONFIG.surveyLink || '',
+        surveyEnabled: CONFIG.surveyEnabled !== false,
+        surveyIdleMinutes: CONFIG.surveyIdleMinutes || 3
+    });
+});
+
+app.get('/api/admin/theme', authAdmin, (req, res) => {
+    res.json({
+        theme: CONFIG.theme,
+        themeApplyToWarga: CONFIG.themeApplyToWarga === true,
+        darkMode: CONFIG.darkMode || 'light'
     });
 });
 
@@ -982,7 +1158,6 @@ app.get('/api/admin/check', (req, res) => {
     }
 });
 
-// Redirect /admin (tanpa slash) ke /admin/
 app.get('/admin', (req, res) => {
     res.redirect(301, '/admin/');
 });
@@ -1025,6 +1200,11 @@ app.get('/api/health', (req, res) => {
 // DASHBOARD STATS
 // ============================================================
 app.get('/api/admin/dashboard/stats', authAdmin, (req, res) => {
+    // ✅ Terima parameter period
+    const period = req.query.period || '7d';
+    const periodDaysMap = { '1d': 1, '7d': 7, '30d': 30, '90d': 90, '1y': 365 };
+    const periodDays = periodDaysMap[period] || 7;
+
     const activeProviders = PROVIDERS_CONFIG.filter(p => p.enabled !== false).length;
     const totalSessions = Object.keys(sessions).length;
     const totalMessages = Object.values(sessions).reduce((sum, s) => sum + s.messages.length, 0);
@@ -1032,26 +1212,35 @@ app.get('/api/admin/dashboard/stats', authAdmin, (req, res) => {
     const pendingUnanswered = unansweredQuestions.filter(u => !u.resolved).length;
     const feedbackStats = getStats();
     const queueStats = getQueueStats();
+    const feedbackList = getFeedbackList(500);
+    const learningQueue = getLearningQueue('all');
 
-    const now = Date.now();
-    const dailyStats = [];
-    for (let i = 6; i >= 0; i--) {
-        const dayStart = now - i * 86400000;
-        const dayEnd = dayStart + 86400000;
-        const count = Object.values(sessions).filter(s =>
-            s.lastActivity >= dayStart && s.lastActivity < dayEnd
-        ).length;
-        const date = new Date(dayStart);
-        dailyStats.push({
-            date: date.toISOString().slice(0, 10),
-            day: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'][date.getDay()],
-            sessions: count
-        });
+    // ===== TOPIK POPULER =====
+    const topTopics = calculateTopTopics(unansweredQuestions, learningQueue, 10);
+
+    // ===== KATEGORI =====
+    const categories = calculateCategories(unansweredQuestions, feedbackList);
+
+    // ===== DAILY ACTIVITY =====
+    // ✅ Prioritas 1: pakai analytics.dailyStats (permanen, dari trackEvent)
+    // ✅ Fallback: pakai calculateDailyActivity (dari pertanyaan warga)
+    const analyticsDaily = feedbackStats.dailyStats || {};
+    const hasAnalyticsData = Object.keys(analyticsDaily).length > 0;
+
+    let dailyStats;
+    if (hasAnalyticsData) {
+        dailyStats = calculateDailyActivityFromAnalytics(analyticsDaily, periodDays);
+        console.log('[DASHBOARD] Daily activity dari analytics.dailyStats');
+    } else {
+        dailyStats = calculateDailyActivity(unansweredQuestions, feedbackList, periodDays);
+        console.log('[DASHBOARD] Daily activity dari pertanyaan warga (fallback)');
     }
 
     res.json({
         aiName: CONFIG.aiName,
         uptime: process.uptime(),
+        period: period,
+        periodDays: periodDays,
         providers: {
             total: PROVIDERS_CONFIG.length,
             active: activeProviders,
@@ -1093,8 +1282,377 @@ app.get('/api/admin/dashboard/stats', authAdmin, (req, res) => {
         learning: queueStats,
         graph: brain.getStats(),
         rag: hybridRAG.getStats(),
-        roles: getRoleStats(PROVIDERS_CONFIG, PROVIDERS)
+        roles: getRoleStats(PROVIDERS_CONFIG, PROVIDERS),
+        topTopics,
+        categories
     });
+});
+
+// ============================================================
+// LAPORAN / REPORT
+// ============================================================
+app.get('/api/admin/report/summary', authAdmin, (req, res) => {
+    try {
+        const { from, to } = req.query;
+
+        const now = new Date();
+
+        // ✅ Helper: parse 'YYYY-MM-DD' sebagai LOCAL timezone (WIB)
+        const parseLocalDate = (str, isEnd = false) => {
+            if (!str) return null;
+            const [y, m, d] = str.split('-').map(Number);
+            if (!y || !m || !d) return null;
+            return isEnd
+                ? new Date(y, m - 1, d, 23, 59, 59, 999)
+                : new Date(y, m - 1, d, 0, 0, 0, 0);
+        };
+
+        const defaultFrom = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const startDate = parseLocalDate(from, false)
+            || new Date(defaultFrom.getFullYear(), defaultFrom.getMonth(), defaultFrom.getDate(), 0, 0, 0, 0);
+        const endDate = parseLocalDate(to, true)
+            || new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+
+        const startMs = startDate.getTime();
+        const endMs = endDate.getTime();
+
+        const inRange = (ts) => {
+            const t = typeof ts === 'number' ? ts : new Date(ts).getTime();
+            return t >= startMs && t <= endMs;
+        };
+
+        const sessionsInRange = Object.values(sessions).filter(s => inRange(s.lastActivity));
+        const totalMessagesInRange = sessionsInRange.reduce((sum, s) => sum + s.messages.length, 0);
+
+        const feedbackList = getFeedbackList(2000).filter(f => inRange(f.timestamp));
+        const goodFeedback = feedbackList.filter(f => f.rating === 'good').length;
+        const badFeedback = feedbackList.filter(f => f.rating === 'bad').length;
+
+        const unansweredInRange = unansweredQuestions.filter(u => inRange(u.lastAsked));
+
+                // ===== DAILY ACTIVITY — dari analytics.dailyStats (PERMANEN) =====
+        // Ini sama dengan yang dipakai Dashboard, jadi konsisten.
+        const rangeDays = Math.ceil((endMs - startMs) / 86400000) + 1;
+
+        // Filter analytics.dailyStats sesuai range
+        const analyticsDailyInRange = {};
+        const feedbackStats = getStats();
+        const allDailyStats = feedbackStats.dailyStats || {};
+        // ✅ Pakai LOCAL date key, bukan UTC
+        const toLocalKey = (d) => {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${dd}`;
+        };
+        const startKey = toLocalKey(startDate);
+        const endKey = toLocalKey(endDate);
+
+        for (const [dateKey, dayData] of Object.entries(allDailyStats)) {
+            if (dateKey >= startKey && dateKey <= endKey) {
+                analyticsDailyInRange[dateKey] = dayData;
+            }
+        }
+
+        // Pakai helper yang sama dengan Dashboard
+        const daily = calculateDailyActivityFromAnalytics(analyticsDailyInRange, rangeDays)
+            .filter(d => d.date >= startKey && d.date <= endKey);
+
+        // ✅ Hitung total sesi & pesan dari daily (permanen, tidak kena hapus sesi)
+        const totalSessionsInRange = daily.reduce((sum, d) => sum + (d.sessions || 0), 0);
+        const totalMessagesFromDaily = daily.reduce((sum, d) => sum + (d.messages || d.questions || 0), 0);
+
+        // ===== TOPIK POPULER — pakai calculateTopTopics() yang sama dgn Dashboard =====
+        const queueStats = getQueueStats();
+        const learningQueue = getLearningQueue('all');
+
+        // Filter unanswered yang masuk range aja
+        const unansweredForTopics = unansweredQuestions.filter(u => inRange(u.lastAsked));
+        const learningForTopics = learningQueue.filter(item => inRange(item.lastAsked));
+
+        const topTopics = calculateTopTopics(unansweredForTopics, learningForTopics, 20);
+
+        // ===== KATEGORI — pakai calculateCategories() yang sama dgn Dashboard =====
+        const categories = calculateCategories(unansweredForTopics, feedbackList);
+
+        const providerDetails = PROVIDERS_CONFIG.map((p, i) => ({
+            index: i + 1,
+            name: p.displayName || PROVIDERS[p.name]?.name || p.name,
+            enabled: p.enabled !== false,
+            roles: p.roles || ['chat'],
+            models: p.models || [],
+            masked: p.apiKey ? p.apiKey.slice(0, 8) + '...' + p.apiKey.slice(-6) : ''
+        }));
+
+        const topMemory = [...memoryItems]
+            .sort((a, b) => (b.hit || 0) - (a.hit || 0))
+            .slice(0, 20)
+            .map(m => ({
+                question: m.question,
+                answer: (m.answer || '').slice(0, 200),
+                hit: m.hit || 0,
+                timestamp: m.timestamp
+            }));
+
+        const knowledgeFiles = fs.existsSync(PATHS.knowledge)
+            ? fs.readdirSync(PATHS.knowledge)
+                .filter(f => /\.(md|txt)$/i.test(f))
+                .map(f => {
+                    const s = fs.statSync(path.join(PATHS.knowledge, f));
+                    return { name: f, size: s.size };
+                })
+            : [];
+
+        res.json({
+            period: {
+                from: startDate.toISOString(),
+                to: endDate.toISOString(),
+                days: Math.ceil((endMs - startMs) / 86400000)
+            },
+            sessions: {
+                total: totalSessionsInRange,
+                messages: totalMessagesFromDaily,
+                avgMessagesPerSession: totalSessionsInRange > 0
+                    ? (totalMessagesFromDaily / totalSessionsInRange).toFixed(1)
+                    : 0
+            },
+            feedback: {
+                total: feedbackList.length,
+                good: goodFeedback,
+                bad: badFeedback,
+                satisfactionRate: feedbackList.length > 0
+                    ? Math.round((goodFeedback / feedbackList.length) * 100)
+                    : 0,
+                items: feedbackList.slice(0, 100).map(f => ({
+                    question: f.question,
+                    answer: (f.answer || '').slice(0, 150),
+                    rating: f.rating,
+                    timestamp: f.timestamp,
+                    provider: f.provider || '',
+                    model: f.model || ''
+                }))
+            },
+            // ✅ TAMBAH INI — biar ANALYTICS di PDF ada datanya
+            analytics: {
+                totalChats: feedbackStats.analytics.totalChats || 0,
+                totalAnswers: feedbackStats.analytics.totalAnswers || 0,
+                totalRefusals: feedbackStats.analytics.totalRefusals || 0,
+                totalMemoryHits: feedbackStats.analytics.totalMemoryHits || 0,
+                totalRagHits: feedbackStats.analytics.totalRagHits || 0,
+                totalOutOfScope: feedbackStats.analytics.totalOutOfScope || 0,
+                accuracyRate: feedbackStats.analytics.accuracyRate || 0
+            },
+            unanswered: {
+                total: unansweredInRange.length,
+                pending: unansweredInRange.filter(u => !u.resolved).length,
+                resolved: unansweredInRange.filter(u => u.resolved).length,
+                items: unansweredInRange.slice(0, 100).map(u => ({
+                    question: u.question,
+                    count: u.count || 1,
+                    lastAsked: u.lastAsked,
+                    firstAsked: u.firstAsked,
+                    resolved: u.resolved
+                }))
+            },
+            knowledge: {
+                chunks: knowledgeChunks.length,
+                topics: availableTopics.length,
+                files: knowledgeFiles
+            },
+            memory: {
+                total: memoryItems.length,
+                totalHits: memoryItems.reduce((sum, m) => sum + (m.hit || 0), 0),
+                topMemory
+            },
+            graph: brain.getStats(),
+            providers: {
+                total: PROVIDERS_CONFIG.length,
+                active: PROVIDERS_CONFIG.filter(p => p.enabled !== false).length,
+                list: providerDetails
+            },
+            topTopics,
+            categories,
+            daily,
+            generatedAt: new Date().toISOString(),
+            aiName: CONFIG.aiName
+        });
+    } catch (err) {
+        console.error('[REPORT] Error:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/report/sessions', authAdmin, (req, res) => {
+    try {
+        const { from, to, limit = 100 } = req.query;
+        const now = new Date();
+        const startDate = from ? new Date(from) : new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const endDate = to ? new Date(to) : now;
+        endDate.setHours(23, 59, 59, 999);
+
+        const startMs = startDate.getTime();
+        const endMs = endDate.getTime();
+
+        const list = Object.values(sessions)
+            .filter(s => s.lastActivity >= startMs && s.lastActivity <= endMs)
+            .sort((a, b) => b.lastActivity - a.lastActivity)
+            .slice(0, parseInt(limit))
+            .map(s => ({
+                id: s.id,
+                createdAt: s.createdAt,
+                lastActivity: s.lastActivity,
+                messageCount: s.messages.length,
+                preview: s.messages.slice(0, 3).map(m => ({
+                    role: m.role,
+                    text: m.text.slice(0, 100)
+                }))
+            }));
+
+        res.json({
+            total: list.length,
+            sessions: list
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/report/unanswered', authAdmin, (req, res) => {
+    try {
+        const { from, to } = req.query;
+        const now = new Date();
+        const startDate = from ? new Date(from) : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const endDate = to ? new Date(to) : now;
+        endDate.setHours(23, 59, 59, 999);
+
+        const startMs = startDate.getTime();
+        const endMs = endDate.getTime();
+
+        const list = unansweredQuestions
+            .filter(u => {
+                const t = new Date(u.lastAsked).getTime();
+                return t >= startMs && t <= endMs;
+            })
+            .sort((a, b) => new Date(b.lastAsked) - new Date(a.lastAsked));
+
+        res.json({
+            total: list.length,
+            pending: list.filter(u => !u.resolved).length,
+            items: list
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/report/feedback', authAdmin, (req, res) => {
+    try {
+        const { from, to, rating } = req.query;
+        const now = new Date();
+        const startDate = from ? new Date(from) : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const endDate = to ? new Date(to) : now;
+        endDate.setHours(23, 59, 59, 999);
+
+        const startMs = startDate.getTime();
+        const endMs = endDate.getTime();
+
+        let list = getFeedbackList(2000).filter(f => {
+            const t = new Date(f.timestamp).getTime();
+            return t >= startMs && t <= endMs;
+        });
+
+        if (rating && ['good', 'bad'].includes(rating)) {
+            list = list.filter(f => f.rating === rating);
+        }
+
+        res.json({
+            total: list.length,
+            items: list
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.get('/api/admin/report/export', authAdmin, (req, res) => {
+    try {
+        const { type = 'sessions', from, to } = req.query;
+        const now = new Date();
+        const startDate = from ? new Date(from) : new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        const endDate = to ? new Date(to) : now;
+        endDate.setHours(23, 59, 59, 999);
+
+        const startMs = startDate.getTime();
+        const endMs = endDate.getTime();
+
+        let csv = '';
+        const filename = `laporan-${type}-${new Date().toISOString().slice(0, 10)}.csv`;
+
+        if (type === 'sessions') {
+            csv = 'Session ID,Waktu Mulai,Aktivitas Terakhir,Jumlah Pesan,Pesan Terakhir\n';
+            const list = Object.values(sessions)
+                .filter(s => s.lastActivity >= startMs && s.lastActivity <= endMs)
+                .sort((a, b) => b.lastActivity - a.lastActivity);
+
+            for (const s of list) {
+                const last = s.messages.length > 0 ? s.messages[s.messages.length - 1].text : '';
+                const cleanLast = last.replace(/"/g, '""').replace(/\n/g, ' ').slice(0, 200);
+                csv += `"${s.id}","${new Date(s.createdAt).toISOString()}","${new Date(s.lastActivity).toISOString()}","${s.messages.length}","${cleanLast}"\n`;
+            }
+        } else if (type === 'unanswered') {
+            csv = 'ID,Pertanyaan,Jumlah Ditanya,Pertama Ditanya,Terakhir Ditanya,Status\n';
+            const list = unansweredQuestions
+                .filter(u => {
+                    const t = new Date(u.lastAsked).getTime();
+                    return t >= startMs && t <= endMs;
+                });
+
+            for (const u of list) {
+                const q = (u.question || '').replace(/"/g, '""').replace(/\n/g, ' ');
+                csv += `"${u.id}","${q}","${u.count || 1}","${new Date(u.firstAsked).toISOString()}","${new Date(u.lastAsked).toISOString()}","${u.resolved ? 'Selesai' : 'Pending'}"\n`;
+            }
+        } else if (type === 'feedback') {
+            csv = 'Waktu,Pertanyaan,Jawaban,Rating,Provider,Model,Sumber\n';
+            const list = getFeedbackList(2000).filter(f => {
+                const t = new Date(f.timestamp).getTime();
+                return t >= startMs && t <= endMs;
+            });
+
+            for (const f of list) {
+                const q = (f.question || '').replace(/"/g, '""').replace(/\n/g, ' ');
+                const a = (f.answer || '').replace(/"/g, '""').replace(/\n/g, ' ').slice(0, 500);
+                csv += `"${new Date(f.timestamp).toISOString()}","${q}","${a}","${f.rating}","${f.provider || ''}","${f.model || ''}","${f.source || ''}"\n`;
+            }
+        } else if (type === 'memory') {
+            csv = 'Waktu,Pertanyaan,Jawaban,Hit,Variasi,Keywords\n';
+            for (const m of memoryItems) {
+                const q = (m.question || '').replace(/"/g, '""').replace(/\n/g, ' ');
+                const a = (m.answer || '').replace(/"/g, '""').replace(/\n/g, ' ').slice(0, 500);
+                const v = (m.variants || []).join('; ').replace(/"/g, '""');
+                const k = (m.keywords || []).join('; ').replace(/"/g, '""');
+                csv += `"${m.timestamp}","${q}","${a}","${m.hit || 0}","${v}","${k}"\n`;
+            }
+        } else if (type === 'providers') {
+            csv = 'No,Nama,Status,Roles,Models,Masked Key\n';
+            PROVIDERS_CONFIG.forEach((p, i) => {
+                const masked = p.apiKey ? p.apiKey.slice(0, 8) + '...' + p.apiKey.slice(-6) : '';
+                csv += `"${i + 1}","${p.displayName || p.name}","${p.enabled !== false ? 'Aktif' : 'Off'}","${(p.roles || ['chat']).join(', ')}","${(p.models || []).join('; ')}","${masked}"\n`;
+            });
+        } else if (type === 'knowledge') {
+            csv = 'Sumber,Judul Chunk,Panjang Teks\n';
+            for (const c of knowledgeChunks) {
+                const source = (c.source || '').replace(/"/g, '""');
+                const preview = (c.text || '').replace(/"/g, '""').replace(/\n/g, ' ').slice(0, 200);
+                csv += `"${source}","${preview}","${(c.text || '').length}"\n`;
+            }
+        }
+
+        res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.send('\uFEFF' + csv);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // ============================================================
@@ -1167,7 +1725,9 @@ app.post('/api/admin/config', authAdmin, (req, res) => {
                         'systemInstruction','quickButtons','memoryEnabled',
                         'memoryMinScore','memorySaveThreshold',
                         'conversationHistoryEnabled','conversationHistorySize',
-                        'rateLimitPerSession','contactInfo','strictMode'];
+                        'rateLimitPerSession','contactInfo','strictMode',
+                        'surveyLink','surveyEnabled','surveyIdleMinutes',
+                        'themeApplyToWarga', 'darkMode'];
         for (const k of allowed) {
             if (req.body[k] !== undefined) {
                 if (k === 'theme' && typeof req.body[k] === 'object') {
@@ -1476,7 +2036,7 @@ app.post('/api/admin/providers/update-roles', authAdmin, (req, res) => {
         }
 
         notifAdd('info', 'Role Provider Diperbarui',
-            `Provider #${index + 1} → [${normalized.join(', ')}]`, 'info');
+            `Provider #${index + 1} -> [${normalized.join(', ')}]`, 'info');
         res.json({ success: true, roles: normalized });
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });
@@ -1636,7 +2196,7 @@ app.post('/api/admin/providers/toggle', authAdmin, (req, res) => {
     const p = PROVIDERS_CONFIG[index];
     const state = p.enabled ? 'AKTIF' : 'NONAKTIF';
     notifAdd('info', `Provider ${state}`,
-        `${p.displayName || PROVIDERS[p.name]?.name || p.name} → ${state}`, 'info');
+        `${p.displayName || PROVIDERS[p.name]?.name || p.name} -> ${state}`, 'info');
     res.json({ success: true, enabled: PROVIDERS_CONFIG[index].enabled });
 });
 
@@ -1762,7 +2322,13 @@ app.post('/api/feedback', async (req, res) => {
 });
 
 app.get('/api/admin/feedback/stats', authAdmin, (req, res) => {
-    res.json(getStats());
+    const stats = getStats();
+
+    // ✅ TAMBAH: daily feedback untuk chart Tren 7 Hari
+    const days = parseInt(req.query.days) || 7;
+    stats.dailyFeedback = getDailyFeedbackStats(days);
+
+    res.json(stats);
 });
 
 app.get('/api/admin/feedback/list', authAdmin, (req, res) => {
@@ -2056,10 +2622,60 @@ app.get('/api/admin/memory', authAdmin, (req, res) => {
             title: m.title,
             question: m.question,
             answer: m.answer,
-            hit: m.hit,
-            variants: m.variants
+            hit: m.hit || 0,
+            variants: m.variants || [],
+            keywords: m.keywords || []
         }))
     });
+});
+
+app.get('/api/admin/memory/:index', authAdmin, (req, res) => {
+    const idx = parseInt(req.params.index);
+    if (isNaN(idx) || idx < 0 || idx >= memoryItems.length) {
+        return res.json({ success: false, message: 'Index tidak valid' });
+    }
+    const m = memoryItems[idx];
+    res.json({
+        success: true,
+        item: {
+            timestamp: m.timestamp,
+            title: m.title,
+            question: m.question,
+            answer: m.answer,
+            hit: m.hit || 0,
+            variants: m.variants || [],
+            keywords: m.keywords || []
+        }
+    });
+});
+
+app.post('/api/admin/memory/update', authAdmin, (req, res) => {
+    try {
+        const { index, question, answer, variants, keywords } = req.body;
+        if (index < 0 || index >= memoryItems.length) {
+            return res.json({ success: false, message: 'Index tidak valid' });
+        }
+        if (!question || !answer) {
+            return res.json({ success: false, message: 'Pertanyaan & jawaban wajib diisi' });
+        }
+        if (answer.length < 20) {
+            return res.json({ success: false, message: 'Jawaban minimal 20 karakter' });
+        }
+        const item = memoryItems[index];
+        item.question = String(question).trim();
+        item.answer = String(answer).trim();
+        item.variants = typeof variants === 'string'
+            ? variants.split(',').map(s => s.trim()).filter(Boolean)
+            : (Array.isArray(variants) ? variants : []);
+        item.keywords = typeof keywords === 'string'
+            ? keywords.split(',').map(s => s.trim()).filter(Boolean)
+            : (Array.isArray(keywords) ? keywords : []);
+        memorySave();
+        notifAdd('info', 'Memori Diperbarui', `Memori #${index + 1} diupdate`, 'info');
+        res.json({ success: true, total: memoryItems.length });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
 });
 app.post('/api/admin/memory/delete', authAdmin, (req, res) => {
     const { index } = req.body;
@@ -2109,7 +2725,7 @@ app.post('/api/admin/sessions/clear', authAdmin, (req, res) => {
 });
 
 // ============================================================
-// BACKUP
+// BACKUP ENDPOINTS
 // ============================================================
 app.post('/api/admin/backup', authAdmin, async (req, res) => {
     try {
@@ -2120,6 +2736,7 @@ app.post('/api/admin/backup', authAdmin, async (req, res) => {
         res.json({ success: false, message: e.message });
     }
 });
+
 app.get('/api/admin/backups', authAdmin, (req, res) => {
     if (!fs.existsSync(PATHS.backupsDir)) return res.json({ items: [] });
     const items = fs.readdirSync(PATHS.backupsDir)
@@ -2129,6 +2746,67 @@ app.get('/api/admin/backups', authAdmin, (req, res) => {
             return { name, created: s.mtime, size: s.size };
         }).sort((a, b) => b.created - a.created);
     res.json({ items });
+});
+
+app.get('/api/admin/backup/download/:filename', authAdmin, (req, res) => {
+    try {
+        const filename = path.basename(req.params.filename);
+        const filePath = path.join(PATHS.backupsDir, filename);
+
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ success: false, message: 'File tidak ditemukan' });
+        }
+
+        res.download(filePath, filename);
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
+const restoreUpload = multer({
+    dest: PATHS.tmp,
+    limits: { fileSize: 200 * 1024 * 1024, files: 1 },
+    fileFilter: (req, file, cb) => {
+        if (!/\.zip\.enc$/i.test(file.originalname)) {
+            return cb(new Error('File harus .zip.enc'));
+        }
+        cb(null, true);
+    }
+});
+
+app.post('/api/admin/backup/restore', authAdmin, restoreUpload.single('backup'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: 'Tidak ada file' });
+        }
+
+        const buffer = fs.readFileSync(req.file.path);
+        try { fs.unlinkSync(req.file.path); } catch (_) {}
+
+        console.log(`[RESTORE] Menerima file: ${req.file.originalname} (${(buffer.length / 1024 / 1024).toFixed(2)} MB)`);
+
+        const result = await restoreBackupFromBuffer(buffer, { overwrite: true });
+
+        if (result.success) {
+            notifAdd('warning', 'Restore Berhasil',
+                `${result.steps.restoredFiles.length} file di-restore. Restart server untuk apply.`,
+                'warning');
+            res.json({
+                success: true,
+                message: result.message,
+                steps: result.steps
+            });
+        } else {
+            res.json({
+                success: false,
+                message: result.message,
+                steps: result.steps
+            });
+        }
+    } catch (err) {
+        console.error('[RESTORE] Error:', err.message);
+        res.status(500).json({ success: false, message: err.message });
+    }
 });
 
 // ============================================================
@@ -2160,7 +2838,7 @@ app.post('/api/chat', async (req, res) => {
         console.log(`[CLASSIFY] relevant=${classification.relevant}, conf=${classification.confidence}`);
 
         if (!classification.relevant || classification.action === 'redirect') {
-            trackEvent('out_of_scope');
+            trackEvent('out_of_scope', session.id);
             unansweredAdd(userText, session.id);
             recordUnansweredQuestion(userText);
 
@@ -2182,16 +2860,18 @@ app.post('/api/chat', async (req, res) => {
             const memResult = memorySearch(userText, memoryItems, CONFIG.memoryMinScore || 75);
 
             if (memResult.item && memResult.isConfident) {
-                const relevant = validateMemoryRelevance(userText, memResult.item);
+                const relevant = memResult.score >= 100
+                                ? true
+                                : validateMemoryRelevance(userText, memResult.item);
                 const answerOk = memResult.item.answer &&
                                  memResult.item.answer.length > 30 &&
                                  !/:\s*$/.test(memResult.item.answer.trim());
 
                 if (relevant && answerOk) {
-                    console.log(`[MEMORY HIT] skor ${memResult.score} — "${userText.slice(0, 50)}"`);
+                    console.log(`[MEMORY HIT] skor ${memResult.score} - "${userText.slice(0, 50)}"`);
                     memResult.item.hit = (memResult.item.hit || 0) + 1;
                     memorySave();
-                    trackEvent('memory');
+                    trackEvent('memory', session.id);
 
                     sessionAddMessage(session.id, 'user', userText);
                     sessionAddMessage(session.id, 'bot', memResult.item.answer);
@@ -2241,7 +2921,7 @@ app.post('/api/chat', async (req, res) => {
             ctx += '=== KONTEKS DARI BUKU PENGETAHUAN ===\n' +
                    relevantChunks.map((c, i) => `[Kutipan ${i + 1}]\n${c.text}`).join('\n\n') +
                    '\n=== AKHIR KONTEKS ===\n\n';
-            console.log(`[RAG] OK — ${relevantChunks.length} chunk (conf ${confidence})`);
+            console.log(`[RAG] OK - ${relevantChunks.length} chunk (conf ${confidence})`);
         } else if (!graphContext) {
             console.log(`[RAG & GRAPH] KOSONG`);
             const suggestions = getSuggestedTopics(6, userText);
@@ -2293,7 +2973,7 @@ app.post('/api/chat', async (req, res) => {
             return res.end();
         }
 
-        console.log(`[AI OK] ${aiResult.provider} — ${aiResult.model}`);
+        console.log(`[AI OK] ${aiResult.provider} - ${aiResult.model}`);
         send({
             meta: {
                 provider: aiResult.provider,
@@ -2316,16 +2996,20 @@ app.post('/api/chat', async (req, res) => {
         const isRefusal = /belum ada di buku|belum ada di catatan|tidak tahu|tidak ada info|hubungi petugas langsung|belum yakin/i.test(text);
 
         if (isRefusal) {
-            trackEvent('refusal');
+            trackEvent('refusal', session.id);
             unansweredAdd(userText, session.id);
             recordUnansweredQuestion(userText);
-        } else if (relevantChunks.length > 0 && confidence >= 70) {
-            trackEvent('rag');
         } else {
-            trackEvent('answer');
+            // ✅ SELALU catat 'answer' setiap AI berhasil jawab
+            trackEvent('answer', session.id);
+
+            // ✅ TAMBAHAN: kalau pakai RAG dengan confidence tinggi, catat juga
+            if (relevantChunks.length > 0 && confidence >= 70) {
+                trackEvent('rag', session.id);
+            }
         }
 
-        if (relevantChunks.length > 0 && confidence >= 70 && !isRefusal) {
+        if (relevantChunks.length > 0 && confidence >= 40 && !isRefusal) {
             const isComplete = text.length > 50 &&
                                !/:\s*$/.test(text.trim()) &&
                                !/\.\.\.$/.test(text.trim());
@@ -2360,15 +3044,15 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('============================================');
     console.log(`SIVT AI siap di http://localhost:${PORT}`);
-    console.log(`👤 Warga  : http://localhost:${PORT}/`);
-    console.log(`👮 Admin  : http://localhost:${PORT}/admin/`);
+    console.log(`Warga  : http://localhost:${PORT}/`);
+    console.log(`Admin  : http://localhost:${PORT}/admin/`);
     const activeCount = PROVIDERS_CONFIG.filter(p => p.enabled !== false).length;
     console.log(`Provider AI    : ${PROVIDERS_CONFIG.length} terdaftar (${activeCount} aktif)`);
     PROVIDERS_CONFIG.forEach((p, i) => {
-        const mark = p.enabled !== false ? '✓' : '✗';
+        const mark = p.enabled !== false ? 'V' : 'X';
         const roles = (p.roles || ['chat']).join(',');
         const models = (p.models || []).slice(0, 2).join(', ');
-        console.log(`  ${i + 1}. [${mark}] ${p.displayName || p.name} [${roles}] → ${models}`);
+        console.log(`  ${i + 1}. [${mark}] ${p.displayName || p.name} [${roles}] -> ${models}`);
     });
     console.log(`Memori         : ${memoryItems.length} item`);
     console.log(`Knowledge      : ${knowledgeChunks.length} chunk`);

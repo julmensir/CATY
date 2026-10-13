@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "notif_1791541056079_bb8w",
+    "type": "info",
+    "title": "Role Provider Diperbarui",
+    "message": "Provider #1 → [embedding, query-rewriter, enrichment]",
+    "level": "info",
+    "timestamp": "2026-10-09T10:17:36.079Z",
+    "read": true
+  },
+  {
+    "id": "notif_1791541059034_7e0b",
+    "type": "info",
+    "title": "Role Provider Diperbarui",
+    "message": "Provider #1 → [embedding, query-rewriter, enrichment, chat]",
+    "level": "info",
+    "timestamp": "2026-10-09T10:17:39.034Z",
+    "read": true
+  },
+  {
+    "id": "notif_1791545332701_ljp5",
+    "type": "info",
+    "title": "Provider NONAKTIF",
+    "message": "Google Gemini → NONAKTIF",
+    "level": "info",
+    "timestamp": "2026-10-09T11:28:52.701Z",
+    "read": true
+  },
+  {
+    "id": "notif_1791545339937_obw0",
+    "type": "info",
+    "title": "Provider NONAKTIF",
+    "message": "Mistral AI → NONAKTIF",
+    "level": "info",
+    "timestamp": "2026-10-09T11:28:59.937Z",
+    "read": true
+  },
+  {
+    "id": "notif_1791545627419_u2hw",
+    "type": "danger",
+    "title": "Semua Provider Gagal",
+    "message": "Cek API key di dashboard.",
+    "level": "danger",
+    "timestamp": "2026-10-09T11:33:47.419Z",
+    "read": true
+  },
+  {
+    "id": "notif_1791545650752_pzkg",
+    "type": "info",
+    "title": "Provider AKTIF",
+    "message": "Mistral AI → AKTIF",
+    "level": "info",
+    "timestamp": "2026-10-09T11:34:10.752Z",
+    "read": true
+  },
+  {
+    "id": "notif_1791862957146_tg5l",
+    "type": "info",
+    "title": "Backup Berhasil",
+    "message": "File backup telah dibuat",
+    "level": "info",
+    "timestamp": "2026-10-13T03:42:37.146Z",
+    "read": false
+  },
+  {
+    "id": "notif_1791862958979_p8rw",
+    "type": "info",
+    "title": "Backup Berhasil",
+    "message": "File backup telah dibuat",
+    "level": "info",
+    "timestamp": "2026-10-13T03:42:38.980Z",
+    "read": false
+  },
+  {
+    "id": "notif_1791862961586_klrz",
+    "type": "info",
+    "title": "Backup Berhasil",
+    "message": "File backup telah dibuat",
+    "level": "info",
+    "timestamp": "2026-10-13T03:42:41.586Z",
+    "read": false
+  },
+  {
+    "id": "notif_1791862963987_5f3q",
+    "type": "info",
+    "title": "Backup Berhasil",
+    "message": "File backup telah dibuat",
+    "level": "info",
+    "timestamp": "2026-10-13T03:42:43.987Z",
+    "read": false
+  },
+  {
+    "id": "notif_1791862966939_mn7m",
+    "type": "info",
+    "title": "Backup Berhasil",
+    "message": "File backup telah dibuat",
+    "level": "info",
+    "timestamp": "2026-10-13T03:42:46.939Z",
+    "read": false
+  },
+  {
+    "id": "notif_1791865183290_2nhg",
+    "type": "info",
+    "title": "Logo Diperbarui",
+    "message": "Logo berhasil diupload",
+    "level": "info",
+    "timestamp": "2026-10-13T04:19:43.291Z",
+    "read": false
+  }
+]

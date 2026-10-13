@@ -1,12 +1,12 @@
 {
-  "name": "SIVT AI - Sistem Informasi Virtual TEGALREJO",
-  "short_name": "SIVT AI",
+  "name": "SIVTY AI - Sistem Informasi Virtual TEGALREJO YOGYAKARTA",
+  "short_name": "SIVTY AI",
   "description": "Asisten virtual Kemantren Tegalrejo untuk layanan administrasi warga.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0d47a1",
-  "theme_color": "#0d47a1",
+  "background_color": "#000000",
+  "theme_color": "#000000",
   "lang": "id",
   "icons": [
     {
