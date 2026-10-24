@@ -466,23 +466,6 @@ Kata kunci: surat keterangan umum, surat bebas, SKU umum, syarat surat keteranga
 
 ---
 
-## BAGIAN 10: PROSEDUR DAN ALUR PELAYANAN
-
-### Alur Pelayanan di Kemantren
-
-Alur pelayanan administrasi di Kemantren Tegalrejo:
-
-1. Warga datang ke loket pelayanan
-2. Ambil nomor antrian
-3. Menunggu giliran dipanggil
-4. Menyerahkan dokumen persyaratan ke petugas
-5. Petugas memverifikasi dokumen
-6. Jika lengkap, petugas memproses surat
-7. Warga menunggu surat selesai (biasanya 1 sampai 3 hari kerja)
-8. Warga mengambil surat yang sudah selesai
-
-Kata kunci: alur pelayanan, prosedur, cara urus surat, cara mengurus surat, langkah-langkah pelayanan, tahapan, proses, prosedur urus surat
-
 ### Waktu Penyelesaian Dokumen
 
 Waktu penyelesaian dokumen di Kemantren Tegalrejo:
@@ -631,12 +614,6 @@ Tidak ada layanan fotokopi resmi di kantor Kemantren. Disarankan fotokopi dokume
 
 Kata kunci: fotokopi, fotokopi di kantor, ada fotokopi tidak
 
-### Nomor Antrian dan Sistem Pelayanan
-
-Kemantren Tegalrejo menggunakan sistem nomor antrian. Ambil nomor di mesin antrian dekat pintu masuk, lalu tunggu sampai nomor dipanggil.
-
-Kata kunci: nomor antrian, ambil nomor, sistem antrian, antri, waiting
-
 ---
 
 ## BAGIAN 14: KONTAK DARURAT DAN LAYANAN KHUSUS
@@ -672,13 +649,13 @@ Kata kunci: lansia, orang tua, prioritas lansia, kakek nenek
 - Semua layanan GRATIS, tidak ada pungutan biaya.
 - Data kontak dan jam pelayanan dapat berubah, selalu konfirmasi ke kantor jika ragu.
 - Untuk layanan yang tidak tercantum di sini, hubungi langsung petugas Kemantren Tegalrejo.
-- Chatbot SIVT AI ini akan terus belajar dari pertanyaan yang sering ditanyakan dan menambah pengetahuannya otomatis.
+- Chatbot CATY ini akan terus belajar dari pertanyaan yang sering ditanyakan dan menambah pengetahuannya otomatis.
 
 ---
 
 ## AKHIR DOKUMEN
 
-Dokumen ini disusun untuk keperluan SIVT AI (Sistem Informasi Virtual TEGALREJO).
+Dokumen ini disusun untuk keperluan CATY.
 Jika ada informasi yang perlu ditambahkan, hubungi admin Kemantren Tegalrejo.
 
 Kata kunci: info, informasi, keterangan, catatan, penjelasan, dokumentasi, bantuan, help

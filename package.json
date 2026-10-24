@@ -1,7 +1,7 @@
 {
-  "name": "sivty-ai-chatbot",
+  "name": "CATY",
   "version": "2.1.0",
-  "description": "SIVTY AI - Asisten Virtual Kemantren Tegalrejo dengan Knowledge Graph, Anti-Halusinasi, Auto-Learning, Feedback, dan Multi-Provider AI",
+  "description": "CATY - Asisten Virtual Kemantren Tegalrejo dengan Knowledge Graph, Anti-Halusinasi, Auto-Learning, Feedback, dan Multi-Provider AI",
   "main": "index.js",
   "type": "module",
   "engines": {
@@ -53,6 +53,7 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.3.0",
     "node-cron": "^4.6.0",
+    "pg": "^8.23.1",
     "vis-data": "^8.0.5",
     "vis-network": "^10.1.2"
   }

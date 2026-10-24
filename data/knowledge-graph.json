@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "savedAt": "2026-10-13T03:20:36.212Z",
+  "savedAt": "2026-10-24T12:30:05.523Z",
   "stats": {
-    "nodes": 1406,
-    "edges": 595
+    "nodes": 1409,
+    "edges": 598
   },
   "nodes": [
     {
@@ -55,7 +55,8 @@
       "id": "- akun jogja smart service jss pemohon",
       "label": "- akun jogja smart service jss pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -64,7 +65,8 @@
       "id": "- alamat email pribadi aktif",
       "label": "- alamat email pribadi aktif",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -73,7 +75,8 @@
       "id": "- alamat kantor",
       "label": "- alamat kantor",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -82,7 +85,8 @@
       "id": "- alamat kantor jl",
       "label": "- alamat kantor jl",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -118,7 +122,8 @@
       "id": "- biaya",
       "label": "- biaya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -127,7 +132,8 @@
       "id": "- biaya gratis",
       "label": "- biaya gratis",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -142,10 +148,20 @@
       "createdAt": 1791518507908
     },
     {
+      "id": "- chatbot caty ini akan terus belajar dari pertanyaan yang",
+      "label": "- chatbot caty ini akan terus belajar dari pertanyaan yang",
+      "sources": [
+        "buku-pengetahuan.md"
+      ],
+      "degree": 0,
+      "createdAt": 1792844034428
+    },
+    {
       "id": "- dasar hukum",
       "label": "- dasar hukum",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -199,7 +215,8 @@
       "id": "- dokumen lengkap dari kelurahan n1",
       "label": "- dokumen lengkap dari kelurahan n1",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -271,7 +288,8 @@
       "id": "- email resmi",
       "label": "- email resmi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -280,7 +298,8 @@
       "id": "- email upik",
       "label": "- email upik",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -289,7 +308,8 @@
       "id": "- fasilitas inklusif",
       "label": "- fasilitas inklusif",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -298,7 +318,8 @@
       "id": "- fasilitas publik",
       "label": "- fasilitas publik",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -307,7 +328,8 @@
       "id": "- fasilitas utama",
       "label": "- fasilitas utama",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -316,7 +338,8 @@
       "id": "- formulir data usaha umkm jenis usaha",
       "label": "- formulir data usaha umkm jenis usaha",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -325,7 +348,8 @@
       "id": "- formulir permohonan",
       "label": "- formulir permohonan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -334,7 +358,8 @@
       "id": "- formulir permohonan lengkap",
       "label": "- formulir permohonan lengkap",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -343,7 +368,8 @@
       "id": "- formulir permohonan yang diisi lengkap dan ditandatangani",
       "label": "- formulir permohonan yang diisi lengkap dan ditandatangani",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -352,7 +378,8 @@
       "id": "- foto tempat usaha",
       "label": "- foto tempat usaha",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -361,7 +388,8 @@
       "id": "- fotocopy akta pendirian atau badan hukum parpol",
       "label": "- fotocopy akta pendirian atau badan hukum parpol",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -370,7 +398,8 @@
       "id": "- fotocopy bpjs kesehatan ketenagakerjaan npwp",
       "label": "- fotocopy bpjs kesehatan ketenagakerjaan npwp",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -379,7 +408,8 @@
       "id": "- fotocopy ktp",
       "label": "- fotocopy ktp",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -388,7 +418,8 @@
       "id": "- fotocopy ktp 1 lembar",
       "label": "- fotocopy ktp 1 lembar",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -397,7 +428,8 @@
       "id": "- fotocopy ktp dan kk calon pengantin",
       "label": "- fotocopy ktp dan kk calon pengantin",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -406,7 +438,8 @@
       "id": "- fotocopy ktp dan kk pemohon",
       "label": "- fotocopy ktp dan kk pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -415,7 +448,8 @@
       "id": "- fotocopy ktp ketua partai",
       "label": "- fotocopy ktp ketua partai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -424,7 +458,8 @@
       "id": "- fotocopy ktp pemohon",
       "label": "- fotocopy ktp pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -433,7 +468,8 @@
       "id": "- fotocopy ktp pemohon 1 lembar",
       "label": "- fotocopy ktp pemohon 1 lembar",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -442,7 +478,8 @@
       "id": "- fotocopy ktp saksi-saksi",
       "label": "- fotocopy ktp saksi-saksi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -451,7 +488,8 @@
       "id": "- fotocopy ktp wali nikah catin perempuan dan ktp orang tua",
       "label": "- fotocopy ktp wali nikah catin perempuan dan ktp orang tua",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -460,7 +498,8 @@
       "id": "- fotocopy sk pengesahan kepengurusan dewan pimpinan daerah",
       "label": "- fotocopy sk pengesahan kepengurusan dewan pimpinan daerah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -469,7 +508,8 @@
       "id": "- fotocopy surat akta kematian pewaris",
       "label": "- fotocopy surat akta kematian pewaris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -496,7 +536,8 @@
       "id": "- fotokopi ktp dan kk pemohon",
       "label": "- fotokopi ktp dan kk pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -505,7 +546,8 @@
       "id": "- fotokopi ktp pemohon",
       "label": "- fotokopi ktp pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -514,7 +556,8 @@
       "id": "- fotokopi ktp pemohon 1 lembar",
       "label": "- fotokopi ktp pemohon 1 lembar",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -523,7 +566,8 @@
       "id": "- fotokopi ktp pemohon ktp yang meninggal",
       "label": "- fotokopi ktp pemohon ktp yang meninggal",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -532,7 +576,8 @@
       "id": "- fotokopi ktp pemohon nomor telepon aktif",
       "label": "- fotokopi ktp pemohon nomor telepon aktif",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -541,7 +586,8 @@
       "id": "- fotokopi surat keterangan meninggal",
       "label": "- fotokopi surat keterangan meninggal",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -577,7 +623,8 @@
       "id": "- hotline pengaduan upik kemantren",
       "label": "- hotline pengaduan upik kemantren",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -676,7 +723,8 @@
       "id": "- kebijakan tarif umum",
       "label": "- kebijakan tarif umum",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -766,7 +814,8 @@
       "id": "- kontak komunikasi",
       "label": "- kontak komunikasi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -785,7 +834,8 @@
       "label": "- ktp asli",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "buku-pengetahuan.md"
+        "buku-pengetahuan.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -848,7 +898,8 @@
       "id": "- membawa berkas asli persyaratan",
       "label": "- membawa berkas asli persyaratan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -857,7 +908,8 @@
       "id": "- membawa berkas asli saat meminta tanda tangan",
       "label": "- membawa berkas asli saat meminta tanda tangan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -866,7 +918,8 @@
       "id": "- membawa berkas asli saat pengajuan tanda tangan",
       "label": "- membawa berkas asli saat pengajuan tanda tangan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -875,7 +928,8 @@
       "id": "- mengisi formulir permohonan",
       "label": "- mengisi formulir permohonan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -884,7 +938,8 @@
       "id": "- menunjukkan kartu keluarga kk asli",
       "label": "- menunjukkan kartu keluarga kk asli",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -893,7 +948,8 @@
       "id": "- menunjukkan ktp orang tua dan identitas pemohon",
       "label": "- menunjukkan ktp orang tua dan identitas pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -920,7 +976,8 @@
       "id": "- moto slogan",
       "label": "- moto slogan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -929,7 +986,8 @@
       "id": "- nama instansi",
       "label": "- nama instansi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -947,7 +1005,8 @@
       "id": "- nomor whatsapp dan email pemohon",
       "label": "- nomor whatsapp dan email pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1092,7 +1151,8 @@
       "label": "- persyaratan",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "Buku Pandua Sarat 1.md"
+        "Buku Pandua Sarat 1.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1128,7 +1188,8 @@
       "id": "- produk layanan",
       "label": "- produk layanan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1137,7 +1198,8 @@
       "id": "- respons pengaduan",
       "label": "- respons pengaduan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -1146,7 +1208,8 @@
       "id": "- respons pengaduan maksimal",
       "label": "- respons pengaduan maksimal",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -1183,7 +1246,8 @@
       "label": "- salinan",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "Buku Pandua Sarat 1.md"
+        "Buku Pandua Sarat 1.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -1201,7 +1265,8 @@
       "id": "- salinan digital dokumen kependudukan persyaratan",
       "label": "- salinan digital dokumen kependudukan persyaratan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1228,7 +1293,8 @@
       "id": "- salinan digital ktp pemohon",
       "label": "- salinan digital ktp pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1237,7 +1303,8 @@
       "id": "- salinan digital nib beserta lampirannya",
       "label": "- salinan digital nib beserta lampirannya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1291,7 +1358,8 @@
       "id": "- senin s d kamis",
       "label": "- senin s d kamis",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -1318,7 +1386,8 @@
       "id": "- sms wa upik",
       "label": "- sms wa upik",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -1381,7 +1450,8 @@
       "id": "- surat permohonan dari ahli waris",
       "label": "- surat permohonan dari ahli waris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -1390,7 +1460,8 @@
       "id": "- surat pernyataan ahli waris bermaterai",
       "label": "- surat pernyataan ahli waris bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1399,7 +1470,8 @@
       "id": "- surat pernyataan beda nama bermaterai",
       "label": "- surat pernyataan beda nama bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1408,7 +1480,8 @@
       "id": "- surat pernyataan belum memiliki rumah bermaterai",
       "label": "- surat pernyataan belum memiliki rumah bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1417,7 +1490,8 @@
       "id": "- surat pernyataan bermaterai",
       "label": "- surat pernyataan bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1426,7 +1500,8 @@
       "id": "- surat pernyataan domisili kantor tetap parpol bermaterai",
       "label": "- surat pernyataan domisili kantor tetap parpol bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1435,7 +1510,8 @@
       "id": "- surat pernyataan domisili usaha bermaterai",
       "label": "- surat pernyataan domisili usaha bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1444,7 +1520,8 @@
       "id": "- surat pernyataan penghasilan orang tua bermaterai",
       "label": "- surat pernyataan penghasilan orang tua bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1453,7 +1530,8 @@
       "id": "- surat pernyataan status kantor tetap parpol bermaterai",
       "label": "- surat pernyataan status kantor tetap parpol bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1462,7 +1540,8 @@
       "id": "- surat pernyataan tempat tinggal bermaterai",
       "label": "- surat pernyataan tempat tinggal bermaterai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1507,7 +1586,8 @@
       "id": "- telp fax",
       "label": "- telp fax",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -1543,7 +1623,8 @@
       "id": "- waktu pelayanan operasional",
       "label": "- waktu pelayanan operasional",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -1553,7 +1634,8 @@
       "label": "- waktu penyelesaian",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "buku-pengetahuan.md"
+        "buku-pengetahuan.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1562,7 +1644,8 @@
       "id": "- waktu penyelesaian maksimal",
       "label": "- waktu penyelesaian maksimal",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -1572,7 +1655,8 @@
       "label": "- website",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "buku-pengetahuan.md"
+        "buku-pengetahuan.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -1734,7 +1818,8 @@
       "id": "1 pelayanan dispensasi nikah",
       "label": "1 pelayanan dispensasi nikah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1752,7 +1837,8 @@
       "id": "1 profil informasi umum instansi",
       "label": "1 profil informasi umum instansi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -1896,7 +1982,8 @@
       "id": "10 pelayanan pendampingan permohonan dokumen kependudukan",
       "label": "10 pelayanan pendampingan permohonan dokumen kependudukan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1914,7 +2001,8 @@
       "id": "11 pelayanan pernyataan susunan anggota keluarga kp4",
       "label": "11 pelayanan pernyataan susunan anggota keluarga kp4",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1932,7 +2020,8 @@
       "id": "12 pelayanan legalisasi",
       "label": "12 pelayanan legalisasi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1941,7 +2030,8 @@
       "id": "120 menit",
       "label": "120 menit",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1950,7 +2040,8 @@
       "id": "13 00 wib",
       "label": "13 00 wib",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -1959,7 +2050,8 @@
       "id": "13 pelayanan pernyataan belum memiliki rumah",
       "label": "13 pelayanan pernyataan belum memiliki rumah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -1977,7 +2069,8 @@
       "id": "14 00 wib istirahat pukul 11 30 -",
       "label": "14 00 wib istirahat pukul 11 30 -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -1995,7 +2088,8 @@
       "id": "14 pelayanan persetujuan rekomendasi pondokan",
       "label": "14 pelayanan persetujuan rekomendasi pondokan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2004,7 +2098,8 @@
       "id": "15 00 wib tanpa jam istirahat",
       "label": "15 00 wib tanpa jam istirahat",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -2022,7 +2117,8 @@
       "id": "15 pelayanan izin pemesanan tempat pemakaman",
       "label": "15 pelayanan izin pemesanan tempat pemakaman",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2031,7 +2127,8 @@
       "id": "16 pelayanan perpanjangan izin pemesanan tanah pemakaman",
       "label": "16 pelayanan perpanjangan izin pemesanan tanah pemakaman",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -2049,7 +2146,8 @@
       "id": "17 pelayanan izin penggunaan tanah untuk pemakaman ipt -",
       "label": "17 pelayanan izin penggunaan tanah untuk pemakaman ipt -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -2265,7 +2363,8 @@
       "id": "2 pelayanan pernyataan beda nama",
       "label": "2 pelayanan pernyataan beda nama",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2274,7 +2373,8 @@
       "id": "2 saksi",
       "label": "2 saksi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2301,7 +2401,8 @@
       "id": "2 sarana",
       "label": "2 sarana",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -2346,7 +2447,8 @@
       "id": "3 daftar lengkap 20 jenis pelayanan publik",
       "label": "3 daftar lengkap 20 jenis pelayanan publik",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2427,7 +2529,8 @@
       "id": "3 hari kerja",
       "label": "3 hari kerja",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2472,7 +2575,8 @@
       "id": "3 pelayanan pernyataan domisili usaha",
       "label": "3 pelayanan pernyataan domisili usaha",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2553,7 +2657,8 @@
       "id": "30 menit",
       "label": "30 menit",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2562,7 +2667,8 @@
       "id": "30 menit 1 hari",
       "label": "30 menit 1 hari",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2571,7 +2677,8 @@
       "id": "30 tahun 2023",
       "label": "30 tahun 2023",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -2724,7 +2831,8 @@
       "id": "4 pelayanan pernyataan tempat tinggal",
       "label": "4 pelayanan pernyataan tempat tinggal",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -3048,7 +3156,8 @@
       "id": "6 pelayanan pernyataan ahli waris",
       "label": "6 pelayanan pernyataan ahli waris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -3066,7 +3175,8 @@
       "id": "60 menit",
       "label": "60 menit",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -3075,7 +3185,8 @@
       "id": "60 menit tergantung jaringan oss",
       "label": "60 menit tergantung jaringan oss",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -3120,7 +3231,8 @@
       "id": "8 pelayanan pernyataan penghasilan orang tua",
       "label": "8 pelayanan pernyataan penghasilan orang tua",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -3151,6 +3263,15 @@
       ],
       "degree": 0,
       "createdAt": 1791525400229
+    },
+    {
+      "id": "ada fotokopi tidak ---",
+      "label": "ada fotokopi tidak ---",
+      "sources": [
+        "buku-pengetahuan.md"
+      ],
+      "degree": 0,
+      "createdAt": 1792376616069
     },
     {
       "id": "ada prosedur tambahan",
@@ -3221,7 +3342,8 @@
       "label": "air mineral snack tamu",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -3486,7 +3608,8 @@
       "id": "alat tulis kantor atk",
       "label": "alat tulis kantor atk",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -3765,7 +3888,8 @@
       "id": "area bermain anak",
       "label": "area bermain anak",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -4125,7 +4249,8 @@
       "id": "berdasarkan regulasi terbaru",
       "label": "berdasarkan regulasi terbaru",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -4683,7 +4808,8 @@
       "id": "daftar lengkap",
       "label": "daftar lengkap",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -4701,7 +4827,8 @@
       "id": "dan atau akta kelahiran seluruh ahli waris",
       "label": "dan atau akta kelahiran seluruh ahli waris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -4728,7 +4855,8 @@
       "id": "dan lurah",
       "label": "dan lurah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5025,7 +5153,8 @@
       "id": "didampingi penuh dari pembuatan akun hingga nib terbit",
       "label": "didampingi penuh dari pembuatan akun hingga nib terbit",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5043,7 +5172,8 @@
       "id": "diketahui ketua rt",
       "label": "diketahui ketua rt",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5088,7 +5218,8 @@
       "id": "diketahui rt",
       "label": "diketahui rt",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5097,7 +5228,8 @@
       "id": "diketahui rt rw lurah",
       "label": "diketahui rt rw lurah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5133,7 +5265,8 @@
       "id": "dipandu pendaftarannya",
       "label": "dipandu pendaftarannya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5151,7 +5284,8 @@
       "id": "ditandatangani ketua sekretaris",
       "label": "ditandatangani ketua sekretaris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5178,7 +5312,8 @@
       "id": "ditandatangani pemohon",
       "label": "ditandatangani pemohon",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5187,7 +5322,8 @@
       "id": "ditandatangani seluruh ahli waris",
       "label": "ditandatangani seluruh ahli waris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5247,6 +5383,15 @@
       "createdAt": 1791525399778
     },
     {
+      "id": "dokumen ini disusun untuk keperluan caty",
+      "label": "dokumen ini disusun untuk keperluan caty",
+      "sources": [
+        "buku-pengetahuan.md"
+      ],
+      "degree": 0,
+      "createdAt": 1792844034470
+    },
+    {
       "id": "dokumen kelurahan",
       "label": "dokumen kelurahan",
       "sources": [
@@ -5259,7 +5404,8 @@
       "id": "dokumen kependudukan persyaratan",
       "label": "dokumen kependudukan persyaratan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -5322,7 +5468,8 @@
       "id": "dokumen yang telah dilegalisir",
       "label": "dokumen yang telah dilegalisir",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5714,7 +5861,8 @@
       "label": "free wi-fi",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -5814,7 +5962,8 @@
       "label": "genset",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -5823,7 +5972,8 @@
       "id": "gratis",
       "label": "gratis",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -5850,7 +6000,8 @@
       "id": "gratis sejak",
       "label": "gratis sejak",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -5859,7 +6010,8 @@
       "id": "gratis sejak 2024",
       "label": "gratis sejak 2024",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -5923,7 +6075,8 @@
       "label": "hari kerja",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "buku-pengetahuan.md"
+        "buku-pengetahuan.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -6582,7 +6735,8 @@
       "id": "jenis pelayanan publik",
       "label": "jenis pelayanan publik",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -6681,7 +6835,8 @@
       "id": "jika pemohon bisa mengoperasikan gawai komputer",
       "label": "jika pemohon bisa mengoperasikan gawai komputer",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -6717,7 +6872,8 @@
       "id": "jika tidak bisa",
       "label": "jika tidak bisa",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -6951,7 +7107,8 @@
       "id": "kebersamaan",
       "label": "kebersamaan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -6978,7 +7135,8 @@
       "id": "kedisiplinan -",
       "label": "kedisiplinan -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -7160,7 +7318,8 @@
       "id": "kemandirian -",
       "label": "kemandirian -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -7180,7 +7339,8 @@
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
         "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "buku-pengetahuan.md"
+        "buku-pengetahuan.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -7234,7 +7394,8 @@
       "id": "kepedulian -",
       "label": "kepedulian -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -7571,7 +7732,8 @@
       "id": "knowledge base ai",
       "label": "knowledge base ai",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422783
@@ -7581,7 +7743,8 @@
       "label": "kode pos",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "buku-pengetahuan.md"
+        "buku-pengetahuan.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -7600,7 +7763,8 @@
       "label": "komputer",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -7926,7 +8090,8 @@
       "label": "ktp pemohon",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:Buku Pandua Sarat 1.md"
+        "enrich:Buku Pandua Sarat 1.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -8115,7 +8280,8 @@
       "id": "lan majune warga tegalrejo segoro amarto",
       "label": "lan majune warga tegalrejo segoro amarto",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -8250,7 +8416,8 @@
       "id": "legalisasi pernyataan ahli waris",
       "label": "legalisasi pernyataan ahli waris",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8306,7 +8473,8 @@
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
         "Buku Pandua Sarat 1.md",
-        "enrich:Buku Pandua Sarat 1.md"
+        "enrich:Buku Pandua Sarat 1.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8333,7 +8501,8 @@
       "id": "lurah sesuai ktp",
       "label": "lurah sesuai ktp",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8342,7 +8511,8 @@
       "id": "makaryo agawe",
       "label": "makaryo agawe",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -8351,7 +8521,8 @@
       "id": "maksimal 3 tiga hari kerja",
       "label": "maksimal 3 tiga hari kerja",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -8360,7 +8531,8 @@
       "id": "maksimal 4 hari kerja sejak notifikasi dpmptsp diterima",
       "label": "maksimal 4 hari kerja sejak notifikasi dpmptsp diterima",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8387,7 +8559,8 @@
       "id": "mantri",
       "label": "mantri",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8415,7 +8588,8 @@
       "id": "masa aktif tetap wajib diperpanjang",
       "label": "masa aktif tetap wajib diperpanjang",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -8424,7 +8598,8 @@
       "id": "masa berlaku izin",
       "label": "masa berlaku izin",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -8433,7 +8608,8 @@
       "id": "masa berlaku izin 3 tahun dan wajib diperpanjang",
       "label": "masa berlaku izin 3 tahun dan wajib diperpanjang",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -8442,7 +8618,8 @@
       "id": "masing 1 lembar",
       "label": "masing 1 lembar",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8676,7 +8853,8 @@
       "id": "menit tergantung jaringan oss",
       "label": "menit tergantung jaringan oss",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -8748,7 +8926,8 @@
       "id": "n4 beserta lampiran 1 lembar",
       "label": "n4 beserta lampiran 1 lembar",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -8877,7 +9056,8 @@
       "id": "nib beserta lampirannya",
       "label": "nib beserta lampirannya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -8968,7 +9148,8 @@
       "id": "nomor induk berusaha nib dan lampirannya",
       "label": "nomor induk berusaha nib dan lampirannya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -9014,7 +9195,8 @@
       "id": "omset",
       "label": "omset",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -9181,7 +9363,8 @@
       "label": "pelayanan dispensasi nikah",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9218,7 +9401,8 @@
       "id": "pelayanan legalisasi",
       "label": "pelayanan legalisasi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9237,7 +9421,8 @@
       "label": "pelayanan pernyataan ahli waris",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9247,7 +9432,8 @@
       "label": "pelayanan pernyataan beda nama",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9257,7 +9443,8 @@
       "label": "pelayanan pernyataan domisili usaha",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9266,7 +9453,8 @@
       "id": "pelayanan pernyataan tempat tinggal",
       "label": "pelayanan pernyataan tempat tinggal",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9275,7 +9463,8 @@
       "id": "pelayanan persetujuan rekomendasi pondokan",
       "label": "pelayanan persetujuan rekomendasi pondokan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -9330,7 +9519,8 @@
       "label": "pemerintah kota yogyakarta",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -9385,7 +9575,8 @@
       "id": "pendampingan dokumen permohonan kependudukan",
       "label": "pendampingan dokumen permohonan kependudukan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -9484,7 +9675,8 @@
       "id": "perizinan adalah",
       "label": "perizinan adalah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -9522,7 +9714,8 @@
       "label": "pernyataan domisili usaha",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -9540,7 +9733,8 @@
       "id": "pernyataan susunan anggota keluarga kp4",
       "label": "pernyataan susunan anggota keluarga kp4",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -9585,7 +9779,8 @@
       "id": "perpustakaan pojok baca",
       "label": "perpustakaan pojok baca",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -9785,7 +9980,8 @@
       "label": "perwal yogyakarta",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -10001,7 +10197,8 @@
       "id": "prasarana fasilitas pendukung",
       "label": "prasarana fasilitas pendukung",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10011,7 +10208,8 @@
       "label": "printer",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10029,7 +10227,8 @@
       "id": "profil informasi umum instansi",
       "label": "profil informasi umum instansi",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -10119,7 +10318,8 @@
       "id": "rekomendasi teknis persetujuan pondokan",
       "label": "rekomendasi teknis persetujuan pondokan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -10128,7 +10328,8 @@
       "id": "retribusi pemakaman berubah menjadi rp 0 -",
       "label": "retribusi pemakaman berubah menjadi rp 0 -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -10164,7 +10365,8 @@
       "id": "rp 0 -",
       "label": "rp 0 -",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -10193,7 +10395,8 @@
       "label": "ruang laktasi",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10203,7 +10406,8 @@
       "label": "ruang tunggu representatif",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10393,7 +10597,8 @@
       "id": "sarana prasarana fasilitas pendukung",
       "label": "sarana prasarana fasilitas pendukung",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10528,7 +10733,8 @@
       "id": "serta jalur ram dan toilet khusus difabel",
       "label": "serta jalur ram dan toilet khusus difabel",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10654,7 +10860,8 @@
       "id": "sim pelayanan jss jogja smart service",
       "label": "sim pelayanan jss jogja smart service",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -10690,7 +10897,8 @@
       "id": "sk izin perpanjangan pemesanan tempat pemakaman",
       "label": "sk izin perpanjangan pemesanan tempat pemakaman",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -10771,7 +10979,8 @@
       "id": "standar pelayanan publik kemantren tegalrejo tahun 2026",
       "label": "standar pelayanan publik kemantren tegalrejo tahun 2026",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422784
@@ -10952,7 +11161,8 @@
       "id": "surat izin pemasangan batu nisan",
       "label": "surat izin pemasangan batu nisan",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -11008,7 +11218,8 @@
       "label": "surat keterangan dispensasi nikah",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -11181,7 +11392,8 @@
       "id": "surat pernyataan anak tidak belum menikah dan belum bekerja",
       "label": "surat pernyataan anak tidak belum menikah dan belum bekerja",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -11192,7 +11404,8 @@
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
         "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:Buku Pandua Sarat 1.md"
+        "enrich:Buku Pandua Sarat 1.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -11201,7 +11414,8 @@
       "id": "surat pernyataan belum memiliki rumah",
       "label": "surat pernyataan belum memiliki rumah",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -11256,7 +11470,8 @@
       "id": "surat pernyataan penghasilan orangtua",
       "label": "surat pernyataan penghasilan orangtua",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -11329,7 +11544,8 @@
       "label": "surat pernyataan tempat tinggal",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:Buku Pandua Sarat 1.md"
+        "enrich:Buku Pandua Sarat 1.md",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423435
@@ -11734,7 +11950,8 @@
       "id": "tahun dan wajib diperpanjang",
       "label": "tahun dan wajib diperpanjang",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -11978,7 +12195,8 @@
       "label": "televisi",
       "sources": [
         "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
-        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "enrich:standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -12105,7 +12323,8 @@
       "id": "tiga hari kerja",
       "label": "tiga hari kerja",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -12159,7 +12378,8 @@
       "id": "toilet",
       "label": "toilet",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423064
@@ -12177,7 +12397,8 @@
       "id": "tompeyan tr iii 219 yogyakarta",
       "label": "tompeyan tr iii 219 yogyakarta",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422874
@@ -12186,7 +12407,8 @@
       "id": "tpu pracimalaya",
       "label": "tpu pracimalaya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -12195,7 +12417,8 @@
       "id": "tpu utaralaya",
       "label": "tpu utaralaya",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -12475,7 +12698,8 @@
       "id": "wajib memperpanjang masa aktif",
       "label": "wajib memperpanjang masa aktif",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508423436
@@ -12647,7 +12871,8 @@
       "id": "wib istirahat pukul",
       "label": "wib istirahat pukul",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -12665,7 +12890,8 @@
       "id": "wib tanpa jam istirahat",
       "label": "wib tanpa jam istirahat",
       "sources": [
-        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
+        "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt",
+        "Buku_standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.md"
       ],
       "degree": 0,
       "createdAt": 1791508422875
@@ -12738,7 +12964,7 @@
     {
       "source": "waktu penyelesaian",
       "target": "1 sampai 3 hari kerja",
-      "weight": 468,
+      "weight": 689,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12746,7 +12972,7 @@
     {
       "source": "nik",
       "target": "ttl",
-      "weight": 222,
+      "weight": 324,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12754,7 +12980,7 @@
     {
       "source": "nik",
       "target": "jenis kelamin",
-      "weight": 185,
+      "weight": 270,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12762,7 +12988,7 @@
     {
       "source": "ttl",
       "target": "jenis kelamin",
-      "weight": 185,
+      "weight": 270,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12770,7 +12996,7 @@
     {
       "source": "data pemohon nama",
       "target": "ttl",
-      "weight": 185,
+      "weight": 270,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12778,7 +13004,7 @@
     {
       "source": "data pemohon nama",
       "target": "nik",
-      "weight": 148,
+      "weight": 216,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12786,7 +13012,7 @@
     {
       "source": "- tanda tangan",
       "target": "para ahli waris",
-      "weight": 111,
+      "weight": 162,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12794,7 +13020,7 @@
     {
       "source": "- tanda tangan",
       "target": "saksi",
-      "weight": 111,
+      "weight": 162,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12802,7 +13028,7 @@
     {
       "source": "para ahli waris",
       "target": "saksi",
-      "weight": 111,
+      "weight": 162,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12810,7 +13036,7 @@
     {
       "source": "para ahli waris",
       "target": "saksi ii",
-      "weight": 111,
+      "weight": 162,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12818,7 +13044,7 @@
     {
       "source": "saksi",
       "target": "saksi ii",
-      "weight": 111,
+      "weight": 162,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12826,7 +13052,7 @@
     {
       "source": "pekerjaan",
       "target": "alamat",
-      "weight": 109,
+      "weight": 160,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12834,7 +13060,7 @@
     {
       "source": "waktu penyelesaian",
       "target": "1 hari kerja",
-      "weight": 108,
+      "weight": 159,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12842,7 +13068,7 @@
     {
       "source": "4 b layanan nikah",
       "target": "talak",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12850,7 +13076,7 @@
     {
       "source": "4 b layanan nikah",
       "target": "dan cerai ntcr",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12858,7 +13084,7 @@
     {
       "source": "talak",
       "target": "dan cerai ntcr",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12866,7 +13092,7 @@
     {
       "source": "ttl",
       "target": "alamat",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12874,7 +13100,7 @@
     {
       "source": "data ketua dan sekretaris nama",
       "target": "jabatan",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12882,7 +13108,7 @@
     {
       "source": "- tanda tangan",
       "target": "ketua",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12890,7 +13116,7 @@
     {
       "source": "- tanda tangan",
       "target": "sekretaris",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12898,7 +13124,7 @@
     {
       "source": "ketua",
       "target": "sekretaris",
-      "weight": 74,
+      "weight": 108,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12906,7 +13132,7 @@
     {
       "source": "kata kunci",
       "target": "umur ktp",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12914,7 +13140,7 @@
     {
       "source": "kata kunci",
       "target": "syarat umur",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12922,7 +13148,7 @@
     {
       "source": "umur ktp",
       "target": "syarat umur",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12930,7 +13156,7 @@
     {
       "source": "umur ktp",
       "target": "ktp anak",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12938,7 +13164,7 @@
     {
       "source": "waktu penyelesaian",
       "target": "3 sampai 7 hari kerja",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12946,7 +13172,7 @@
     {
       "source": "kata kunci",
       "target": "pindah domisili",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12954,7 +13180,7 @@
     {
       "source": "kata kunci",
       "target": "pindah alamat",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12962,7 +13188,7 @@
     {
       "source": "pindah domisili",
       "target": "pindah alamat",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12970,7 +13196,7 @@
     {
       "source": "pindah domisili",
       "target": "pindah rumah",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12978,7 +13204,7 @@
     {
       "source": "pindah alamat",
       "target": "pindah rumah",
-      "weight": 72,
+      "weight": 106,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12986,7 +13212,7 @@
     {
       "source": "pemerintah kota yogyakarta",
       "target": "kemantren tegalrejo",
-      "weight": 46,
+      "weight": 63,
       "label": "meliputi, memiliki",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -12994,7 +13220,7 @@
     {
       "source": "knowledge base ai",
       "target": "standar pelayanan publik kemantren tegalrejo tahun 2026",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13002,7 +13228,7 @@
     {
       "source": "- nama instansi",
       "target": "pemerintah kota yogyakarta",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13010,7 +13236,7 @@
     {
       "source": "- nama instansi",
       "target": "kemantren tegalrejo",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13018,7 +13244,7 @@
     {
       "source": "tompeyan tr iii 219 yogyakarta",
       "target": "kode pos",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13026,7 +13252,7 @@
     {
       "source": "- respons pengaduan",
       "target": "maksimal 3 tiga hari kerja",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13034,7 +13260,7 @@
     {
       "source": "2 sarana",
       "target": "prasarana fasilitas pendukung",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13042,7 +13268,7 @@
     {
       "source": "- fasilitas utama",
       "target": "sim pelayanan jss jogja smart service",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13050,7 +13276,7 @@
     {
       "source": "- fasilitas utama",
       "target": "komputer",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13058,7 +13284,7 @@
     {
       "source": "sim pelayanan jss jogja smart service",
       "target": "komputer",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13066,7 +13292,7 @@
     {
       "source": "sim pelayanan jss jogja smart service",
       "target": "printer",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13074,7 +13300,7 @@
     {
       "source": "- dasar hukum",
       "target": "perwal yogyakarta",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13082,7 +13308,7 @@
     {
       "source": "- dokumen lengkap dari kelurahan n1",
       "target": "n4 beserta lampiran 1 lembar",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13090,7 +13316,7 @@
     {
       "source": "- fotocopy ktp dan kk calon pengantin",
       "target": "masing 1 lembar",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13098,7 +13324,7 @@
     {
       "source": "- biaya",
       "target": "gratis",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13106,7 +13332,7 @@
     {
       "source": "- produk layanan",
       "target": "surat keterangan dispensasi nikah",
-      "weight": 42,
+      "weight": 59,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13114,7 +13340,7 @@
     {
       "source": "berdasarkan bagan pendaftaran pelayanan",
       "target": "berikut adalah daftar layanan yang",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13122,7 +13348,7 @@
     {
       "source": "3 untuk perpanjangan",
       "target": "fotokopi izin terdahulu izin yang lama dan menunjukkan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13130,7 +13356,7 @@
     {
       "source": "4 untuk perpanjangan",
       "target": "melampirkan fotokopi izin terdahulu izin yang lama dan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13138,7 +13364,7 @@
     {
       "source": "5 jika warga terlantar",
       "target": "melampirkan surat keterangan orang terlantar skot",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13146,7 +13372,7 @@
     {
       "source": "- persyaratan umum",
       "target": "mengacu pada panduan teknis di bagian d",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13154,7 +13380,7 @@
     {
       "source": "bekerja yang dibuat",
       "target": "dibubuhi material dan ditandatangani pemohon serta",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13162,7 +13388,7 @@
     {
       "source": "telah dibubuhi materai",
       "target": "ditandatangani oleh para ahli waris yang rela tidak",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13170,7 +13396,7 @@
     {
       "source": "menerima harta warisan",
       "target": "2 dua orang saksi serta diketahui ketua rt dan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13178,7 +13404,7 @@
     {
       "source": "dibubuhi materai",
       "target": "ditandatangani oleh pemohon",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13186,7 +13412,7 @@
     {
       "source": "dibubuhi materai",
       "target": "2 dua orang saksi serta",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13194,7 +13420,7 @@
     {
       "source": "ditandatangani oleh pemohon",
       "target": "2 dua orang saksi serta",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13202,7 +13428,7 @@
     {
       "source": "informasi persyaratan",
       "target": "pelayanan umum lain yang menjadi kewenangan kelurahan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13210,7 +13436,7 @@
     {
       "source": "1 salinan digital pernyataan tempat tinggal yang dibuat",
       "target": "dibubuhi materai",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13218,7 +13444,7 @@
     {
       "source": "organisasi kemasyarakatan yang bersangkutan",
       "target": "diketahui oleh ketua rt",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13226,7 +13452,7 @@
     {
       "source": "organisasi kemasyarakatan yang bersangkutan",
       "target": "ketua",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13234,7 +13460,7 @@
     {
       "source": "diketahui oleh ketua rt",
       "target": "ketua",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13242,7 +13468,7 @@
     {
       "source": "rw dan lurah",
       "target": "serta membawa berkas asli pada saat pemohon mengambil",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13250,7 +13476,7 @@
     {
       "source": "6 foto kantor atau sekretariat organisasi kemasyarakatan",
       "target": "tampak depan yang",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13258,7 +13484,7 @@
     {
       "source": "partai politik yang bersangkutan",
       "target": "diketahui oleh ketua rt",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13266,7 +13492,7 @@
     {
       "source": "partai politik yang bersangkutan",
       "target": "ketua rw dan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13274,7 +13500,7 @@
     {
       "source": "diketahui oleh ketua rt",
       "target": "ketua rw dan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13282,7 +13508,7 @@
     {
       "source": "melangsungkan pernikahan",
       "target": "baik sebagai calon istri maupun calon suami",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13290,7 +13516,7 @@
     {
       "source": "- untuk mengajukan permohonan",
       "target": "silakan login ke akun jss dan cari aplikasi",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13298,7 +13524,7 @@
     {
       "source": "1 login jss",
       "target": "masuk ke akun jss anda",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13306,7 +13532,7 @@
     {
       "source": "2 akses aplikasi",
       "target": "cari dan masuk ke aplikasi pelayanan kelurahan dan kecamatan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13314,7 +13540,7 @@
     {
       "source": "3 pilih menu",
       "target": "pilih menu nikah rujuk ntcr -",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13322,7 +13548,7 @@
     {
       "source": "3 pilih menu",
       "target": "nikah talak rujuk cerai",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13330,7 +13556,7 @@
     {
       "source": "pilih menu nikah rujuk ntcr -",
       "target": "nikah talak rujuk cerai",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13338,7 +13564,7 @@
     {
       "source": "- jika ada kendala aplikasi",
       "target": "silakan menghubungi help desk jss melalui",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13346,7 +13572,7 @@
     {
       "source": "nama",
       "target": "nik",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13354,7 +13580,7 @@
     {
       "source": "nama",
       "target": "ttl",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13362,7 +13588,7 @@
     {
       "source": "data almarhum ahli waris nama",
       "target": "ttl",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13370,7 +13596,7 @@
     {
       "source": "data almarhum ahli waris nama",
       "target": "alamat",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13378,7 +13604,7 @@
     {
       "source": "alamat",
       "target": "nik",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13386,7 +13612,7 @@
     {
       "source": "data pemohon nama",
       "target": "pekerjaan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13394,7 +13620,7 @@
     {
       "source": "ttl",
       "target": "pekerjaan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13402,7 +13628,7 @@
     {
       "source": "bahwa kantor dpw dpd dpc",
       "target": "beralamat di",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13410,7 +13636,7 @@
     {
       "source": "bahwa kantor sekretariat ormas",
       "target": "beralamat di",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13418,7 +13644,7 @@
     {
       "source": "- semua dokumen yang diunggah harus dalam format png",
       "target": "jpeg",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13426,7 +13652,7 @@
     {
       "source": "- semua dokumen yang diunggah harus dalam format png",
       "target": "atau jpg dengan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13434,7 +13660,7 @@
     {
       "source": "jpeg",
       "target": "atau jpg dengan",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13442,7 +13668,7 @@
     {
       "source": "- berkas asli wajib dibawa ke kelurahan untuk",
       "target": "verifikasi",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13450,7 +13676,7 @@
     {
       "source": "- untuk kendala teknis pada aplikasi jss",
       "target": "silakan menghubungi help desk jss",
-      "weight": 37,
+      "weight": 54,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13458,7 +13684,7 @@
     {
       "source": "sistem informasi virtual tegalrejo",
       "target": "kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13466,7 +13692,7 @@
     {
       "source": "sistem informasi virtual tegalrejo",
       "target": "yogyakarta",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13474,7 +13700,7 @@
     {
       "source": "kemantren tegalrejo",
       "target": "yogyakarta",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13482,7 +13708,7 @@
     {
       "source": "kemantren tegalrejo",
       "target": "kota yogyakarta",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13490,7 +13716,7 @@
     {
       "source": "setiap topik dipisah dengan baris kosong",
       "target": "dilengkapi kata kunci untuk memudahkan pencarian oleh ai ---",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13498,7 +13724,7 @@
     {
       "source": "jumlah penduduk",
       "target": "sekitar 30 000 jiwa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13506,7 +13732,7 @@
     {
       "source": "kata kunci",
       "target": "tentang kemantren",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13514,7 +13740,7 @@
     {
       "source": "kata kunci",
       "target": "profil kemantren",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13522,7 +13748,7 @@
     {
       "source": "tentang kemantren",
       "target": "profil kemantren",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13530,7 +13756,7 @@
     {
       "source": "tentang kemantren",
       "target": "wilayah kemantren",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13538,7 +13764,7 @@
     {
       "source": "tegalrejo no 1",
       "target": "tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13546,7 +13772,7 @@
     {
       "source": "tegalrejo no 1",
       "target": "kota yogyakarta",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13554,7 +13780,7 @@
     {
       "source": "tegalrejo",
       "target": "kota yogyakarta",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13562,7 +13788,7 @@
     {
       "source": "tegalrejo",
       "target": "daerah istimewa yogyakarta 55241",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13570,7 +13796,7 @@
     {
       "source": "kota yogyakarta",
       "target": "daerah istimewa yogyakarta 55241",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13578,7 +13804,7 @@
     {
       "source": "- instagram",
       "target": "kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13586,7 +13812,7 @@
     {
       "source": "kata kunci",
       "target": "kontak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13594,7 +13820,7 @@
     {
       "source": "kata kunci",
       "target": "telepon",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13602,7 +13828,7 @@
     {
       "source": "kontak",
       "target": "telepon",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13610,7 +13836,7 @@
     {
       "source": "kontak",
       "target": "nomor telepon",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13618,7 +13844,7 @@
     {
       "source": "- senin sampai jumat",
       "target": "pukul 08 00 sampai 15 00 wib",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13626,7 +13852,7 @@
     {
       "source": "- sabtu",
       "target": "tutup",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13634,7 +13860,7 @@
     {
       "source": "- minggu",
       "target": "tutup",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13642,7 +13868,7 @@
     {
       "source": "- hari libur nasional",
       "target": "tutup",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13650,7 +13876,7 @@
     {
       "source": "jam istirahat",
       "target": "pukul 12 00 sampai 13 00 wib pelayanan tutup sementara",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13658,7 +13884,7 @@
     {
       "source": "kata kunci",
       "target": "cara hubungi petugas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13666,7 +13892,7 @@
     {
       "source": "kata kunci",
       "target": "kontak petugas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13674,7 +13900,7 @@
     {
       "source": "cara hubungi petugas",
       "target": "kontak petugas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13682,7 +13908,7 @@
     {
       "source": "cara hubungi petugas",
       "target": "telpon petugas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13690,7 +13916,7 @@
     {
       "source": "kontak petugas",
       "target": "telpon petugas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13698,7 +13924,7 @@
     {
       "source": "kata kunci",
       "target": "kk baru",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13706,7 +13932,7 @@
     {
       "source": "kata kunci",
       "target": "buat kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13714,7 +13940,7 @@
     {
       "source": "kk baru",
       "target": "buat kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13722,7 +13948,7 @@
     {
       "source": "kk baru",
       "target": "bikin kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13730,7 +13956,7 @@
     {
       "source": "istri",
       "target": "atau suami",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13738,7 +13964,7 @@
     {
       "source": "kata kunci",
       "target": "tambah anggota kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13746,7 +13972,7 @@
     {
       "source": "kata kunci",
       "target": "kk tambah anak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13754,7 +13980,7 @@
     {
       "source": "tambah anggota kk",
       "target": "kk tambah anak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13762,7 +13988,7 @@
     {
       "source": "kata kunci",
       "target": "kurangi anggota kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13770,7 +13996,7 @@
     {
       "source": "kata kunci",
       "target": "kk pindah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13778,7 +14004,7 @@
     {
       "source": "kurangi anggota kk",
       "target": "kk pindah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13786,7 +14012,7 @@
     {
       "source": "kurangi anggota kk",
       "target": "kk meninggal",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13794,7 +14020,7 @@
     {
       "source": "persyaratan mengubah data pada kk seperti nama",
       "target": "alamat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13802,7 +14028,7 @@
     {
       "source": "persyaratan mengubah data pada kk seperti nama",
       "target": "status",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13810,7 +14036,7 @@
     {
       "source": "alamat",
       "target": "status",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13818,7 +14044,7 @@
     {
       "source": "status",
       "target": "pekerjaan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13826,7 +14052,7 @@
     {
       "source": "kata kunci",
       "target": "kk hilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13834,7 +14060,7 @@
     {
       "source": "kata kunci",
       "target": "kk rusak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13842,7 +14068,7 @@
     {
       "source": "kk hilang",
       "target": "kk rusak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13850,7 +14076,7 @@
     {
       "source": "kk hilang",
       "target": "ganti kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13858,7 +14084,7 @@
     {
       "source": "semua layanan kk baru",
       "target": "tambah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13866,7 +14092,7 @@
     {
       "source": "semua layanan kk baru",
       "target": "kurang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13874,7 +14100,7 @@
     {
       "source": "tambah",
       "target": "kurang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13882,7 +14108,7 @@
     {
       "source": "tambah",
       "target": "ubah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13890,7 +14116,7 @@
     {
       "source": "kurang",
       "target": "ubah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13898,7 +14124,7 @@
     {
       "source": "persyaratan membuat ktp untuk pertama kali",
       "target": "untuk warga usia 17 tahun ke atas atau yang sudah menikah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13906,7 +14132,7 @@
     {
       "source": "kata kunci",
       "target": "ktp pertama",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13914,7 +14140,7 @@
     {
       "source": "kata kunci",
       "target": "buat ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13922,7 +14148,7 @@
     {
       "source": "ktp pertama",
       "target": "buat ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13930,7 +14156,7 @@
     {
       "source": "kata kunci",
       "target": "ktp hilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13938,7 +14164,7 @@
     {
       "source": "kata kunci",
       "target": "ganti ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13946,7 +14172,7 @@
     {
       "source": "ktp hilang",
       "target": "ganti ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13954,7 +14180,7 @@
     {
       "source": "ktp hilang",
       "target": "ktp ilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13962,7 +14188,7 @@
     {
       "source": "kata kunci",
       "target": "ktp rusak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13970,7 +14196,7 @@
     {
       "source": "kata kunci",
       "target": "ganti ktp rusak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13978,7 +14204,7 @@
     {
       "source": "ktp rusak",
       "target": "ganti ktp rusak",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13986,7 +14212,7 @@
     {
       "source": "ktp rusak",
       "target": "ktp sobek",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13994,7 +14220,7 @@
     {
       "source": "kata kunci",
       "target": "perpanjang ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14002,7 +14228,7 @@
     {
       "source": "kata kunci",
       "target": "perbarui ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14010,7 +14236,7 @@
     {
       "source": "perpanjang ktp",
       "target": "perbarui ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14018,7 +14244,7 @@
     {
       "source": "perpanjang ktp",
       "target": "ktp kadaluarsa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14026,7 +14252,7 @@
     {
       "source": "persyaratan mengubah data pada ktp seperti nama",
       "target": "alamat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14034,7 +14260,7 @@
     {
       "source": "persyaratan mengubah data pada ktp seperti nama",
       "target": "pekerjaan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14042,7 +14268,7 @@
     {
       "source": "alamat",
       "target": "atau status",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14050,7 +14276,7 @@
     {
       "source": "pekerjaan",
       "target": "atau status",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14058,7 +14284,7 @@
     {
       "source": "anak di bawah umur 17 tahun belum bisa membuat ktp",
       "target": "cukup terdaftar di kk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14066,7 +14292,7 @@
     {
       "source": "kata kunci",
       "target": "sktm",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14074,7 +14300,7 @@
     {
       "source": "kata kunci",
       "target": "surat tidak mampu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14082,7 +14308,7 @@
     {
       "source": "sktm",
       "target": "surat tidak mampu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14090,7 +14316,7 @@
     {
       "source": "sktm",
       "target": "keterangan tidak mampu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14098,7 +14324,7 @@
     {
       "source": "kata kunci",
       "target": "fungsi sktm",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14106,7 +14332,7 @@
     {
       "source": "kata kunci",
       "target": "kegunaan sktm",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14114,7 +14340,7 @@
     {
       "source": "fungsi sktm",
       "target": "kegunaan sktm",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14122,7 +14348,7 @@
     {
       "source": "fungsi sktm",
       "target": "sktm untuk apa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14130,7 +14356,7 @@
     {
       "source": "kegunaan sktm",
       "target": "sktm untuk apa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14138,7 +14364,7 @@
     {
       "source": "kata kunci",
       "target": "domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14146,7 +14372,7 @@
     {
       "source": "kata kunci",
       "target": "surat domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14154,7 +14380,7 @@
     {
       "source": "domisili",
       "target": "surat domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14162,7 +14388,7 @@
     {
       "source": "domisili",
       "target": "keterangan domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14170,7 +14396,7 @@
     {
       "source": "- pembuatan",
       "target": "bank",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14178,7 +14404,7 @@
     {
       "source": "kata kunci",
       "target": "fungsi domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14186,7 +14412,7 @@
     {
       "source": "kata kunci",
       "target": "kegunaan domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14194,7 +14420,7 @@
     {
       "source": "fungsi domisili",
       "target": "kegunaan domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14202,7 +14428,7 @@
     {
       "source": "fungsi domisili",
       "target": "domisili untuk apa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14210,7 +14436,7 @@
     {
       "source": "kata kunci",
       "target": "izin keramaian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14218,7 +14444,7 @@
     {
       "source": "kata kunci",
       "target": "izin acara",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14226,7 +14452,7 @@
     {
       "source": "izin keramaian",
       "target": "izin acara",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14234,7 +14460,7 @@
     {
       "source": "izin keramaian",
       "target": "izin hajatan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14242,7 +14468,7 @@
     {
       "source": "kata kunci",
       "target": "fungsi izin keramaian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14250,7 +14476,7 @@
     {
       "source": "kata kunci",
       "target": "izin untuk acara",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14258,7 +14484,7 @@
     {
       "source": "fungsi izin keramaian",
       "target": "izin untuk acara",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14266,7 +14492,7 @@
     {
       "source": "fungsi izin keramaian",
       "target": "izin keramaian untuk apa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14274,7 +14500,7 @@
     {
       "source": "izin untuk acara",
       "target": "izin keramaian untuk apa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14282,7 +14508,7 @@
     {
       "source": "kata kunci",
       "target": "pindah keluar",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14290,7 +14516,7 @@
     {
       "source": "kata kunci",
       "target": "surat pindah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14298,7 +14524,7 @@
     {
       "source": "pindah keluar",
       "target": "surat pindah",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14306,7 +14532,7 @@
     {
       "source": "pindah keluar",
       "target": "pindah domisili",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14314,7 +14540,7 @@
     {
       "source": "kata kunci",
       "target": "pindah masuk",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14322,7 +14548,7 @@
     {
       "source": "kata kunci",
       "target": "surat datang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14330,7 +14556,7 @@
     {
       "source": "pindah masuk",
       "target": "surat datang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14338,7 +14564,7 @@
     {
       "source": "pindah masuk",
       "target": "kedatangan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14346,7 +14572,7 @@
     {
       "source": "batas waktu",
       "target": "sebaiknya diurus sebelum anak berusia 1 tahun",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14354,7 +14580,7 @@
     {
       "source": "jika terlambat",
       "target": "ada prosedur tambahan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14362,7 +14588,7 @@
     {
       "source": "kata kunci",
       "target": "akta kelahiran",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14370,7 +14596,7 @@
     {
       "source": "kata kunci",
       "target": "surat lahir",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14378,7 +14604,7 @@
     {
       "source": "kata kunci",
       "target": "akta kematian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14386,7 +14612,7 @@
     {
       "source": "kata kunci",
       "target": "surat kematian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14394,7 +14620,7 @@
     {
       "source": "akta kematian",
       "target": "surat kematian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14402,7 +14628,7 @@
     {
       "source": "akta kematian",
       "target": "meninggal",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14410,7 +14636,7 @@
     {
       "source": "untuk pengajuan kur",
       "target": "izin usaha",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14418,7 +14644,7 @@
     {
       "source": "untuk pengajuan kur",
       "target": "atau keperluan administrasi usaha lainnya",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14426,7 +14652,7 @@
     {
       "source": "izin usaha",
       "target": "atau keperluan administrasi usaha lainnya",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14434,7 +14660,7 @@
     {
       "source": "kata kunci",
       "target": "sku",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14442,7 +14668,7 @@
     {
       "source": "3 fotokopi dokumen yang menunjukkan perbedaan nama ijazah",
       "target": "akta",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14450,7 +14676,7 @@
     {
       "source": "kata kunci",
       "target": "beda nama",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14458,7 +14684,7 @@
     {
       "source": "kata kunci",
       "target": "nama berbeda",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14466,7 +14692,7 @@
     {
       "source": "beda nama",
       "target": "nama berbeda",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14474,7 +14700,7 @@
     {
       "source": "kata kunci",
       "target": "surat keterangan umum",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14482,7 +14708,7 @@
     {
       "source": "kata kunci",
       "target": "surat bebas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14490,7 +14716,7 @@
     {
       "source": "surat keterangan umum",
       "target": "surat bebas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14498,47 +14724,7 @@
     {
       "source": "surat keterangan umum",
       "target": "sku umum",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "6 jika lengkap",
-      "target": "petugas",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "6 jika lengkap",
-      "target": "surat",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "petugas",
-      "target": "surat",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "kata kunci",
-      "target": "alur pelayanan",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "kata kunci",
-      "target": "cara urus surat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14546,7 +14732,7 @@
     {
       "source": "- kk",
       "target": "1 sampai 3 hari kerja",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14554,7 +14740,7 @@
     {
       "source": "- ktp",
       "target": "1 sampai 3 hari kerja",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14562,7 +14748,7 @@
     {
       "source": "- sktm",
       "target": "1 hari kerja",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14570,7 +14756,7 @@
     {
       "source": "- surat domisili",
       "target": "1 hari kerja",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14578,7 +14764,7 @@
     {
       "source": "- izin keramaian",
       "target": "3 sampai 7 hari kerja",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14586,7 +14772,7 @@
     {
       "source": "jika ada pihak yang meminta biaya",
       "target": "segera laporkan ke petugas atau call center di 0274 123456",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14594,7 +14780,7 @@
     {
       "source": "kata kunci",
       "target": "biaya",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14602,7 +14788,7 @@
     {
       "source": "kata kunci",
       "target": "harga",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14610,7 +14796,7 @@
     {
       "source": "biaya",
       "target": "harga",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14618,7 +14804,7 @@
     {
       "source": "biaya",
       "target": "bayar berapa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14626,7 +14812,7 @@
     {
       "source": "kata kunci",
       "target": "daring",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14634,7 +14820,7 @@
     {
       "source": "kata kunci",
       "target": "internet",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14642,7 +14828,7 @@
     {
       "source": "daring",
       "target": "internet",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14650,7 +14836,7 @@
     {
       "source": "daring",
       "target": "lewat online",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14658,7 +14844,7 @@
     {
       "source": "internet",
       "target": "lewat online",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14666,7 +14852,7 @@
     {
       "source": "kata kunci",
       "target": "diwakilkan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14674,7 +14860,7 @@
     {
       "source": "kata kunci",
       "target": "kuasa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14682,7 +14868,7 @@
     {
       "source": "diwakilkan",
       "target": "kuasa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14690,7 +14876,7 @@
     {
       "source": "diwakilkan",
       "target": "wakil",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14698,7 +14884,7 @@
     {
       "source": "kuasa",
       "target": "wakil",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14706,7 +14892,7 @@
     {
       "source": "jika dokumen kk",
       "target": "ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14714,7 +14900,7 @@
     {
       "source": "jika dokumen kk",
       "target": "akta hilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14722,7 +14908,7 @@
     {
       "source": "ktp",
       "target": "akta hilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14730,7 +14916,7 @@
     {
       "source": "kata kunci",
       "target": "dokumen hilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14738,7 +14924,7 @@
     {
       "source": "kata kunci",
       "target": "surat hilang",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14746,7 +14932,7 @@
     {
       "source": "anak di bawah 17 tahun belum bisa membuat ktp",
       "target": "cukup terdaftar di kartu keluarga",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14754,7 +14940,7 @@
     {
       "source": "kata kunci",
       "target": "sabtu tutup",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14762,7 +14948,7 @@
     {
       "source": "kata kunci",
       "target": "hari sabtu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14770,7 +14956,7 @@
     {
       "source": "sabtu tutup",
       "target": "hari sabtu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14778,7 +14964,7 @@
     {
       "source": "sabtu tutup",
       "target": "jam sabtu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14786,7 +14972,7 @@
     {
       "source": "hari sabtu",
       "target": "jam sabtu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14794,7 +14980,7 @@
     {
       "source": "berapa lama",
       "target": "pembuatan surat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14802,7 +14988,7 @@
     {
       "source": "kata kunci",
       "target": "berapa lama",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14810,7 +14996,7 @@
     {
       "source": "kata kunci",
       "target": "waktu penyelesaian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14818,7 +15004,7 @@
     {
       "source": "berapa lama",
       "target": "waktu penyelesaian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14826,7 +15012,7 @@
     {
       "source": "berapa lama",
       "target": "kapan selesai",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14834,7 +15020,7 @@
     {
       "source": "kata kunci",
       "target": "antar jemput",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14842,7 +15028,7 @@
     {
       "source": "kata kunci",
       "target": "delivery",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14850,7 +15036,7 @@
     {
       "source": "antar jemput",
       "target": "delivery",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14858,7 +15044,7 @@
     {
       "source": "antar jemput",
       "target": "kirim dokumen",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14866,7 +15052,7 @@
     {
       "source": "delivery",
       "target": "kirim dokumen",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14874,7 +15060,7 @@
     {
       "source": "jika ada keluhan",
       "target": "saran",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14882,7 +15068,7 @@
     {
       "source": "jika ada keluhan",
       "target": "atau pengaduan terhadap layanan kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14890,7 +15076,7 @@
     {
       "source": "saran",
       "target": "atau pengaduan terhadap layanan kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14898,7 +15084,7 @@
     {
       "source": "- instagram dm",
       "target": "kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14906,7 +15092,7 @@
     {
       "source": "kata kunci",
       "target": "pengaduan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14914,7 +15100,7 @@
     {
       "source": "- senin sampai jumat",
       "target": "08 00 sampai 15 00 wib",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14922,7 +15108,7 @@
     {
       "source": "di luar jam tersebut",
       "target": "pengaduan bisa dikirim",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14930,7 +15116,7 @@
     {
       "source": "kata kunci",
       "target": "jam pengaduan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14938,7 +15124,7 @@
     {
       "source": "kata kunci",
       "target": "kontak pengaduan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14946,7 +15132,7 @@
     {
       "source": "jam pengaduan",
       "target": "kontak pengaduan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14954,7 +15140,7 @@
     {
       "source": "kata kunci",
       "target": "cara cepat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14962,7 +15148,7 @@
     {
       "source": "kata kunci",
       "target": "biar cepat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14970,7 +15156,7 @@
     {
       "source": "cara cepat",
       "target": "biar cepat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14978,7 +15164,7 @@
     {
       "source": "cara cepat",
       "target": "urus surat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14986,7 +15172,7 @@
     {
       "source": "biar cepat",
       "target": "urus surat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14994,7 +15180,7 @@
     {
       "source": "kata kunci",
       "target": "dokumen yang dibawa",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15002,7 +15188,7 @@
     {
       "source": "kata kunci",
       "target": "syarat umum",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15010,7 +15196,7 @@
     {
       "source": "dokumen yang dibawa",
       "target": "syarat umum",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15018,7 +15204,7 @@
     {
       "source": "dokumen yang dibawa",
       "target": "dokumen dasar",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15026,7 +15212,7 @@
     {
       "source": "syarat umum",
       "target": "dokumen dasar",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15034,7 +15220,7 @@
     {
       "source": "misalnya saat mengurus kk baru",
       "target": "sekalian bisa mengurus ktp",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15042,7 +15228,7 @@
     {
       "source": "sampaikan ke petugas di awal supaya bisa",
       "target": "bersamaan",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15050,7 +15236,7 @@
     {
       "source": "kata kunci",
       "target": "beberapa surat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15058,7 +15244,7 @@
     {
       "source": "kata kunci",
       "target": "urus sekaligus",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15066,7 +15252,7 @@
     {
       "source": "beberapa surat",
       "target": "urus sekaligus",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15074,7 +15260,7 @@
     {
       "source": "kata kunci",
       "target": "fotokopi",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15082,7 +15268,7 @@
     {
       "source": "kata kunci",
       "target": "fotokopi di kantor",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15090,63 +15276,7 @@
     {
       "source": "fotokopi",
       "target": "fotokopi di kantor",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "fotokopi",
-      "target": "ada fotokopi tidak",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "fotokopi di kantor",
-      "target": "ada fotokopi tidak",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "ambil nomor di mesin antrian dekat pintu masuk",
-      "target": "lalu tunggu sampai nomor dipanggil",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "kata kunci",
-      "target": "nomor antrian",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "kata kunci",
-      "target": "ambil nomor",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "nomor antrian",
-      "target": "ambil nomor",
-      "weight": 36,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
-    },
-    {
-      "source": "nomor antrian",
-      "target": "sistem antrian",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15154,7 +15284,7 @@
     {
       "source": "kata kunci",
       "target": "darurat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15162,7 +15292,7 @@
     {
       "source": "kata kunci",
       "target": "emergency",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15170,7 +15300,7 @@
     {
       "source": "darurat",
       "target": "emergency",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15178,7 +15308,7 @@
     {
       "source": "darurat",
       "target": "ambulans",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15186,7 +15316,7 @@
     {
       "source": "emergency",
       "target": "ambulans",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15194,7 +15324,7 @@
     {
       "source": "kata kunci",
       "target": "difabel",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15202,7 +15332,7 @@
     {
       "source": "kata kunci",
       "target": "disabilitas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15210,7 +15340,7 @@
     {
       "source": "difabel",
       "target": "disabilitas",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15218,7 +15348,7 @@
     {
       "source": "difabel",
       "target": "penyandang cacat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15226,7 +15356,7 @@
     {
       "source": "disabilitas",
       "target": "penyandang cacat",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15234,7 +15364,7 @@
     {
       "source": "kata kunci",
       "target": "lansia",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15242,7 +15372,7 @@
     {
       "source": "kata kunci",
       "target": "orang tua",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15250,7 +15380,7 @@
     {
       "source": "lansia",
       "target": "orang tua",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15258,7 +15388,7 @@
     {
       "source": "lansia",
       "target": "prioritas lansia",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15266,7 +15396,7 @@
     {
       "source": "orang tua",
       "target": "prioritas lansia",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15274,7 +15404,7 @@
     {
       "source": "- semua layanan gratis",
       "target": "tidak ada pungutan biaya",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15282,7 +15412,7 @@
     {
       "source": "- data kontak dan jam pelayanan dapat berubah",
       "target": "selalu konfirmasi ke kantor jika ragu",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15290,7 +15420,7 @@
     {
       "source": "- untuk layanan yang tidak tercantum di sini",
       "target": "hubungi langsung petugas kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15298,7 +15428,7 @@
     {
       "source": "jika ada informasi yang perlu ditambahkan",
       "target": "hubungi admin kemantren tegalrejo",
-      "weight": 36,
+      "weight": 53,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15306,7 +15436,119 @@
     {
       "source": "kata kunci",
       "target": "dokumentasi",
-      "weight": 36,
+      "weight": 53,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "6 jika lengkap",
+      "target": "petugas",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "6 jika lengkap",
+      "target": "surat",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "petugas",
+      "target": "surat",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "kata kunci",
+      "target": "alur pelayanan",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "kata kunci",
+      "target": "cara urus surat",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "fotokopi",
+      "target": "ada fotokopi tidak",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "fotokopi di kantor",
+      "target": "ada fotokopi tidak",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "ambil nomor di mesin antrian dekat pintu masuk",
+      "target": "lalu tunggu sampai nomor dipanggil",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "kata kunci",
+      "target": "nomor antrian",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "kata kunci",
+      "target": "ambil nomor",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "nomor antrian",
+      "target": "ambil nomor",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "nomor antrian",
+      "target": "sistem antrian",
+      "weight": 40,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "fotokopi",
+      "target": "ada fotokopi tidak ---",
+      "weight": 13,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "fotokopi di kantor",
+      "target": "ada fotokopi tidak ---",
+      "weight": 13,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -17494,6 +17736,14 @@
       "label": "dibuat oleh",
       "semantic": true,
       "sourceFile": "enrich:Buku Pandua Sarat 1.md"
+    },
+    {
+      "source": "- chatbot caty ini akan terus belajar dari pertanyaan yang",
+      "target": "ditanyakan dan menambah pengetahuannya otomatis ---",
+      "weight": 1,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
     }
   ]
 }

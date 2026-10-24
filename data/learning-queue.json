@@ -14,28 +14,6 @@
     "resolvedAt": "2026-10-09T12:20:13.380Z"
   },
   {
-    "id": "lq_1791546568814_wj0r",
-    "question": "apa bisa di sini beli sayur",
-    "original": "apa bisa di sini beli sayur",
-    "variants": [],
-    "count": 1,
-    "firstAsked": "2026-10-09T11:49:28.814Z",
-    "lastAsked": "2026-10-09T11:49:28.814Z",
-    "priority": "normal",
-    "resolved": false
-  },
-  {
-    "id": "lq_1791546580202_9qcq",
-    "question": "apa di kemetrrina ada uang",
-    "original": "apa di kemetrrina ada uang",
-    "variants": [],
-    "count": 1,
-    "firstAsked": "2026-10-09T11:49:40.202Z",
-    "lastAsked": "2026-10-09T11:49:40.202Z",
-    "priority": "normal",
-    "resolved": false
-  },
-  {
     "id": "lq_1791546599487_sk6h",
     "question": "bagimana cara membat ktp baru?",
     "original": "bagimana cara membat KTP baru?",
@@ -67,28 +45,6 @@
     "count": 1,
     "firstAsked": "2026-10-12T02:50:34.374Z",
     "lastAsked": "2026-10-12T02:50:34.374Z",
-    "priority": "normal",
-    "resolved": false
-  },
-  {
-    "id": "lq_1791773968153_jp30",
-    "question": "okey terimakasih sayang",
-    "original": "Okey Terimakasih sayang",
-    "variants": [],
-    "count": 1,
-    "firstAsked": "2026-10-12T02:59:28.153Z",
-    "lastAsked": "2026-10-12T02:59:28.153Z",
-    "priority": "normal",
-    "resolved": false
-  },
-  {
-    "id": "lq_1791773995922_axtk",
-    "question": "disini jual sayur ngak",
-    "original": "disini jual sayur ngak",
-    "variants": [],
-    "count": 1,
-    "firstAsked": "2026-10-12T02:59:55.922Z",
-    "lastAsked": "2026-10-12T02:59:55.922Z",
     "priority": "normal",
     "resolved": false
   },
@@ -133,6 +89,28 @@
     "count": 1,
     "firstAsked": "2026-10-13T02:42:53.890Z",
     "lastAsked": "2026-10-13T02:42:53.890Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1792385148296_spm8",
+    "question": "siapa nama presiden ri ke 5?",
+    "original": "siapa nama presiden RI Ke 5?",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-19T04:45:48.296Z",
+    "lastAsked": "2026-10-19T04:45:48.296Z",
+    "priority": "normal",
+    "resolved": false
+  },
+  {
+    "id": "lq_1792385710604_jbds",
+    "question": "nomor kamteren itu berapa?",
+    "original": "nomor kamteren itu berapa?",
+    "variants": [],
+    "count": 1,
+    "firstAsked": "2026-10-19T04:55:10.604Z",
+    "lastAsked": "2026-10-19T04:55:10.604Z",
     "priority": "normal",
     "resolved": false
   }

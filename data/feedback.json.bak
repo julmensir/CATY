@@ -691,5 +691,115 @@
     "model": "unknown",
     "source": "memory",
     "timestamp": "2026-10-13T05:36:19.026Z"
+  },
+  {
+    "id": "fb_1792328090922_d5iu",
+    "question": "Syarat KTP hilang",
+    "answer": "Syarat mengganti KTP yang hilang:\n\n1. Surat keterangan kehilangan dari Polisi\n2. Fotokopi Kartu Keluarga (KK)\n3. Surat pengantar dari RT/RW\n4. Formulir permohonan KTP (diisi di lokasi)",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "Mistral AI",
+    "model": "open-mistral-nemo",
+    "source": "ai",
+    "timestamp": "2026-10-18T12:54:50.922Z"
+  },
+  {
+    "id": "fb_1792328092318_ndv5",
+    "question": "Syarat membuat KK baru",
+    "answer": "Syarat membuat Kartu Keluarga (KK) baru:\n\n1. Surat pengantar dari RT/RW setempat (asli)\n2. Fotokopi KTP suami dan istri\n3. Fotokopi Buku Nikah atau Akta Perkawinan\n4. Formulir permohonan KK (diisi di lokasi)\n5. Fotokopi Akta Kelahiran anak jika sudah punya anak\n\nWaktu penyelesaian: 1 sampai 3 hari kerja.\nBiaya: GRATIS.",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "Mistral AI",
+    "model": "open-mistral-nemo",
+    "source": "ai",
+    "timestamp": "2026-10-18T12:54:52.318Z"
+  },
+  {
+    "id": "fb_1792328117336_cgq3",
+    "question": "Jam pelayanan Kemantren",
+    "answer": "Jam pelayanan Kemantren Tegalrejo:\n• Senin sampai Jumat:\n  • Pukul 08.00 sampai 15.00 WIB\n  • Istirahat pukul 12.00 sampai 13.00 WIB (pelayanan tutup sementara)\n• Sabtu: TUTUP\n• Minggu: TUTUP\n• Hari libur nasional: TUTUP",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "unknown",
+    "model": "unknown",
+    "source": "memory",
+    "timestamp": "2026-10-18T12:55:17.336Z"
+  },
+  {
+    "id": "fb_1792328119069_u8a6",
+    "question": "Syarat KTP hilang",
+    "answer": "Syarat mengganti KTP yang hilang:\n\n1. Surat keterangan kehilangan dari Polisi\n2. Fotokopi Kartu Keluarga (KK)\n3. Surat pengantar dari RT/RW\n4. Formulir permohonan KTP (diisi di lokasi)",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "unknown",
+    "model": "unknown",
+    "source": "memory",
+    "timestamp": "2026-10-18T12:55:19.069Z"
+  },
+  {
+    "id": "fb_1792328120474_l1lg",
+    "question": "Syarat membuat KK baru",
+    "answer": "Syarat membuat Kartu Keluarga (KK) baru:\n\n1. Surat pengantar dari RT/RW setempat (asli)\n2. Fotokopi KTP suami dan istri\n3. Fotokopi Buku Nikah atau Akta Perkawinan\n4. Formulir permohonan KK (diisi di lokasi)\n5. Fotokopi Akta Kelahiran anak jika sudah punya anak\n\nWaktu penyelesaian: 1 sampai 3 hari kerja.\nBiaya: GRATIS.",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "unknown",
+    "model": "unknown",
+    "source": "memory",
+    "timestamp": "2026-10-18T12:55:20.474Z"
+  },
+  {
+    "id": "fb_1792328122420_bkco",
+    "question": "Alamat Kemantren Tegalrejo",
+    "answer": "Alamat lengkap Kantor Kemantren Tegalrejo:\nJl. Tompeyan TR III/219, Yogyakarta, Kode Pos: 55244",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "unknown",
+    "model": "unknown",
+    "source": "memory",
+    "timestamp": "2026-10-18T12:55:22.420Z"
+  },
+  {
+    "id": "fb_1792328124041_j7zl",
+    "question": "Jam pelayanan Kemantren",
+    "answer": "Jam pelayanan Kemantren Tegalrejo:\n• Senin sampai Jumat:\n  • Pukul 08.00 sampai 15.00 WIB\n  • Istirahat pukul 12.00 sampai 13.00 WIB (pelayanan tutup sementara)\n• Sabtu: TUTUP\n• Minggu: TUTUP\n• Hari libur nasional: TUTUP",
+    "rating": "good",
+    "sessionId": "sess_1792328073175_cswa001f",
+    "provider": "unknown",
+    "model": "unknown",
+    "source": "memory",
+    "timestamp": "2026-10-18T12:55:24.041Z"
+  },
+  {
+    "id": "fb_1792380973959_rutx",
+    "question": "Syarat membuat KK baru",
+    "answer": "Syarat membuat Kartu Keluarga (KK) baru:\n\n1. Surat pengantar dari RT/RW setempat (asli)\n2. Fotokopi KTP suami dan istri\n3. Fotokopi Buku Nikah atau Akta Perkawinan\n4. Formulir permohonan KK (diisi di lokasi)\n5. Fotokopi Akta Kelahiran anak jika sudah punya anak\n\nWaktu penyelesaian: 1 sampai 3 hari kerja.\nBiaya: GRATIS.",
+    "rating": "good",
+    "sessionId": "sess_1792380968233_rwqempjl",
+    "provider": "Mistral AI",
+    "model": "open-mistral-nemo",
+    "source": "ai",
+    "timestamp": "2026-10-19T03:36:13.959Z"
+  },
+  {
+    "id": "fb_1792381021776_vrtf",
+    "question": "Syarat KTP hilang",
+    "answer": "Syarat mengganti KTP yang hilang:\n\n1. Surat keterangan kehilangan dari Polisi\n2. Fotokopi Kartu Keluarga (KK)\n3. Surat pengantar dari RT/RW\n4. Formulir permohonan KTP (diisi di lokasi)",
+    "rating": "good",
+    "sessionId": "sess_1792380968233_rwqempjl",
+    "provider": "Mistral AI",
+    "model": "open-mistral-nemo",
+    "source": "ai",
+    "timestamp": "2026-10-19T03:37:01.776Z"
+  },
+  {
+    "id": "fb_1792385236464_u92y",
+    "question": "Syarat KTP hilang",
+    "answer": "Syarat mengganti KTP yang hilang:\n\n1. Surat keterangan kehilangan dari Polisi\n2. Fotokopi Kartu Keluarga (KK)\n3. Surat pengantar dari RT/RW\n4. Formulir permohonan KTP (diisi di lokasi)",
+    "rating": "good",
+    "sessionId": "sess_1792385077957_chqscvbk",
+    "provider": "unknown",
+    "model": "unknown",
+    "source": "memory",
+    "timestamp": "2026-10-19T04:47:16.464Z"
   }
 ]

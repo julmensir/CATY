@@ -57,24 +57,6 @@
     "resolved": false
   },
   {
-    "id": "uq_1791773968152_o4j3",
-    "question": "Okey Terimakasih sayang",
-    "sessionId": "sess_1791773242057_j3ub82bl",
-    "count": 1,
-    "firstAsked": "2026-10-12T02:59:28.152Z",
-    "lastAsked": "2026-10-12T02:59:28.152Z",
-    "resolved": false
-  },
-  {
-    "id": "uq_1791773995920_7km5",
-    "question": "disini jual sayur ngak",
-    "sessionId": "sess_1791773242057_j3ub82bl",
-    "count": 1,
-    "firstAsked": "2026-10-12T02:59:55.920Z",
-    "lastAsked": "2026-10-12T02:59:55.920Z",
-    "resolved": false
-  },
-  {
     "id": "uq_1791774556027_w2p0",
     "question": "syarata buat KTP baru",
     "sessionId": "sess_1791774248831_0vbw41jw",
@@ -108,6 +90,24 @@
     "count": 1,
     "firstAsked": "2026-10-13T02:42:53.879Z",
     "lastAsked": "2026-10-13T02:42:53.879Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1792385148290_pku1",
+    "question": "siapa nama presiden RI Ke 5?",
+    "sessionId": "sess_1792385077957_chqscvbk",
+    "count": 1,
+    "firstAsked": "2026-10-19T04:45:48.290Z",
+    "lastAsked": "2026-10-19T04:45:48.290Z",
+    "resolved": false
+  },
+  {
+    "id": "uq_1792385710602_8dl6",
+    "question": "nomor kamteren itu berapa?",
+    "sessionId": "sess_1792385077957_chqscvbk",
+    "count": 1,
+    "firstAsked": "2026-10-19T04:55:10.602Z",
+    "lastAsked": "2026-10-19T04:55:10.602Z",
     "resolved": false
   }
 ]

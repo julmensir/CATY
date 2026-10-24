@@ -1,6 +1,5 @@
 // ============================================================
 // SIVT AI — Admin Dashboard Script (TABLER FINAL)
-// 100% kompatibel dengan Tabler Icons
 // ============================================================
 
 let currentUser = null;
@@ -10,6 +9,7 @@ let currentTheme = null;
 let currentInboxTab = 'all';
 let currentFeedbackFilter = 'all';
 let currentProviderMode = 'builtin';
+let currentSettingsTab = 'umum';
 let graphNetwork = null;
 let graphNodesDataset = null;
 let graphEdgesDataset = null;
@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (loginPage) loginPage.style.display = 'flex';
   if (adminPage) adminPage.style.display = 'none';
 
-  // Sidebar nav binding
   document.querySelectorAll('.nav-link[data-page]').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
@@ -50,7 +49,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Notif dropdown auto-close
   document.addEventListener('click', (e) => {
     const wrapper = e.target.closest('.dropdown');
     document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
@@ -61,7 +59,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // Keyboard Escape
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal.show').forEach(m => {
@@ -86,14 +83,10 @@ function startLiveClock() {
   if (!clockEl || !dateEl) return;
   function update() {
     const now = new Date();
-
-    // ✅ Jam format rapi: 19.01.25
     const hh = String(now.getHours()).padStart(2, '0');
     const mm = String(now.getMinutes()).padStart(2, '0');
     const ss = String(now.getSeconds()).padStart(2, '0');
     clockEl.textContent = `${hh}.${mm}.${ss}`;
-
-    // ✅ Tanggal pendek cantik: "Sen, 11 Okt 2026"
     const day = String(now.getDate()).padStart(2, '0');
     const monthNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
     const dayNames = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
@@ -112,20 +105,14 @@ async function toggleDarkMode() {
   html.setAttribute('data-bs-theme', next);
   localStorage.setItem('sivt-theme', next);
   const icon = document.getElementById('darkModeIcon');
-  if (icon) {
-    icon.className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
-  }
-  // ✅ FIX: Dark mode admin hanya di localStorage.
-  // Jangan POST ke server supaya tidak ganggu warga.
+  if (icon) icon.className = next === 'dark' ? 'ti ti-sun' : 'ti ti-moon';
 }
 (function() {
   const saved = localStorage.getItem('sivt-theme') || 'light';
   document.documentElement.setAttribute('data-bs-theme', saved);
   document.addEventListener('DOMContentLoaded', () => {
     const icon = document.getElementById('darkModeIcon');
-    if (icon && saved === 'dark') {
-      icon.className = 'ti ti-sun';
-    }
+    if (icon && saved === 'dark') icon.className = 'ti ti-sun';
   });
 })();
 
@@ -141,62 +128,39 @@ async function loadPublicConfigAdmin() {
   try {
     const res = await fetch('/api/config/public');
     const cfg = await res.json();
-
-    // ✅ AUTO-UPDATE JUDUL TAB BROWSER
     document.title = `${cfg.aiName || 'SIVT AI'} - Admin Dashboard`;
-
     const loginTitle = document.getElementById('loginTitle');
     if (loginTitle) loginTitle.textContent = cfg.aiName || 'SIVT AI';
     const sidebarAiName = document.getElementById('sidebarAiName');
     if (sidebarAiName) sidebarAiName.textContent = cfg.aiName || 'SIVT AI';
-
-    const logoHtml = cfg.logoUrl
-      ? `<img src="${cfg.logoUrl}" alt="logo" style="width:100%;height:100%;object-fit:contain;">`
-      : 'S';
+    const logoHtml = cfg.logoUrl ? `<img src="${cfg.logoUrl}" alt="logo" style="width:100%;height:100%;object-fit:contain;">` : 'S';
     const loginLogo = document.getElementById('loginLogo');
     if (loginLogo) loginLogo.innerHTML = logoHtml;
     const sidebarLogo = document.getElementById('sidebarLogo');
     if (sidebarLogo) sidebarLogo.innerHTML = logoHtml;
-
-    // ✅ FIX: Tema admin TIDAK di-apply di sini.
-    // Tema admin di-load terpisah via loadAdminTheme().
-    // Endpoint publik hanya untuk logo, nama, tagline, dll.
-
     applyLogoSizeAdmin(cfg.logoSize || 'medium');
-
     if (cfg.logoUrl) {
       let fav = document.querySelector('link[rel="icon"]');
-      if (!fav) {
-        fav = document.createElement('link');
-        fav.rel = 'icon';
-        document.head.appendChild(fav);
-      }
+      if (!fav) { fav = document.createElement('link'); fav.rel = 'icon'; document.head.appendChild(fav); }
       fav.href = cfg.logoUrl;
     }
-  } catch (err) {
-    console.warn('[CONFIG] Error:', err.message);
-  }
+  } catch (err) { console.warn('[CONFIG] Error:', err.message); }
 }
 
 // ============================================================
-// LOAD ADMIN THEME — Selalu ambil tema dari endpoint admin
+// LOAD ADMIN THEME
 // ============================================================
 async function loadAdminTheme() {
-  if (!adminToken) return;  // Belum login, skip
+  if (!adminToken) return;
   try {
     const res = await adminFetch('/api/admin/theme');
     if (!res.ok) return;
     const data = await res.json();
     if (data.theme) {
-      currentTheme = {
-        ...data.theme,
-        applyToWarga: data.themeApplyToWarga === true
-      };
+      currentTheme = { ...data.theme, applyToWarga: data.themeApplyToWarga === true };
       applyTheme(data.theme);
     }
-  } catch (err) {
-    console.warn('[ADMIN-THEME] Gagal load:', err.message);
-  }
+  } catch (err) { console.warn('[ADMIN-THEME] Gagal load:', err.message); }
 }
 
 // ============================================================
@@ -204,26 +168,17 @@ async function loadAdminTheme() {
 // ============================================================
 function applyTheme(theme) {
   if (!theme) return;
-  // ❌ JANGAN timpa currentTheme di sini — biar applyToWarga tetap tersimpan
-  // currentTheme = theme;  ← HAPUS BARIS INI
-
   const root = document.documentElement;
   if (theme.primary) {
     root.style.setProperty('--tblr-primary', theme.primary);
     root.style.setProperty('--tblr-blue', theme.primary);
     root.style.setProperty('--tblr-btn-primary-bg', theme.primary);
   }
-  if (theme.primaryDark) {
-    root.style.setProperty('--tblr-primary-darken', theme.primaryDark);
-  }
-  if (theme.accent) {
-    root.style.setProperty('--tblr-pink', theme.accent);
-  }
+  if (theme.primaryDark) root.style.setProperty('--tblr-primary-darken', theme.primaryDark);
+  if (theme.accent) root.style.setProperty('--tblr-pink', theme.accent);
   if (theme.sidebarStart && theme.sidebarEnd) {
     const sidebar = document.getElementById('adminSidebar');
-    if (sidebar) {
-      sidebar.style.background = `linear-gradient(180deg, ${theme.sidebarStart} 0%, ${theme.primary || theme.sidebarEnd} 50%, ${theme.sidebarEnd} 100%)`;
-    }
+    if (sidebar) sidebar.style.background = `linear-gradient(180deg, ${theme.sidebarStart} 0%, ${theme.primary || theme.sidebarEnd} 50%, ${theme.sidebarEnd} 100%)`;
   }
 }
 function previewTheme() {
@@ -245,10 +200,7 @@ function syncColorFromText(key) {
   const colorEl = document.getElementById(`theme-${key}`);
   if (!textEl || !colorEl) return;
   const val = textEl.value.trim();
-  if (/^#[0-9a-f]{6}$/i.test(val)) {
-    colorEl.value = val;
-    previewTheme();
-  }
+  if (/^#[0-9a-f]{6}$/i.test(val)) { colorEl.value = val; previewTheme(); }
 }
 const PRESETS = {
   default: { primary: '#0d47a1', primaryDark: '#0a3a8a', accent: '#ec4899' },
@@ -280,28 +232,20 @@ async function saveTheme() {
   try {
     const res = await adminFetch('/api/admin/config', {
       method: 'POST',
-      body: JSON.stringify({
-        theme: theme,
-        themeApplyToWarga: applyToWarga
-      })
+      body: JSON.stringify({ theme: theme, themeApplyToWarga: applyToWarga })
     });
     const data = await res.json();
     if (data.success) {
       currentTheme = { ...theme, applyToWarga };
-      applyTheme(theme);   // ✅ Apply langsung ke admin
-      const msg = applyToWarga
-        ? 'Tema disimpan & diterapkan ke Admin + Warga'
-        : 'Tema disimpan (hanya Admin)';
+      applyTheme(theme);
+      const msg = applyToWarga ? 'Tema disimpan & diterapkan ke Admin + Warga' : 'Tema disimpan (hanya Admin)';
       showToast(msg, 'success');
     } else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 function resetTheme() {
   showConfirmAsync('Reset tema ke default?').then(ok => {
-    if (ok) {
-      applyPreset('default');
-      showToast('Tema direset', 'info');
-    }
+    if (ok) { applyPreset('default'); showToast('Tema direset', 'info'); }
   });
 }
 function applyLogoSizeAdmin(size) {
@@ -319,14 +263,12 @@ function getSelectedRoles(containerId) {
   const container = document.getElementById(containerId);
   if (!container) return ['chat'];
   const roles = [];
-  container.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
-    roles.push(cb.value);
-  });
+  container.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => roles.push(cb.value));
   return roles.length > 0 ? roles : ['chat'];
 }
 
 // ============================================================
-// ROBUST DASHBOARD LOADER — Retry sampai dashboard.js siap
+// ROBUST DASHBOARD LOADER
 // ============================================================
 function tryLoadDashboard(retries = 10) {
   if (window.loadDashboardNew && window.startDashboardAutoRefresh) {
@@ -335,11 +277,8 @@ function tryLoadDashboard(retries = 10) {
     console.log('[DASHBOARD] Auto-load berhasil ✓');
     return;
   }
-  if (retries > 0) {
-    setTimeout(() => tryLoadDashboard(retries - 1), 100);
-  } else {
-    console.warn('[DASHBOARD] Gagal load: dashboard.js tidak termuat');
-  }
+  if (retries > 0) setTimeout(() => tryLoadDashboard(retries - 1), 100);
+  else console.warn('[DASHBOARD] Gagal load: dashboard.js tidak termuat');
 }
 window.tryLoadDashboard = tryLoadDashboard;
 
@@ -365,7 +304,7 @@ async function checkAdminSession() {
       showPage('dashboard');
       loadNotificationsBadge();
       setInterval(loadNotificationsBadge, 30000);
-      tryLoadDashboard();   // ✅ Robust auto-load
+      tryLoadDashboard();
     }
   } catch (err) { console.warn('[AUTH]', err.message); }
 }
@@ -396,7 +335,7 @@ async function doLogin(event) {
       loadNotificationsBadge();
       showToast(`Selamat datang, ${username}!`, 'success');
       setInterval(loadNotificationsBadge, 30000);
-      tryLoadDashboard();   // ✅ Robust auto-load
+      tryLoadDashboard();
     } else {
       errorEl.textContent = data.message || 'Login gagal';
       errorEl.style.display = 'block';
@@ -441,12 +380,20 @@ function showPage(page) {
     p.style.display = p.id === 'page-' + page ? 'block' : 'none';
   });
   const titles = {
-    dashboard: 'Dashboard', general: 'Umum', logo: 'Logo & Branding',
-    theme: 'Warna Tema', providers: 'Provider AI', prompt: 'Prompt AI',
-    knowledge: 'Pengetahuan', graph: 'Knowledge Graph', inbox: 'Pertanyaan Warga',
-    feedback: 'Feedback & Akurasi', memory: 'Memori AI', sessions: 'Percakapan',
-    notifications: 'Notifikasi', backup: 'Backup', security: 'Keamanan',
-    report: 'Laporan'
+    dashboard:     'Dashboard',
+    settings:      'Pengaturan',
+    prompt:        'Prompt AI',
+    providers:     'Provider AI',
+    knowledge:     'Pengetahuan',
+    graph:         'Knowledge Graph',
+    inbox:         'Pertanyaan Warga',
+    feedback:      'Feedback & Akurasi',
+    memory:        'Memori AI',
+    sessions:      'Percakapan',
+    notifications: 'Notifikasi',
+    backup:        'Backup',
+    security:      'Keamanan',
+    report:        'Laporan'
   };
   const titleEl = document.getElementById('pageTitle');
   if (titleEl) titleEl.textContent = titles[page] || page;
@@ -454,15 +401,10 @@ function showPage(page) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ============================================================
-// LOAD CURRENT PAGE — Router otomatis pemanggil loader
-// ============================================================
 function loadCurrentPage() {
   const loaders = {
     dashboard:     () => { if (window.loadDashboardNew) window.loadDashboardNew(window._currentDashPeriod || '1d'); },
-    general:       () => loadAdminConfig(),
-    logo:          () => loadAdminConfig(),
-    theme:         () => loadThemeToForm(),
+    settings:      () => switchSettingsTab(currentSettingsTab),
     prompt:        () => loadAdminConfig(),
     providers:     () => loadAdminConfig(),
     knowledge:     () => loadAdminConfig(),
@@ -475,7 +417,6 @@ function loadCurrentPage() {
     notifications: () => loadNotifications(),
     backup:        () => {
       loadBackups();
-      // ✅ Reset file input saat masuk halaman backup
       const restoreFile = document.getElementById('restoreFile');
       if (restoreFile) restoreFile.value = '';
     },
@@ -488,8 +429,6 @@ function loadCurrentPage() {
 }
 window.loadCurrentPage = loadCurrentPage;
 
-
-
 function loadThemeToForm() {
   if (!currentTheme) return;
   const setV = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
@@ -498,14 +437,30 @@ function loadThemeToForm() {
   setV('theme-accent', currentTheme.accent || '#ec4899');
   setV('theme-sidebarStart', currentTheme.sidebarStart || '#0a3a8a');
   setV('theme-sidebarEnd', currentTheme.sidebarEnd || '#0d47a1');
-
-  // Load toggle "Update ke Warga"
   const toggleEl = document.getElementById('themeApplyToWarga');
   if (toggleEl) toggleEl.checked = currentTheme.applyToWarga === true;
-
   previewTheme();
 }
 
+// ============================================================
+// SETTINGS TAB SWITCHER
+// ============================================================
+function switchSettingsTab(tab) {
+  currentSettingsTab = tab;
+  const btnMap = { umum: 'tabUmumBtn', logo: 'tabLogoBtn', tema: 'tabTemaBtn' };
+  Object.keys(btnMap).forEach(k => {
+    const btn = document.getElementById(btnMap[k]);
+    if (btn) btn.classList.toggle('active', k === tab);
+  });
+  const paneMap = { umum: 'settingsTabUmum', logo: 'settingsTabLogo', tema: 'settingsTabTema' };
+  Object.keys(paneMap).forEach(k => {
+    const pane = document.getElementById(paneMap[k]);
+    if (pane) pane.style.display = (k === tab) ? 'block' : 'none';
+  });
+  if (tab === 'umum' || tab === 'logo') loadAdminConfig();
+  else if (tab === 'tema') loadThemeToForm();
+}
+window.switchSettingsTab = switchSettingsTab;
 
 // ============================================================
 // NOTIFIKASI
@@ -652,9 +607,7 @@ async function loadAdminConfig() {
 
     renderProviders(cfg.providers || []);
     renderKnowledgeFiles(cfg.knowledgeFiles || [], cfg.knowledgeChunks || 0);
-  } catch (err) {
-    console.error('Gagal load admin config:', err);
-  }
+  } catch (err) { console.error('Gagal load admin config:', err); }
 }
 
 // ============================================================
@@ -686,31 +639,16 @@ function renderProviders(providers) {
       <td>${p.index + 1}</td>
       <td><strong>${p.displayName}</strong>${customTag}</td>
       <td><div style="max-width:280px;">${roleBadges}</div></td>
-      <td>
-        <code>${(p.models || []).slice(0, 2).join(', ')}</code>
-        ${embModels}
-      </td>
+      <td><code>${(p.models || []).slice(0, 2).join(', ')}</code>${embModels}</td>
       <td>${statusBadge}</td>
       <td>
         <div class="btn-list flex-nowrap">
-          <button class="btn btn-sm btn-icon btn-ghost-info" onclick="testProvider(${p.index}, 'chat')" title="Test Chat">
-            <i class="ti ti-flask"></i>
-          </button>
-          <button class="btn btn-sm btn-icon btn-ghost-info" onclick="testProvider(${p.index}, 'embedding')" title="Test Embedding">
-            <i class="ti ti-ruler-measure"></i>
-          </button>
-          <button class="btn btn-sm btn-icon btn-ghost-primary" onclick="editProviderModels(${p.index}, '${(p.models || []).join(',')}', '${(p.embeddingModels || []).join(',')}')" title="Edit Model">
-            <i class="ti ti-edit"></i>
-          </button>
-          <button class="btn btn-sm btn-icon btn-ghost-warning" onclick="editProviderKey(${p.index})" title="Edit API Key">
-            <i class="ti ti-key"></i>
-          </button>
-          <button class="btn btn-sm btn-icon btn-ghost-secondary" onclick="toggleProvider(${p.index})" title="On/Off">
-            <i class="ti ti-power"></i>
-          </button>
-          <button class="btn btn-sm btn-icon btn-ghost-danger" onclick="removeProvider(${p.index})" title="Hapus">
-            <i class="ti ti-trash"></i>
-          </button>
+          <button class="btn btn-sm btn-icon btn-ghost-info" onclick="testProvider(${p.index}, 'chat')" title="Test Chat"><i class="ti ti-flask"></i></button>
+          <button class="btn btn-sm btn-icon btn-ghost-info" onclick="testProvider(${p.index}, 'embedding')" title="Test Embedding"><i class="ti ti-ruler-measure"></i></button>
+          <button class="btn btn-sm btn-icon btn-ghost-primary" onclick="editProviderModels(${p.index}, '${(p.models || []).join(',')}', '${(p.embeddingModels || []).join(',')}')" title="Edit Model"><i class="ti ti-edit"></i></button>
+          <button class="btn btn-sm btn-icon btn-ghost-warning" onclick="editProviderKey(${p.index})" title="Edit API Key"><i class="ti ti-key"></i></button>
+          <button class="btn btn-sm btn-icon btn-ghost-secondary" onclick="toggleProvider(${p.index})" title="On/Off"><i class="ti ti-power"></i></button>
+          <button class="btn btn-sm btn-icon btn-ghost-danger" onclick="removeProvider(${p.index})" title="Hapus"><i class="ti ti-trash"></i></button>
         </div>
       </td>
     </tr>`;
@@ -734,10 +672,8 @@ async function toggleRole(index, role) {
       method: 'POST', body: JSON.stringify({ index, roles: [...roles] })
     });
     const data = await res.json();
-    if (data.success) {
-      loadAdminConfig();
-      showToast(`Role ${role} diperbarui`, 'success');
-    } else showToast(data.message, 'error');
+    if (data.success) { loadAdminConfig(); showToast(`Role ${role} diperbarui`, 'success'); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -802,10 +738,8 @@ async function editProviderKey(index) {
         method: 'POST', body: JSON.stringify({ index, apiKey: val.trim() })
       });
       const data = await res.json();
-      if (data.success) {
-        showToast('API key diperbarui', 'success');
-        loadAdminConfig();
-      } else showToast(data.message, 'error');
+      if (data.success) { showToast('API key diperbarui', 'success'); loadAdminConfig(); }
+      else showToast(data.message, 'error');
     } catch (err) { showToast(err.message, 'error'); }
   }, 'Edit API Key');
 }
@@ -815,18 +749,14 @@ async function editProviderModels(index, currentModels, currentEmbModels) {
     const models = modelsStr.split(',').map(s => s.trim()).filter(Boolean);
     showPrompt('Edit model EMBEDDING (pisah koma, kosongkan skip):', currentEmbModels || '', async (embStr) => {
       const embeddingModels = embStr ? embStr.split(',').map(s => s.trim()).filter(Boolean) : [];
-      if (models.length === 0 && embeddingModels.length === 0) {
-        return showToast('Minimal 1 model', 'warning');
-      }
+      if (models.length === 0 && embeddingModels.length === 0) return showToast('Minimal 1 model', 'warning');
       try {
         const res = await adminFetch('/api/admin/providers/update-models', {
           method: 'POST', body: JSON.stringify({ index, models, embeddingModels })
         });
         const data = await res.json();
-        if (data.success) {
-          showToast('Model diperbarui', 'success');
-          loadAdminConfig();
-        } else showToast(data.message, 'error');
+        if (data.success) { showToast('Model diperbarui', 'success'); loadAdminConfig(); }
+        else showToast(data.message, 'error');
       } catch (err) { showToast(err.message, 'error'); }
     }, 'Edit Model Embedding');
   }, 'Edit Model Chat');
@@ -840,10 +770,8 @@ async function removeProvider(index) {
       method: 'POST', body: JSON.stringify({ index })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Provider dihapus', 'success');
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Provider dihapus', 'success'); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -853,11 +781,8 @@ async function toggleProvider(index) {
       method: 'POST', body: JSON.stringify({ index })
     });
     const data = await res.json();
-    if (data.success) {
-      loadAdminConfig();
-      loadNotificationsBadge();
-      showToast('Status provider diperbarui', 'success');
-    } else showToast(data.message, 'error');
+    if (data.success) { loadAdminConfig(); loadNotificationsBadge(); showToast('Status provider diperbarui', 'success'); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -868,11 +793,8 @@ async function testProvider(index, type = 'chat') {
       method: 'POST', body: JSON.stringify({ index, type })
     });
     const data = await res.json();
-    if (data.success) {
-      showAlert(data.message, 'Test Berhasil', 'success');
-    } else {
-      showAlert(data.message, 'Test Gagal', 'error');
-    }
+    if (data.success) showAlert(data.message, 'Test Berhasil', 'success');
+    else showAlert(data.message, 'Test Gagal', 'error');
   } catch (err) { showAlert(err.message, 'Error', 'error'); }
 }
 
@@ -897,10 +819,7 @@ async function loadPertanyaanWarga() {
       const res = await adminFetch('/api/admin/unanswered?filter=all');
       const data = await res.json();
       const badge = document.getElementById('badgeInbox');
-      if (badge) {
-        badge.textContent = data.pending || 0;
-        badge.style.display = (data.pending || 0) > 0 ? 'inline-flex' : 'none';
-      }
+      if (badge) { badge.textContent = data.pending || 0; badge.style.display = (data.pending || 0) > 0 ? 'inline-flex' : 'none'; }
       const countAll = document.getElementById('inboxTabAllCount');
       if (countAll) countAll.textContent = data.total || 0;
 
@@ -945,9 +864,7 @@ async function loadPertanyaanWarga() {
           </div>
         `;
       }).join('');
-    } catch (err) {
-      el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-    }
+    } catch (err) { el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
   } else {
     try {
       const res = await adminFetch('/api/admin/learning/queue?filter=pending');
@@ -964,9 +881,7 @@ async function loadPertanyaanWarga() {
         const priorityColors = { urgent: 'red', high: 'yellow', medium: 'blue', normal: 'secondary' };
         const color = priorityColors[item.priority] || 'secondary';
         const safeQuestion = (item.original || item.question).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        const variants = (item.variants || []).slice(0, 3).map(v =>
-          `<div class="text-secondary small"><i class="ti ti-quote"></i> ${v}</div>`
-        ).join('');
+        const variants = (item.variants || []).slice(0, 3).map(v => `<div class="text-secondary small"><i class="ti ti-quote"></i> ${v}</div>`).join('');
         return `
           <div class="card mb-2 ${item.resolved ? 'opacity-75' : ''}">
             <div class="card-body">
@@ -997,9 +912,7 @@ async function loadPertanyaanWarga() {
           </div>
         `;
       }).join('');
-    } catch (err) {
-      el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-    }
+    } catch (err) { el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
   }
 }
 
@@ -1009,11 +922,8 @@ async function markUnansweredResolved(id) {
       method: 'POST', body: JSON.stringify({ id })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Ditandai sudah dijawab', 'success');
-      loadPertanyaanWarga();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Ditandai sudah dijawab', 'success'); loadPertanyaanWarga(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1025,11 +935,8 @@ async function deleteUnanswered(id) {
       method: 'POST', body: JSON.stringify({ id })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Pertanyaan dihapus', 'success');
-      loadPertanyaanWarga();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Pertanyaan dihapus', 'success'); loadPertanyaanWarga(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1039,11 +946,8 @@ async function resolveLearning(id) {
       method: 'POST', body: JSON.stringify({ id })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Ditandai selesai', 'success');
-      loadPertanyaanWarga();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Ditandai selesai', 'success'); loadPertanyaanWarga(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1055,11 +959,8 @@ async function deleteLearning(id) {
       method: 'POST', body: JSON.stringify({ id })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Dihapus dari antrian', 'success');
-      loadPertanyaanWarga();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Dihapus dari antrian', 'success'); loadPertanyaanWarga(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1068,9 +969,7 @@ async function clearInboxResolved() {
   if (!ok) return;
   try {
     if (currentInboxTab === 'all') {
-      await adminFetch('/api/admin/unanswered/clear', {
-        method: 'POST', body: JSON.stringify({ onlyResolved: true })
-      });
+      await adminFetch('/api/admin/unanswered/clear', { method: 'POST', body: JSON.stringify({ onlyResolved: true }) });
     } else {
       await adminFetch('/api/admin/learning/clear-resolved', { method: 'POST' });
     }
@@ -1091,9 +990,7 @@ async function clearInboxAll() {
   try {
     showToast('Menghapus semua pertanyaan...', 'info');
     if (currentInboxTab === 'all') {
-      await adminFetch('/api/admin/unanswered/clear', {
-        method: 'POST', body: JSON.stringify({ onlyResolved: false })
-      });
+      await adminFetch('/api/admin/unanswered/clear', { method: 'POST', body: JSON.stringify({ onlyResolved: false }) });
     } else {
       await adminFetch('/api/admin/learning/clear-all', { method: 'POST' });
     }
@@ -1120,8 +1017,6 @@ async function loadFeedback() {
     setText('anRefusals', stats.analytics?.totalRefusals || 0);
     setText('anAccuracy', (stats.analytics?.accuracyRate || 0) + '%');
     renderFeedbackPieChart(stats.feedback);
-
-    // ✅ RENDER TREN 7 HARI (pakai dailyFeedback dari API)
     renderFeedbackTrendInFeedbackPage(stats.dailyFeedback || []);
   } catch (err) { console.error(err); }
   const el = document.getElementById('feedbackList');
@@ -1156,9 +1051,7 @@ async function loadFeedback() {
         </div>
       `;
     }).join('');
-  } catch (err) {
-    el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-  }
+  } catch (err) { el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
 }
 
 function renderFeedbackPieChart(feedback) {
@@ -1170,128 +1063,58 @@ function renderFeedbackPieChart(feedback) {
   }
   el.innerHTML = '<canvas></canvas>';
   const ctx = el.querySelector('canvas').getContext('2d');
-  // ✅ Pakai window.feedbackPieChartInstance biar aman antar file
   if (window.feedbackPieChartInstance) window.feedbackPieChartInstance.destroy();
   window.feedbackPieChartInstance = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels: ['Bagus 👍', 'Kurang 👎'],
-      datasets: [{
-        data: [feedback.good || 0, feedback.bad || 0],
-        backgroundColor: ['#10b981', '#dc3545'],
-        borderColor: '#fff',
-        borderWidth: 3
-      }]
+      datasets: [{ data: [feedback.good || 0, feedback.bad || 0], backgroundColor: ['#10b981', '#dc3545'], borderColor: '#fff', borderWidth: 3 }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      cutout: '65%',
-      plugins: {
-        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12 } }
-      }
+      responsive: true, maintainAspectRatio: false, cutout: '65%',
+      plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, padding: 12 } } }
     }
   });
 }
 
-// ============================================================
-// RENDER TREN 7 HARI untuk Feedback Page
-// ============================================================
 function renderFeedbackTrendInFeedbackPage(dailyFeedback) {
   const el = document.getElementById('feedbackChart');
   if (!el) return;
-
   if (!dailyFeedback || dailyFeedback.length === 0) {
     el.innerHTML = '<div class="text-center text-secondary py-4">Belum ada data</div>';
     return;
   }
-
-  // Cek apakah ada data feedback
   const hasData = dailyFeedback.some(d => (d.good || 0) + (d.bad || 0) > 0);
   if (!hasData) {
-    el.innerHTML = `
-      <div class="text-center text-secondary py-4">
-        <i class="ti ti-mood-empty" style="font-size: 48px; opacity: 0.5;"></i>
-        <p class="mt-2">Belum ada feedback 7 hari terakhir</p>
-      </div>
-    `;
+    el.innerHTML = `<div class="text-center text-secondary py-4"><i class="ti ti-mood-empty" style="font-size: 48px; opacity: 0.5;"></i><p class="mt-2">Belum ada feedback 7 hari terakhir</p></div>`;
     return;
   }
-
   el.innerHTML = '<canvas></canvas>';
   const ctx = el.querySelector('canvas').getContext('2d');
-
   if (window.feedbackChartInstance) window.feedbackChartInstance.destroy();
   window.feedbackChartInstance = new Chart(ctx, {
     type: 'line',
     data: {
       labels: dailyFeedback.map(d => d.day),
       datasets: [
-        {
-          label: 'Bagus 👍',
-          data: dailyFeedback.map(d => d.good || 0),
-          borderColor: '#10b981',
-          backgroundColor: 'rgba(16, 185, 129, 0.15)',
-          borderWidth: 3,
-          tension: 0.4,
-          fill: true,
-          pointBackgroundColor: '#10b981',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 8
-        },
-        {
-          label: 'Kurang 👎',
-          data: dailyFeedback.map(d => d.bad || 0),
-          borderColor: '#ef4444',
-          backgroundColor: 'rgba(239, 68, 68, 0.15)',
-          borderWidth: 3,
-          tension: 0.4,
-          fill: true,
-          pointBackgroundColor: '#ef4444',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 8
-        }
+        { label: 'Bagus 👍', data: dailyFeedback.map(d => d.good || 0), borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.15)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#10b981', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 8 },
+        { label: 'Kurang 👎', data: dailyFeedback.map(d => d.bad || 0), borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.15)', borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#ef4444', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 8 }
       ]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: 'index',
-        intersect: false
-      },
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            usePointStyle: true,
-            padding: 14,
-            font: { size: 12, weight: '600' }
-          }
-        },
+        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 14, font: { size: 12, weight: '600' } } },
         tooltip: {
-          backgroundColor: 'rgba(15, 23, 42, 0.95)',
-          padding: 14,
+          backgroundColor: 'rgba(15, 23, 42, 0.95)', padding: 14,
           callbacks: {
-            title: (items) => {
-              const d = dailyFeedback[items[0].dataIndex];
-              const dateStr = new Date(d.date).toLocaleDateString('id-ID', {
-                day: 'numeric', month: 'short'
-              });
-              return `${d.day}, ${dateStr}`;
-            },
+            title: (items) => { const d = dailyFeedback[items[0].dataIndex]; const dateStr = new Date(d.date).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }); return `${d.day}, ${dateStr}`; },
             label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y}`
           }
         }
       },
-      scales: {
-        x: { grid: { display: false } },
-        y: { beginAtZero: true, ticks: { precision: 0 } }
-      }
+      scales: { x: { grid: { display: false } }, y: { beginAtZero: true, ticks: { precision: 0 } } }
     }
   });
 }
@@ -1328,24 +1151,17 @@ function openAnswerModal(id, question, source) {
   document.getElementById('modalPipelineStatus').innerHTML = '';
   const btn = document.getElementById('modalSubmitBtn');
   if (btn) btn.disabled = false;
-
   const modalEl = document.getElementById('answerModal');
   if (modalEl) {
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
     modal.show();
   }
-  setTimeout(() => {
-    const ans = document.getElementById('modal-answer');
-    if (ans) ans.focus();
-  }, 300);
+  setTimeout(() => { const ans = document.getElementById('modal-answer'); if (ans) ans.focus(); }, 300);
 }
 
 function closeAnswerModal() {
   const modalEl = document.getElementById('answerModal');
-  if (modalEl) {
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    if (modal) modal.hide();
-  }
+  if (modalEl) { const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide(); }
 }
 
 async function submitAnswerToKnowledge() {
@@ -1361,13 +1177,7 @@ async function submitAnswerToKnowledge() {
   if (answer.length < 20) return showToast('Jawaban minimal 20 karakter', 'warning');
   if (submitBtn) submitBtn.disabled = true;
 
-  if (statusEl) {
-    statusEl.innerHTML = `
-      <div class="alert alert-info">
-        <i class="ti ti-loader-2 ti-spin me-2"></i> Menyimpan & update pipeline...
-      </div>
-    `;
-  }
+  if (statusEl) statusEl.innerHTML = `<div class="alert alert-info"><i class="ti ti-loader-2 ti-spin me-2"></i> Menyimpan & update pipeline...</div>`;
 
   try {
     const res = await adminFetch('/api/admin/unified/add-to-knowledge', {
@@ -1386,11 +1196,7 @@ async function submitAnswerToKnowledge() {
         `;
       }
       showToast('Jawaban ditambahkan ke knowledge base', 'success');
-      setTimeout(() => {
-        closeAnswerModal();
-        loadPertanyaanWarga();
-        loadAdminConfig();
-      }, 2000);
+      setTimeout(() => { closeAnswerModal(); loadPertanyaanWarga(); loadAdminConfig(); }, 2000);
     } else {
       if (statusEl) statusEl.innerHTML = `<div class="alert alert-danger">Gagal: ${data.message}</div>`;
       showToast(data.message, 'error');
@@ -1490,7 +1296,6 @@ async function saveGeneral() {
     const data = await res.json();
     if (data.success) {
       await loadPublicConfigAdmin();
-      // ✅ Langsung update judul tab tanpa refresh
       document.title = `${updates.aiName || 'SIVT AI'} - Admin Dashboard`;
       showToast('Pengaturan umum disimpan', 'success');
     } else showToast(data.message, 'error');
@@ -1516,9 +1321,7 @@ async function saveSurveyConfig() {
     surveyIdleMinutes: parseInt(document.getElementById('cfg-surveyIdleMinutes').value) || 3,
     surveyEnabled: document.getElementById('surveyEnabled').checked
   };
-  if (updates.surveyEnabled && !updates.surveyLink) {
-    return showToast('Link survei wajib diisi', 'warning');
-  }
+  if (updates.surveyEnabled && !updates.surveyLink) return showToast('Link survei wajib diisi', 'warning');
   try {
     const res = await adminFetch('/api/admin/config', {
       method: 'POST', body: JSON.stringify(updates)
@@ -1547,7 +1350,10 @@ function renderKnowledgeFiles(files, chunks) {
     html += `<tr>
       <td>${f.name}</td>
       <td>${(f.size / 1024).toFixed(1)} KB</td>
-      <td><button class="btn btn-sm btn-icon btn-ghost-danger" onclick="deleteKnowledge('${f.name}')"><i class="ti ti-trash"></i></button></td>
+      <td>
+        <button class="btn btn-sm btn-icon btn-ghost-primary" onclick="openEditKnowledge('${f.name}')" title="Edit"><i class="ti ti-edit"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost-danger" onclick="deleteKnowledge('${f.name}')" title="Hapus"><i class="ti ti-trash"></i></button>
+      </td>
     </tr>`;
   });
   html += '</tbody></table></div>';
@@ -1591,10 +1397,8 @@ async function deleteKnowledge(name) {
       method: 'POST', body: JSON.stringify({ name })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('File dihapus', 'success');
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('File dihapus', 'success'); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1628,10 +1432,7 @@ async function loadMemoryList() {
       </div>
       <div class="row row-cards">
         ${data.items.map((m, i) => {
-          const date = new Date(m.timestamp).toLocaleString('id-ID', {
-            day: '2-digit', month: 'short', year: 'numeric',
-            hour: '2-digit', minute: '2-digit'
-          });
+          const date = new Date(m.timestamp).toLocaleString('id-ID', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
           const variantsHtml = (m.variants || []).length > 0
             ? `<div class="mt-2"><div class="text-secondary small mb-1"><i class="ti ti-refresh"></i> Variasi:</div><div>${m.variants.map(v => `<span class="badge bg-blue-lt text-blue me-1">${v}</span>`).join('')}</div></div>`
             : '';
@@ -1644,12 +1445,8 @@ async function loadMemoryList() {
                 <div class="card-header">
                   <div class="text-secondary small"><i class="ti ti-clock me-1"></i> ${date}</div>
                   <div class="card-actions">
-                    <button class="btn btn-sm btn-icon btn-ghost-primary" onclick="openEditMemory(${i})" title="Edit">
-                      <i class="ti ti-edit"></i>
-                    </button>
-                    <button class="btn btn-sm btn-icon btn-ghost-danger" onclick="deleteMemory(${i})" title="Hapus">
-                      <i class="ti ti-trash"></i>
-                    </button>
+                    <button class="btn btn-sm btn-icon btn-ghost-primary" onclick="openEditMemory(${i})" title="Edit"><i class="ti ti-edit"></i></button>
+                    <button class="btn btn-sm btn-icon btn-ghost-danger" onclick="deleteMemory(${i})" title="Hapus"><i class="ti ti-trash"></i></button>
                   </div>
                 </div>
                 <div class="card-body">
@@ -1669,9 +1466,7 @@ async function loadMemoryList() {
         }).join('')}
       </div>
     `;
-  } catch (err) {
-    el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-  }
+  } catch (err) { el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
 }
 
 async function openEditMemory(index) {
@@ -1685,27 +1480,15 @@ async function openEditMemory(index) {
     document.getElementById('editMemoryAnswer').value = m.answer || '';
     document.getElementById('editMemoryVariants').value = (m.variants || []).join(', ');
     document.getElementById('editMemoryKeywords').value = (m.keywords || []).join(', ');
-
     const modalEl = document.getElementById('editMemoryModal');
-    if (modalEl) {
-      const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
-      modal.show();
-    }
-    setTimeout(() => {
-      const q = document.getElementById('editMemoryQuestion');
-      if (q) q.focus();
-    }, 300);
-  } catch (err) {
-    showToast(err.message, 'error');
-  }
+    if (modalEl) { const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl); modal.show(); }
+    setTimeout(() => { const q = document.getElementById('editMemoryQuestion'); if (q) q.focus(); }, 300);
+  } catch (err) { showToast(err.message, 'error'); }
 }
 
 function closeEditMemory() {
   const modalEl = document.getElementById('editMemoryModal');
-  if (modalEl) {
-    const modal = bootstrap.Modal.getInstance(modalEl);
-    if (modal) modal.hide();
-  }
+  if (modalEl) { const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide(); }
 }
 
 async function saveEditMemory() {
@@ -1714,30 +1497,20 @@ async function saveEditMemory() {
   const answer = document.getElementById('editMemoryAnswer').value.trim();
   const variants = document.getElementById('editMemoryVariants').value.trim();
   const keywords = document.getElementById('editMemoryKeywords').value.trim();
-
   if (!question) return showToast('Pertanyaan wajib diisi', 'warning');
   if (!answer) return showToast('Jawaban wajib diisi', 'warning');
   if (answer.length < 20) return showToast('Jawaban minimal 20 karakter', 'warning');
-
   const btn = document.getElementById('editMemorySaveBtn');
   if (btn) btn.disabled = true;
-
   try {
     const res = await adminFetch('/api/admin/memory/update', {
-      method: 'POST',
-      body: JSON.stringify({ index, question, answer, variants, keywords })
+      method: 'POST', body: JSON.stringify({ index, question, answer, variants, keywords })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Memori diperbarui', 'success');
-      closeEditMemory();
-      loadMemoryList();
-    } else showToast(data.message, 'error');
-  } catch (err) {
-    showToast(err.message, 'error');
-  } finally {
-    if (btn) btn.disabled = false;
-  }
+    if (data.success) { showToast('Memori diperbarui', 'success'); closeEditMemory(); loadMemoryList(); }
+    else showToast(data.message, 'error');
+  } catch (err) { showToast(err.message, 'error'); }
+  finally { if (btn) btn.disabled = false; }
 }
 
 async function deleteMemory(index) {
@@ -1748,11 +1521,8 @@ async function deleteMemory(index) {
       method: 'POST', body: JSON.stringify({ index })
     });
     const data = await res.json();
-    if (data.success) {
-      showToast('Memori dihapus', 'success');
-      loadMemoryList();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Memori dihapus', 'success'); loadMemoryList(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1767,11 +1537,8 @@ async function clearMemory() {
     showToast('Menghapus semua memori...', 'info');
     const res = await adminFetch('/api/admin/memory/clear', { method: 'POST' });
     const data = await res.json();
-    if (data.success) {
-      showToast('Semua memori dihapus', 'success');
-      loadMemoryList();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Semua memori dihapus', 'success'); loadMemoryList(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1843,9 +1610,7 @@ async function loadSessions() {
     });
     html += '</tbody></table></div>';
     el.innerHTML = html;
-  } catch (err) {
-    el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-  }
+  } catch (err) { el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
 }
 
 async function clearSessions() {
@@ -1854,11 +1619,8 @@ async function clearSessions() {
   try {
     const res = await adminFetch('/api/admin/sessions/clear', { method: 'POST' });
     const data = await res.json();
-    if (data.success) {
-      showToast('Semua sesi dihapus', 'success');
-      loadSessions();
-      loadAdminConfig();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast('Semua sesi dihapus', 'success'); loadSessions(); loadAdminConfig(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1872,10 +1634,8 @@ async function runBackupNow() {
   try {
     const res = await adminFetch('/api/admin/backup', { method: 'POST' });
     const data = await res.json();
-    if (data.success) {
-      showToast(data.message, 'success');
-      loadBackups();
-    } else showToast(data.message, 'error');
+    if (data.success) { showToast(data.message, 'success'); loadBackups(); }
+    else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
 }
 
@@ -1896,18 +1656,12 @@ async function loadBackups() {
         <td><code>${b.name}</code></td>
         <td>${new Date(b.created).toLocaleString('id-ID')}</td>
         <td>${(b.size / 1024).toFixed(1)} KB</td>
-        <td>
-          <button class="btn btn-sm btn-icon btn-ghost-primary" onclick="downloadBackup('${b.name}')" title="Download">
-            <i class="ti ti-download"></i>
-          </button>
-        </td>
+        <td><button class="btn btn-sm btn-icon btn-ghost-primary" onclick="downloadBackup('${b.name}')" title="Download"><i class="ti ti-download"></i></button></td>
       </tr>`;
     });
     html += '</tbody></table></div>';
     el.innerHTML = html;
-  } catch (err) {
-    el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-  }
+  } catch (err) { el.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
 }
 
 async function downloadBackup(filename) {
@@ -1927,9 +1681,7 @@ async function downloadBackup(filename) {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     showToast('Download selesai', 'success');
-  } catch (err) {
-    showToast('Gagal download: ' + err.message, 'error');
-  }
+  } catch (err) { showToast('Gagal download: ' + err.message, 'error'); }
 }
 
 async function startRestore() {
@@ -1939,16 +1691,13 @@ async function startRestore() {
   if (!fileInput.files[0]) return showToast('Pilih file backup dulu', 'warning');
   const file = fileInput.files[0];
   if (!file.name.endsWith('.zip.enc')) return showToast('File harus .zip.enc', 'error');
-
   const ok = await showConfirmAsync(
     `Restore dari file: ${file.name}\n\nData lama akan di-backup dulu.\nSetelah restore, WAJIB restart server.`,
     'Restore Backup'
   );
   if (!ok) return;
-
   if (btn) btn.disabled = true;
   if (statusEl) statusEl.innerHTML = '<div class="alert alert-info"><i class="ti ti-loader-2 ti-spin me-2"></i> Mengupload...</div>';
-
   try {
     const formData = new FormData();
     formData.append('backup', file);
@@ -2019,7 +1768,6 @@ async function loadGraphVisualization() {
   const limit = parseInt(document.getElementById('graphLimit')?.value) || 200;
   const minDegree = parseInt(document.getElementById('graphMinDegree')?.value) || 1;
   container.innerHTML = '<div class="text-center text-secondary py-4"><i class="ti ti-loader-2 ti-spin"></i> Memuat graph...</div>';
-
   try {
     const res = await adminFetch(`/api/admin/graph/visualize?limit=${limit}&minDegree=${minDegree}`);
     const data = await res.json();
@@ -2059,9 +1807,7 @@ async function loadGraphVisualization() {
         }
       });
     }
-  } catch (err) {
-    container.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-  }
+  } catch (err) { container.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
 }
 
 async function showGraphNodeDetail(nodeId) {
@@ -2094,9 +1840,7 @@ async function showGraphNodeDetail(nodeId) {
       html += '</div>';
     }
     bodyEl.innerHTML = html;
-  } catch (err) {
-    bodyEl.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`;
-  }
+  } catch (err) { bodyEl.innerHTML = `<div class="text-danger">Gagal: ${err.message}</div>`; }
 }
 
 function closeGraphNodeDetail() {
@@ -2146,9 +1890,7 @@ async function pollEnrichStatus() {
     }
     const { done, total } = data.progress;
     const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-    if (statusEl) {
-      statusEl.innerHTML = `<div><i class="ti ti-loader-2 ti-spin me-1"></i> ${done}/${total} chunk (${pct}%)</div>`;
-    }
+    if (statusEl) statusEl.innerHTML = `<div><i class="ti ti-loader-2 ti-spin me-1"></i> ${done}/${total} chunk (${pct}%)</div>`;
   } catch (err) {}
 }
 
@@ -2156,9 +1898,7 @@ async function pollEnrichStatus() {
 // TOAST & MODALS
 // ============================================================
 function showToast(message, type = 'info') {
-  // Remove existing toast
   document.querySelectorAll('.sivt-toast').forEach(t => t.remove());
-
   const config = {
     info:    { color: '#3b82f6', bg: 'rgba(59,130,246,0.1)',  icon: 'ti-info-circle',       title: 'Informasi' },
     success: { color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: 'ti-circle-check',      title: 'Berhasil' },
@@ -2166,116 +1906,42 @@ function showToast(message, type = 'info') {
     error:   { color: '#ef4444', bg: 'rgba(239,68,68,0.1)',   icon: 'ti-alert-circle',      title: 'Gagal' }
   };
   const c = config[type] || config.info;
-
   const toast = document.createElement('div');
   toast.className = 'sivt-toast';
   toast.style.cssText = `
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    z-index: 99999;
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    min-width: 320px;
-    max-width: 420px;
-    padding: 16px 18px;
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow:
-      0 20px 60px rgba(13, 71, 161, 0.15),
-      0 8px 24px rgba(0, 0, 0, 0.08),
-      0 0 0 1px rgba(0, 0, 0, 0.04);
-    opacity: 0;
-    transform: translateX(120%) scale(0.9);
+    position: fixed; top: 24px; right: 24px; z-index: 99999;
+    display: flex; align-items: flex-start; gap: 14px;
+    min-width: 320px; max-width: 420px; padding: 16px 18px;
+    background: #ffffff; border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(13, 71, 161, 0.15), 0 8px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04);
+    opacity: 0; transform: translateX(120%) scale(0.9);
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     overflow: hidden;
   `;
-
   toast.innerHTML = `
-    <div style="
-      flex-shrink: 0;
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: ${c.bg};
-      color: ${c.color};
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      position: relative;
-    ">
+    <div style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: ${c.bg}; color: ${c.color}; display: flex; align-items: center; justify-content: center; font-size: 22px; position: relative;">
       <i class="ti ${c.icon}"></i>
     </div>
     <div style="flex: 1; min-width: 0; padding-top: 2px;">
-      <div style="
-        font-size: 14px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 2px;
-        letter-spacing: -0.2px;
-      ">${c.title}</div>
-      <div style="
-        font-size: 13px;
-        color: #6b7280;
-        line-height: 1.5;
-        word-wrap: break-word;
-      ">${message}</div>
+      <div style="font-size: 14px; font-weight: 700; color: #1f2937; margin-bottom: 2px; letter-spacing: -0.2px;">${c.title}</div>
+      <div style="font-size: 13px; color: #6b7280; line-height: 1.5; word-wrap: break-word;">${message}</div>
     </div>
-    <button onclick="this.closest('.sivt-toast').remove()" style="
-      flex-shrink: 0;
-      background: transparent;
-      border: none;
-      color: #9ca3af;
-      cursor: pointer;
-      padding: 4px;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      transition: all 0.2s;
-    " onmouseover="this.style.background='#f3f4f6'; this.style.color='#374151';"
-       onmouseout="this.style.background='transparent'; this.style.color='#9ca3af';">
+    <button onclick="this.closest('.sivt-toast').remove()" style="flex-shrink: 0; background: transparent; border: none; color: #9ca3af; cursor: pointer; padding: 4px; font-size: 16px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s;">
       <i class="ti ti-x"></i>
     </button>
-    <div style="
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 3px;
-      background: ${c.color};
-      border-radius: 0 0 16px 16px;
-      animation: sivtToastProgress 3.5s linear forwards;
-    "></div>
+    <div style="position: absolute; bottom: 0; left: 0; height: 3px; background: ${c.color}; border-radius: 0 0 16px 16px; animation: sivtToastProgress 3.5s linear forwards;"></div>
   `;
-
-  // Progress animation
   const style = document.createElement('style');
   if (!document.getElementById('sivt-toast-anim')) {
     style.id = 'sivt-toast-anim';
-    style.textContent = `
-      @keyframes sivtToastProgress {
-        from { width: 100%; }
-        to { width: 0%; }
-      }
-      .sivt-toast {
-        position: relative;
-      }
-    `;
+    style.textContent = `@keyframes sivtToastProgress { from { width: 100%; } to { width: 0%; } } .sivt-toast { position: relative; }`;
     document.head.appendChild(style);
   }
-
   document.body.appendChild(toast);
-
-  // Show animation
   requestAnimationFrame(() => {
     toast.style.opacity = '1';
     toast.style.transform = 'translateX(0) scale(1)';
   });
-
-  // Auto remove
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(120%) scale(0.9)';
@@ -2344,10 +2010,7 @@ function showConfirmAsync(message, title = 'Konfirmasi', okLabel = 'Ya, Lanjutka
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
     document.getElementById('dynConfirmOk').onclick = () => { modal.hide(); resolve(true); };
-    modalEl.addEventListener('hidden.bs.modal', () => {
-      div.remove();
-      resolve(false);
-    }, { once: true });
+    modalEl.addEventListener('hidden.bs.modal', () => { div.remove(); resolve(false); }, { once: true });
   });
 }
 
@@ -2391,46 +2054,25 @@ function showPrompt(message, defaultValue, onSubmit, title = 'Input') {
 }
 
 // ============================================================
-// FIXED NAVBAR — Scroll Effect
+// FIXED NAVBAR
 // ============================================================
 function initFixedNavbar() {
   const header = document.querySelector('.page-wrapper > header.navbar');
-  if (!header) {
-    console.warn('[NAVBAR] Header tidak ditemukan');
-    return;
-  }
-
+  if (!header) return;
   const onScroll = () => {
-    if (window.scrollY > 10) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
+    if (window.scrollY > 10) header.classList.add('scrolled');
+    else header.classList.remove('scrolled');
   };
-
-  // Pasang event listener (throttle pakai requestAnimationFrame)
   let ticking = false;
   window.addEventListener('scroll', () => {
     if (!ticking) {
-      window.requestAnimationFrame(() => {
-        onScroll();
-        ticking = false;
-      });
+      window.requestAnimationFrame(() => { onScroll(); ticking = false; });
       ticking = true;
     }
   }, { passive: true });
-
-  // Cek posisi awal
   onScroll();
-
-  console.log('[NAVBAR] Fixed navbar aktif ✓');
 }
 window.initFixedNavbar = initFixedNavbar;
-
-// ============================================================
-// EXPOSE GLOBAL
-// ============================================================
-window.doLogin = doLogin;
 
 // ============================================================
 // EXPOSE GLOBAL
@@ -2501,47 +2143,95 @@ window.markUnansweredResolved = markUnansweredResolved;
 window.deleteUnanswered = deleteUnanswered;
 window.resolveLearning = resolveLearning;
 window.deleteLearning = deleteLearning;
+window.switchSettingsTab = switchSettingsTab;
+
+async function openEditKnowledge(filename) {
+    document.getElementById('editKnowledgeFilename').textContent = filename;
+    document.getElementById('editKnowledgeContent').value = 'Memuat isi file...';
+    document.getElementById('editKnowledgeStatus').innerHTML = '';
+    
+    const modalEl = document.getElementById('editKnowledgeModal');
+    if (modalEl) {
+        const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+
+    try {
+        const res = await adminFetch(`/api/admin/knowledge/content?name=${encodeURIComponent(filename)}`);
+        const data = await res.json();
+        if (data.success) {
+            document.getElementById('editKnowledgeContent').value = data.content;
+        } else {
+            document.getElementById('editKnowledgeContent').value = '';
+            document.getElementById('editKnowledgeStatus').innerHTML = `<span class="text-danger">${data.message}</span>`;
+        }
+    } catch (err) {
+        document.getElementById('editKnowledgeContent').value = '';
+        document.getElementById('editKnowledgeStatus').innerHTML = `<span class="text-danger">Gagal memuat: ${err.message}</span>`;
+    }
+}
+
+async function saveKnowledgeFile() {
+    const filename = document.getElementById('editKnowledgeFilename').textContent;
+    const content = document.getElementById('editKnowledgeContent').value;
+    const statusEl = document.getElementById('editKnowledgeStatus');
+    const btn = document.getElementById('editKnowledgeSaveBtn');
+    
+    if (btn) btn.disabled = true;
+    if (statusEl) statusEl.innerHTML = '<i class="ti ti-loader-2 ti-spin me-1"></i> Menyimpan dan memperbarui RAG...';
+
+    try {
+        const res = await adminFetch('/api/admin/knowledge/save', {
+            method: 'POST',
+            body: JSON.stringify({ name: filename, content })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            if (statusEl) statusEl.innerHTML = `<span class="text-success"><i class="ti ti-check"></i> ${data.message}</span>`;
+            showToast('Pengetahuan berhasil diubah', 'success');
+            loadAdminConfig();
+            setTimeout(() => {
+                const modalEl = document.getElementById('editKnowledgeModal');
+                if (modalEl) { const modal = bootstrap.Modal.getInstance(modalEl); if (modal) modal.hide(); }
+            }, 1500);
+        } else {
+            if (statusEl) statusEl.innerHTML = `<span class="text-danger">${data.message}</span>`;
+            if (btn) btn.disabled = false;
+        }
+    } catch (err) {
+        if (statusEl) statusEl.innerHTML = `<span class="text-danger">Error: ${err.message}</span>`;
+        if (btn) btn.disabled = false;
+    }
+}
+
+window.openEditKnowledge = openEditKnowledge;
+window.saveKnowledgeFile = saveKnowledgeFile;
 
 // ============================================================
-// LOGIN PASSWORD TOGGLE — Show/Hide password
+// LOGIN PASSWORD TOGGLE
 // ============================================================
 function initPasswordToggle() {
   const passwordInput = document.getElementById('loginPassword');
   const passwordToggle = document.getElementById('passwordToggle');
   const passwordToggleIcon = document.getElementById('passwordToggleIcon');
-
-  if (!passwordInput || !passwordToggle || !passwordToggleIcon) {
-    console.warn('[PASSWORD-TOGGLE] Element tidak ditemukan');
-    return;
-  }
-
-  // Hindari double binding
+  if (!passwordInput || !passwordToggle || !passwordToggleIcon) return;
   if (passwordToggle.dataset.bound === 'true') return;
   passwordToggle.dataset.bound = 'true';
-
   passwordToggle.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-
     const isPassword = passwordInput.type === 'password';
-
     if (isPassword) {
-      // Show password
       passwordInput.type = 'text';
       passwordToggleIcon.className = 'ti ti-eye';
     } else {
-      // Hide password
       passwordInput.type = 'password';
       passwordToggleIcon.className = 'ti ti-eye-off';
     }
-
     passwordInput.focus();
   });
-
-  console.log('[PASSWORD-TOGGLE] Aktif ✓');
 }
-
-// Auto-init
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initPasswordToggle);
 } else {

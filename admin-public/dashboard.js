@@ -1,6 +1,6 @@
 // ============================================================
 // admin-public/dashboard.js
-// UI & Logic Dashboard — SIVT AI
+// UI & Logic Dashboard — CATY
 // ============================================================
 
 let sessionsChartInstance = null;

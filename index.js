@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
@@ -15,7 +16,7 @@ import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 import { PROVIDERS, callWithFallback, callGemini, callOpenAICompatible, callEmbeddingWithFallback } from './lib/providers.js';
-import { tokenize, memorySearch, memoryAdd, validateMemoryRelevance, makeBigrams, stemID } from './lib/memory.js';
+import { tokenize, memorySearch, memoryAdd, validateMemoryRelevance, makeBigrams, stemID, memoryLoadDB, memorySaveDB } from './lib/memory.js';
 import { classifyQuestion, generateRedirectMessage } from './lib/classifier.js';
 import {
     feedbackInit, addFeedback, trackEvent, getStats,
@@ -31,6 +32,13 @@ import {
     summarizerInit, generateKnowledgeSummary, generateDailyInsight,
     getSummaries, getLatestSummary
 } from './lib/summarizer.js';
+
+// === TAMBAHAN UNTUK DATABASE ===
+import { initSchema, healthCheck } from './lib/db.js';
+import { loadConfigFromDB, saveConfigToDB } from './lib/config-db.js';
+import { loadProvidersFromDB, insertProvider, updateProviderKey, updateProviderModels, updateProviderRoles, toggleProviderDB, deleteProviderDB } from './lib/providers-db.js';
+
+const USE_DB = process.env.USE_DB === 'true';
 import GraphEngine from './lib/graph-engine.js';
 import { processAdminAnswer } from './lib/unified-learning.js';
 import { HybridRAG } from './lib/rag-hybrid.js';
@@ -58,6 +66,12 @@ const AdmZip = require('adm-zip');
 
 const app = express();
 app.set('trust proxy', 1);
+
+// Tambahkan Helmet untuk keamanan HTTP Header
+app.use(helmet({
+    contentSecurityPolicy: false, // Dimatikan sementara agar Chart.js & vis-network dari CDN tidak diblokir
+    crossOriginEmbedderPolicy: false
+}));
 
 // ============================================================
 // VALIDASI ENV
@@ -394,9 +408,12 @@ process.on('SIGINT', () => {
 // ============================================================
 // PROVIDERS
 // ============================================================
-let PROVIDERS_CONFIG = loadProviders();
+let PROVIDERS_CONFIG = [];
 
-function loadProviders() {
+async function loadProviders() {
+    if (USE_DB) {
+        return await loadProvidersFromDB(PROVIDERS, decryptData, normalizeRoles);
+    }
     if (!fs.existsSync(PATHS.providers)) return [];
     try {
         const raw = fs.readFileSync(PATHS.providers, 'utf-8').trim();
@@ -418,7 +435,8 @@ function loadProviders() {
     }
 }
 
-function saveProviders() {
+async function saveProviders() {
+    if (USE_DB) return; // DB di-handle oleh fungsi spesifik
     try {
         fs.writeFileSync(PATHS.providers, encryptData(JSON.stringify(PROVIDERS_CONFIG)), 'utf-8');
     } catch (e) {
@@ -431,15 +449,20 @@ function saveProviders() {
 // ============================================================
 let memoryItems = [];
 
-function memoryInit() {
-    if (!fs.existsSync(PATHS.memoryFile)) {
-        const header = `# Memori SIVT AI\n\nTotal memori: 0\nTerakhir diperbarui: ${new Date().toISOString()}\n\n---\n\n`;
-        fs.writeFileSync(PATHS.memoryFile, header, 'utf-8');
+async function memoryInit() {
+    if (USE_DB) {
+        memoryItems = await memoryLoadDB();
+    } else {
+        if (!fs.existsSync(PATHS.memoryFile)) {
+            const header = `# Memori SIVT AI\n\nTotal memori: 0\nTerakhir diperbarui: ${new Date().toISOString()}\n\n---\n\n`;
+            fs.writeFileSync(PATHS.memoryFile, header, 'utf-8');
+        }
+        memoryLoad();
     }
-    memoryLoad();
+    console.log(`[MEMORY] ${memoryItems.length} memori dimuat.`);
 }
 
-function memoryLoad() {
+function memoryLoad() { // Fallback file
     memoryItems = [];
     if (!fs.existsSync(PATHS.memoryFile)) return;
     const content = fs.readFileSync(PATHS.memoryFile, 'utf-8');
@@ -449,7 +472,6 @@ function memoryLoad() {
             const lines = block.split('\n');
             const headerMatch = lines[0].match(/\[(.+?)\]\s*(.+)/);
             if (!headerMatch) continue;
-
             const getField = (name) => {
                 const idx = lines.findIndex(l => l.startsWith(`**${name}:**`));
                 if (idx === -1) return '';
@@ -461,22 +483,21 @@ function memoryLoad() {
                 }
                 return value.trim();
             };
-
             memoryItems.push({
-                timestamp: headerMatch[1],
-                title: headerMatch[2].trim(),
-                question: getField('Pertanyaan'),
-                variants: getField('Variasi').split(',').map(s => s.trim()).filter(Boolean),
-                answer: getField('Jawaban'),
-                hit: parseInt(getField('Hit')) || 0,
+                timestamp: headerMatch[1], title: headerMatch[2].trim(),
+                question: getField('Pertanyaan'), variants: getField('Variasi').split(',').map(s => s.trim()).filter(Boolean),
+                answer: getField('Jawaban'), hit: parseInt(getField('Hit')) || 0,
                 keywords: getField('Kata kunci').split(',').map(s => s.trim()).filter(Boolean)
             });
         } catch (e) {}
     }
-    console.log(`[MEMORY] ${memoryItems.length} memori dimuat.`);
 }
 
-function memorySave() {
+async function memorySave() {
+    if (USE_DB) {
+        await memorySaveDB(memoryItems);
+        return;
+    }
     const lines = [
         '# Memori SIVT AI', '',
         `Total memori: ${memoryItems.length}`,
@@ -749,7 +770,10 @@ Info umum:
     surveyIdleMinutes: 3
 };
 
-function loadConfig() {
+let CONFIG;
+
+async function loadConfig() {
+    if (USE_DB) return await loadConfigFromDB(DEFAULT_CONFIG);
     if (!fs.existsSync(PATHS.config)) {
         fs.writeFileSync(PATHS.config, JSON.stringify(DEFAULT_CONFIG, null, 2), 'utf-8');
         return { ...DEFAULT_CONFIG };
@@ -767,10 +791,11 @@ function loadConfig() {
         return { ...DEFAULT_CONFIG };
     }
 }
-function saveConfig() {
+
+async function saveConfig() {
+    if (USE_DB) return await saveConfigToDB(CONFIG);
     fs.writeFileSync(PATHS.config, JSON.stringify(CONFIG, null, 2), 'utf-8');
 }
-let CONFIG = loadConfig();
 
 // ============================================================
 // BACKUP
@@ -786,27 +811,40 @@ function createZip(sourceDir, destZip) {
     });
 }
 
+import { exec } from 'child_process';
+import util from 'util';
+const execPromise = util.promisify(exec);
+
 async function runBackup() {
     try {
         const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
         const tmpDir = path.join(PATHS.tmp, `backup_${stamp}`);
         fs.mkdirSync(tmpDir, { recursive: true });
 
-        const files = [
-            { src: PATHS.config, name: 'config.json' },
-            { src: PATHS.providers, name: 'providers.json.enc' },
-            { src: PATHS.memoryFile, name: 'memory.md' },
-            { src: PATHS.unanswered, name: 'unanswered.json' },
-            { src: path.join(PATHS.dataDir, 'feedback.json'), name: 'feedback.json' },
-            { src: path.join(PATHS.dataDir, 'learning-queue.json'), name: 'learning-queue.json' },
-            { src: path.join(PATHS.dataDir, 'analytics.json'), name: 'analytics.json' },
-            { src: GRAPH_PATH, name: 'knowledge-graph.json' },
-            { src: EMBEDDING_CACHE_PATH, name: 'embedding-cache.json' }
-        ];
-        for (const f of files) {
-            if (fs.existsSync(f.src)) fs.copyFileSync(f.src, path.join(tmpDir, f.name));
+        // 1. Dump Database PostgreSQL (jika pakai DB)
+        if (process.env.USE_DB === 'true') {
+            const sqlFile = path.join(tmpDir, 'database_dump.sql');
+            // Perintah pg_dump (pastikan password diset via env)
+            // Deteksi otomatis: Jika pakai Windows, gunakan path lengkap. Jika Linux (Server), gunakan 'pg_dump' biasa.
+            const isWindows = process.platform === 'win32';
+            const pgDumpCmd = isWindows 
+                ? `"C:\\Program Files\\PostgreSQL\\16\\bin\\pg_dump.exe"` 
+                : 'pg_dump'; 
+                
+            const cmd = `${pgDumpCmd} -h ${process.env.PGHOST} -U ${process.env.PGUSER} -d ${process.env.PGDATABASE} -F p -f "${sqlFile}"`;
+            
+            console.log('[BACKUP] Menjalankan pg_dump...');
+            try {
+                await execPromise(cmd, {
+                    env: { ...process.env, PGPASSWORD: process.env.PGPASSWORD }
+                });
+            } catch (err) {
+                console.error('[BACKUP] Gagal pg_dump. Pastikan pg_dump ada di PATH sistem Anda.', err);
+                // Fallback: Tetap backup file JSON lokal jika DB gagal
+            }
         }
 
+        // 2. Backup file knowledge (karena berupa teks .md)
         const kdir = path.join(tmpDir, 'knowledge');
         fs.mkdirSync(kdir, { recursive: true });
         if (fs.existsSync(PATHS.knowledge)) {
@@ -817,6 +855,11 @@ async function runBackup() {
             });
         }
 
+        // 3. Backup file graph & embedding cache (karena file JSON besar dan tidak di DB)
+        if (fs.existsSync(GRAPH_PATH)) fs.copyFileSync(GRAPH_PATH, path.join(tmpDir, 'knowledge-graph.json'));
+        if (fs.existsSync(EMBEDDING_CACHE_PATH)) fs.copyFileSync(EMBEDDING_CACHE_PATH, path.join(tmpDir, 'embedding-cache.json'));
+
+        // 4. Zip semuanya
         const tmpZip = path.join(PATHS.tmp, `backup_${stamp}.zip`);
         await createZip(tmpDir, tmpZip);
 
@@ -1038,7 +1081,7 @@ app.use('/api/', rateLimit({
 
 const chatLimiter = rateLimit({
     windowMs: 60 * 1000,
-    max: CONFIG.rateLimitPerSession || 20,
+    max: (CONFIG && CONFIG.rateLimitPerSession) ? CONFIG.rateLimitPerSession : 20,
     keyGenerator: (req, res) => {
         if (req.body?.sessionId) return 'sess_' + req.body.sessionId;
         return ipKeyGenerator(req, res);
@@ -1199,7 +1242,7 @@ app.get('/api/health', (req, res) => {
 // ============================================================
 // DASHBOARD STATS
 // ============================================================
-app.get('/api/admin/dashboard/stats', authAdmin, (req, res) => {
+app.get('/api/admin/dashboard/stats', authAdmin, async (req, res) => {
     // ✅ Terima parameter period
     const period = req.query.period || '7d';
     const periodDaysMap = { '1d': 1, '7d': 7, '30d': 30, '90d': 90, '1y': 365 };
@@ -1210,10 +1253,10 @@ app.get('/api/admin/dashboard/stats', authAdmin, (req, res) => {
     const totalMessages = Object.values(sessions).reduce((sum, s) => sum + s.messages.length, 0);
     const unreadNotif = notifications.filter(n => !n.read).length;
     const pendingUnanswered = unansweredQuestions.filter(u => !u.resolved).length;
-    const feedbackStats = getStats();
-    const queueStats = getQueueStats();
-    const feedbackList = getFeedbackList(500);
-    const learningQueue = getLearningQueue('all');
+    const feedbackStats = await getStats();
+    const queueStats = await getQueueStats();
+    const feedbackList = await getFeedbackList(500);
+    const learningQueue = await getLearningQueue('all');
 
     // ===== TOPIK POPULER =====
     const topTopics = calculateTopTopics(unansweredQuestions, learningQueue, 10);
@@ -1291,7 +1334,7 @@ app.get('/api/admin/dashboard/stats', authAdmin, (req, res) => {
 // ============================================================
 // LAPORAN / REPORT
 // ============================================================
-app.get('/api/admin/report/summary', authAdmin, (req, res) => {
+app.get('/api/admin/report/summary', authAdmin, async (req, res) => {
     try {
         const { from, to } = req.query;
 
@@ -1324,7 +1367,7 @@ app.get('/api/admin/report/summary', authAdmin, (req, res) => {
         const sessionsInRange = Object.values(sessions).filter(s => inRange(s.lastActivity));
         const totalMessagesInRange = sessionsInRange.reduce((sum, s) => sum + s.messages.length, 0);
 
-        const feedbackList = getFeedbackList(2000).filter(f => inRange(f.timestamp));
+        const feedbackList = (await getFeedbackList(2000)).filter(f => inRange(f.timestamp));
         const goodFeedback = feedbackList.filter(f => f.rating === 'good').length;
         const badFeedback = feedbackList.filter(f => f.rating === 'bad').length;
 
@@ -1336,7 +1379,7 @@ app.get('/api/admin/report/summary', authAdmin, (req, res) => {
 
         // Filter analytics.dailyStats sesuai range
         const analyticsDailyInRange = {};
-        const feedbackStats = getStats();
+        const feedbackStats = await getStats();
         const allDailyStats = feedbackStats.dailyStats || {};
         // ✅ Pakai LOCAL date key, bukan UTC
         const toLocalKey = (d) => {
@@ -1363,8 +1406,8 @@ app.get('/api/admin/report/summary', authAdmin, (req, res) => {
         const totalMessagesFromDaily = daily.reduce((sum, d) => sum + (d.messages || d.questions || 0), 0);
 
         // ===== TOPIK POPULER — pakai calculateTopTopics() yang sama dgn Dashboard =====
-        const queueStats = getQueueStats();
-        const learningQueue = getLearningQueue('all');
+        const queueStats = await getQueueStats();
+        const learningQueue = await getLearningQueue('all');
 
         // Filter unanswered yang masuk range aja
         const unansweredForTopics = unansweredQuestions.filter(u => inRange(u.lastAsked));
@@ -2014,7 +2057,7 @@ app.post('/api/admin/rag/rebuild', authAdmin, async (req, res) => {
 // ============================================================
 // PROVIDER ROLE ENDPOINTS
 // ============================================================
-app.post('/api/admin/providers/update-roles', authAdmin, (req, res) => {
+app.post('/api/admin/providers/update-roles', authAdmin, async (req, res) => {
     try {
         const { index, roles } = req.body;
         if (index < 0 || index >= PROVIDERS_CONFIG.length) {
@@ -2023,8 +2066,14 @@ app.post('/api/admin/providers/update-roles', authAdmin, (req, res) => {
 
         const oldRoles = PROVIDERS_CONFIG[index].roles || ['chat'];
         const normalized = normalizeRoles(roles);
-        PROVIDERS_CONFIG[index].roles = normalized;
-        saveProviders();
+        
+        if (USE_DB) {
+            await updateProviderRoles(PROVIDERS_CONFIG[index].id, normalized);
+            PROVIDERS_CONFIG = await loadProviders();
+        } else {
+            PROVIDERS_CONFIG[index].roles = normalized;
+            await saveProviders();
+        }
 
         const hadEmbed = oldRoles.includes('embedding');
         const hasEmbed = normalized.includes('embedding');
@@ -2116,7 +2165,7 @@ app.post('/api/admin/unified/add-to-knowledge', authAdmin, async (req, res) => {
 // ============================================================
 // PROVIDERS CRUD
 // ============================================================
-app.post('/api/admin/providers/add', authAdmin, (req, res) => {
+app.post('/api/admin/providers/add', authAdmin, async (req, res) => {
     try {
         const { name, apiKey, models, embeddingModels, customEndpoint, displayName, roles } = req.body;
         if (!name || !apiKey) {
@@ -2156,8 +2205,14 @@ app.post('/api/admin/providers/add', authAdmin, (req, res) => {
             newProvider.displayName = displayName || name;
         }
 
-        PROVIDERS_CONFIG.push(newProvider);
-        saveProviders();
+        if (USE_DB) {
+            await insertProvider(newProvider, encryptData);
+            PROVIDERS_CONFIG = await loadProviders();
+        } else {
+            PROVIDERS_CONFIG.push(newProvider);
+            await saveProviders();
+        }
+
         notifAdd('info', 'Provider Ditambahkan',
             `${newProvider.displayName || PROVIDERS[name]?.name || name} [${normalizedRoles.join(', ')}]`, 'info');
 
@@ -2171,13 +2226,20 @@ app.post('/api/admin/providers/add', authAdmin, (req, res) => {
     }
 });
 
-app.post('/api/admin/providers/remove', authAdmin, (req, res) => {
+app.post('/api/admin/providers/remove', authAdmin, async (req, res) => {
     const { index } = req.body;
     if (index < 0 || index >= PROVIDERS_CONFIG.length) {
         return res.json({ success: false, message: 'Index tidak valid' });
     }
-    const removed = PROVIDERS_CONFIG.splice(index, 1)[0];
-    saveProviders();
+    
+    const removed = PROVIDERS_CONFIG[index];
+    if (USE_DB) {
+        await deleteProviderDB(removed.id);
+        PROVIDERS_CONFIG = await loadProviders();
+    } else {
+        PROVIDERS_CONFIG.splice(index, 1);
+        await saveProviders();
+    }
 
     if ((removed.roles || []).includes('embedding')) {
         setTimeout(() => buildRAGIndex().catch(() => {}), 500);
@@ -2186,21 +2248,29 @@ app.post('/api/admin/providers/remove', authAdmin, (req, res) => {
     res.json({ success: true, total: PROVIDERS_CONFIG.length });
 });
 
-app.post('/api/admin/providers/toggle', authAdmin, (req, res) => {
+app.post('/api/admin/providers/toggle', authAdmin, async (req, res) => {
     const { index } = req.body;
     if (index < 0 || index >= PROVIDERS_CONFIG.length) {
         return res.json({ success: false, message: 'Index tidak valid' });
     }
-    PROVIDERS_CONFIG[index].enabled = !PROVIDERS_CONFIG[index].enabled;
-    saveProviders();
-    const p = PROVIDERS_CONFIG[index];
-    const state = p.enabled ? 'AKTIF' : 'NONAKTIF';
-    notifAdd('info', `Provider ${state}`,
-        `${p.displayName || PROVIDERS[p.name]?.name || p.name} -> ${state}`, 'info');
-    res.json({ success: true, enabled: PROVIDERS_CONFIG[index].enabled });
+    
+    let newStatus = false;
+    if (USE_DB) {
+        newStatus = await toggleProviderDB(PROVIDERS_CONFIG[index].id);
+        PROVIDERS_CONFIG = await loadProviders();
+    } else {
+        PROVIDERS_CONFIG[index].enabled = !PROVIDERS_CONFIG[index].enabled;
+        newStatus = PROVIDERS_CONFIG[index].enabled;
+        await saveProviders();
+    }
+    
+    const p = PROVIDERS_CONFIG.find(pr => pr.enabled === newStatus) || PROVIDERS_CONFIG[index];
+    const state = newStatus ? 'AKTIF' : 'NONAKTIF';
+    notifAdd('info', `Provider ${state}`, `${p.displayName || p.name} -> ${state}`, 'info');
+    res.json({ success: true, enabled: newStatus });
 });
 
-app.post('/api/admin/providers/update-models', authAdmin, (req, res) => {
+app.post('/api/admin/providers/update-models', authAdmin, async (req, res) => {
     try {
         const { index, models, embeddingModels } = req.body;
         if (index < 0 || index >= PROVIDERS_CONFIG.length) {
@@ -2209,13 +2279,18 @@ app.post('/api/admin/providers/update-models', authAdmin, (req, res) => {
         if (!Array.isArray(models) || models.length === 0) {
             return res.json({ success: false, message: 'Models harus array minimal 1' });
         }
-        PROVIDERS_CONFIG[index].models = models.map(m => String(m).trim()).filter(Boolean);
+        
+        const cleanModels = models.map(m => String(m).trim()).filter(Boolean);
+        const cleanEmbModels = Array.isArray(embeddingModels) && embeddingModels.length > 0 ? embeddingModels.map(m => String(m).trim()).filter(Boolean) : [];
 
-        if (Array.isArray(embeddingModels) && embeddingModels.length > 0) {
-            PROVIDERS_CONFIG[index].embeddingModels = embeddingModels.map(m => String(m).trim()).filter(Boolean);
+        if (USE_DB) {
+            await updateProviderModels(PROVIDERS_CONFIG[index].id, cleanModels, cleanEmbModels);
+            PROVIDERS_CONFIG = await loadProviders();
+        } else {
+            PROVIDERS_CONFIG[index].models = cleanModels;
+            if (cleanEmbModels.length > 0) PROVIDERS_CONFIG[index].embeddingModels = cleanEmbModels;
+            await saveProviders();
         }
-
-        saveProviders();
 
         if ((PROVIDERS_CONFIG[index].roles || []).includes('embedding')) {
             setTimeout(() => buildRAGIndex().catch(() => {}), 500);
@@ -2231,7 +2306,7 @@ app.post('/api/admin/providers/update-models', authAdmin, (req, res) => {
     }
 });
 
-app.post('/api/admin/providers/update-key', authAdmin, (req, res) => {
+app.post('/api/admin/providers/update-key', authAdmin, async (req, res) => {
     try {
         const { index, apiKey } = req.body;
         if (index < 0 || index >= PROVIDERS_CONFIG.length) {
@@ -2240,10 +2315,16 @@ app.post('/api/admin/providers/update-key', authAdmin, (req, res) => {
         if (!apiKey || apiKey.trim().length < 5) {
             return res.json({ success: false, message: 'API key tidak valid' });
         }
-        PROVIDERS_CONFIG[index].apiKey = apiKey.trim();
-        saveProviders();
-        notifAdd('info', 'API Key Diperbarui',
-            `Provider #${index + 1} API key diupdate`, 'info');
+        
+        if (USE_DB) {
+            await updateProviderKey(PROVIDERS_CONFIG[index].id, apiKey.trim(), encryptData);
+            PROVIDERS_CONFIG = await loadProviders();
+        } else {
+            PROVIDERS_CONFIG[index].apiKey = apiKey.trim();
+            await saveProviders();
+        }
+        
+        notifAdd('info', 'API Key Diperbarui', `Provider #${index + 1} API key diupdate`, 'info');
         res.json({ success: true });
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });
@@ -2314,76 +2395,77 @@ app.post('/api/feedback', async (req, res) => {
         if (!question || !answer || !['good', 'bad'].includes(rating)) {
             return res.status(400).json({ error: 'Data tidak valid' });
         }
-        addFeedback(question, answer, rating, sessionId, { provider, model, source });
+        // TAMBAHKAN AWAIT DI SINI
+        await addFeedback(question, answer, rating, sessionId, { provider, model, source });
         res.json({ success: true });
     } catch (e) {
         res.status(500).json({ success: false, message: e.message });
     }
 });
 
-app.get('/api/admin/feedback/stats', authAdmin, (req, res) => {
-    const stats = getStats();
+app.get('/api/admin/feedback/stats', authAdmin, async (req, res) => {
+    const stats = await getStats();
 
     // ✅ TAMBAH: daily feedback untuk chart Tren 7 Hari
     const days = parseInt(req.query.days) || 7;
-    stats.dailyFeedback = getDailyFeedbackStats(days);
+    stats.dailyFeedback = await getDailyFeedbackStats(days);
 
     res.json(stats);
 });
 
-app.get('/api/admin/feedback/list', authAdmin, (req, res) => {
-    res.json({ items: getFeedbackList(200) });
+app.get('/api/admin/feedback/list', authAdmin, async (req, res) => {
+    res.json({ items: await getFeedbackList(200) });
 });
 
-app.get('/api/admin/feedback/bad', authAdmin, (req, res) => {
-    res.json({ items: getBadExamples(50) });
+app.get('/api/admin/feedback/bad', authAdmin, async (req, res) => {
+    res.json({ items: await getBadExamples(50) });
 });
 
-app.get('/api/admin/feedback/good', authAdmin, (req, res) => {
-    res.json({ items: getGoodExamples(50) });
+app.get('/api/admin/feedback/good', authAdmin, async (req, res) => {
+    res.json({ items: await getGoodExamples(50) });
 });
 
-app.post('/api/admin/feedback/clear', authAdmin, (req, res) => {
+app.post('/api/admin/feedback/clear', authAdmin, async (req, res) => {
     const { analytics } = req.body || {};
-    if (analytics) clearAnalytics();
-    else clearFeedback();
+    if (analytics) await clearAnalytics();
+    else await clearFeedback();
     res.json({ success: true });
 });
 
 // ============================================================
 // LEARNING
 // ============================================================
-app.get('/api/admin/learning/queue', authAdmin, (req, res) => {
+app.get('/api/admin/learning/queue', authAdmin, async (req, res) => {
     const filter = req.query.filter || 'all';
     res.json({
-        stats: getQueueStats(),
-        items: getLearningQueue(filter)
+        stats: await getQueueStats(),
+        items: await getLearningQueue(filter)
     });
 });
 
-app.get('/api/admin/learning/stats', authAdmin, (req, res) => {
-    res.json(getQueueStats());
+app.get('/api/admin/learning/stats', authAdmin, async (req, res) => {
+    res.json(await getQueueStats());
 });
 
-app.post('/api/admin/learning/resolve', authAdmin, (req, res) => {
+app.post('/api/admin/learning/resolve', authAdmin, async (req, res) => {
     const { id } = req.body;
-    if (resolveQuestion(id)) res.json({ success: true });
+    if (await resolveQuestion(id)) res.json({ success: true });
     else res.json({ success: false, message: 'Tidak ditemukan' });
 });
 
-app.post('/api/admin/learning/delete', authAdmin, (req, res) => {
+app.post('/api/admin/learning/delete', authAdmin, async (req, res) => {
     const { id } = req.body;
-    if (deleteQuestion(id)) res.json({ success: true });
+    if (await deleteQuestion(id)) res.json({ success: true });
     else res.json({ success: false, message: 'Tidak ditemukan' });
 });
 
-app.post('/api/admin/learning/clear-resolved', authAdmin, (req, res) => {
-    clearLearningResolved();
+app.post('/api/admin/learning/clear-resolved', authAdmin, async (req, res) => {
+    await clearLearningResolved();
     res.json({ success: true });
 });
 
-app.post('/api/admin/learning/clear-all', authAdmin, (req, res) => {
-    clearLearningAll();
+app.post('/api/admin/learning/clear-all', authAdmin, async (req, res) => {
+    await clearLearningAll();
     res.json({ success: true });
 });
 
@@ -2598,6 +2680,36 @@ app.post('/api/admin/knowledge/upload', authAdmin, upload.single('file'), (req, 
         res.status(500).json({ success: false, message: e.message });
     }
 });
+app.get('/api/admin/knowledge/content', authAdmin, (req, res) => {
+    try {
+        const safe = path.basename(req.query.name || '');
+        const filePath = path.join(PATHS.knowledge, safe);
+        if (!fs.existsSync(filePath)) return res.status(404).json({ success: false, message: 'File tidak ditemukan' });
+        
+        const content = fs.readFileSync(filePath, 'utf-8');
+        res.json({ success: true, content });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
+});
+
+app.post('/api/admin/knowledge/save', authAdmin, (req, res) => {
+    try {
+        const { name, content } = req.body;
+        if (!name) return res.status(400).json({ success: false, message: 'Nama file tidak valid' });
+        
+        const safe = path.basename(name);
+        const filePath = path.join(PATHS.knowledge, safe);
+        
+        fs.writeFileSync(filePath, content, 'utf-8');
+        loadKnowledge(); // Reload RAG otomatis
+        
+        res.json({ success: true, message: 'File berhasil disimpan dan RAG diperbarui.', chunks: knowledgeChunks.length });
+    } catch (e) {
+        res.status(500).json({ success: false, message: e.message });
+    }
+});
+
 app.post('/api/admin/knowledge/delete', authAdmin, (req, res) => {
     const safe = path.basename(req.body.name || '');
     const filePath = path.join(PATHS.knowledge, safe);
@@ -2838,9 +2950,9 @@ app.post('/api/chat', async (req, res) => {
         console.log(`[CLASSIFY] relevant=${classification.relevant}, conf=${classification.confidence}`);
 
         if (!classification.relevant || classification.action === 'redirect') {
-            trackEvent('out_of_scope', session.id);
+            await trackEvent('out_of_scope', session.id);
             unansweredAdd(userText, session.id);
-            recordUnansweredQuestion(userText);
+            await recordUnansweredQuestion(userText);
 
             const redirectMsg = generateRedirectMessage(classification.reason, CONFIG.aiName);
             sessionAddMessage(session.id, 'user', userText);
@@ -2870,8 +2982,8 @@ app.post('/api/chat', async (req, res) => {
                 if (relevant && answerOk) {
                     console.log(`[MEMORY HIT] skor ${memResult.score} - "${userText.slice(0, 50)}"`);
                     memResult.item.hit = (memResult.item.hit || 0) + 1;
-                    memorySave();
-                    trackEvent('memory', session.id);
+                    await memorySave();
+                    await trackEvent('memory', session.id);
 
                     sessionAddMessage(session.id, 'user', userText);
                     sessionAddMessage(session.id, 'bot', memResult.item.answer);
@@ -2996,16 +3108,16 @@ app.post('/api/chat', async (req, res) => {
         const isRefusal = /belum ada di buku|belum ada di catatan|tidak tahu|tidak ada info|hubungi petugas langsung|belum yakin/i.test(text);
 
         if (isRefusal) {
-            trackEvent('refusal', session.id);
+            await trackEvent('refusal', session.id);
             unansweredAdd(userText, session.id);
-            recordUnansweredQuestion(userText);
+            await recordUnansweredQuestion(userText);
         } else {
             // ✅ SELALU catat 'answer' setiap AI berhasil jawab
-            trackEvent('answer', session.id);
+            await trackEvent('answer', session.id);
 
             // ✅ TAMBAHAN: kalau pakai RAG dengan confidence tinggi, catat juga
             if (relevantChunks.length > 0 && confidence >= 70) {
-                trackEvent('rag', session.id);
+                await trackEvent('rag', session.id);
             }
         }
 
@@ -3017,7 +3129,7 @@ app.post('/api/chat', async (req, res) => {
             if (isComplete) {
                 const addResult = memoryAdd(userText, text, memoryItems, CONFIG.memorySaveThreshold || 55);
                 if (addResult.added || addResult.updated) {
-                    memorySave();
+                    await memorySave();
                     console.log(`[MEMORY] ${addResult.added ? 'Tersimpan' : 'Diupdate'}: "${userText.slice(0, 50)}"`);
                 }
             }
@@ -3041,9 +3153,26 @@ app.get('/api/topics', (req, res) => {
 // START SERVER
 // ============================================================
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+
+// === INIT DATABASE & LOAD DATA (WAJIB DI LUAR LISTEN) ===
+if (USE_DB) {
+    const health = await healthCheck();
+    if (!health.ok) {
+        console.error('FATAL: Gagal konek ke PostgreSQL:', health.error);
+        process.exit(1);
+    }
+    await initSchema();
+    console.log('[DB] PostgreSQL terhubung & schema siap.');
+}
+
+// Load data secara Async
+CONFIG = await loadConfig();
+PROVIDERS_CONFIG = await loadProviders();
+await memoryInit();
+
+app.listen(PORT, async () => {
     console.log('============================================');
-    console.log(`SIVT AI siap di http://localhost:${PORT}`);
+    console.log(`CATY siap di http://localhost:${PORT}`);
     console.log(`Warga  : http://localhost:${PORT}/`);
     console.log(`Admin  : http://localhost:${PORT}/admin/`);
     const activeCount = PROVIDERS_CONFIG.filter(p => p.enabled !== false).length;
@@ -3059,7 +3188,6 @@ app.listen(PORT, () => {
     console.log(`Unanswered     : ${unansweredQuestions.filter(u => !u.resolved).length} pending`);
     console.log('============================================');
 
-    memoryInit();
     sessionInit();
 
     console.log('[GRAPH] Memuat knowledge graph dari disk...');
