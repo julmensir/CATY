@@ -3161,7 +3161,24 @@ if (USE_DB) {
         console.error('FATAL: Gagal konek ke PostgreSQL:', health.error);
         process.exit(1);
     }
-    await initSchema();
+
+    // Auto-migrate: buat tabel jika belum ada (Neon / Back4app)
+    try {
+        const fsMod = await import('fs');
+        const pathMod = await import('path');
+        const { fileURLToPath } = await import('url');
+        const dir = pathMod.dirname(fileURLToPath(import.meta.url));
+        const schemaPath = pathMod.join(dir, 'db', 'schema.sql');
+        if (fsMod.existsSync(schemaPath)) {
+            const sql = fsMod.readFileSync(schemaPath, 'utf-8');
+            const dbMod = await import('./lib/db.js');
+            await dbMod.query(sql);
+            console.log('[DB] Schema otomatis dicek/dibuat.');
+        }
+    } catch (e) {
+        console.warn('[DB] Auto-migrate gagal:', e.message);
+    }
+
     console.log('[DB] PostgreSQL terhubung & schema siap.');
 }
 
