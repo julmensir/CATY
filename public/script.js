@@ -1,5 +1,5 @@
 // ============================================================
-// SIVT AI — Frontend Script WARGA (Chat Only)
+// CHAT AI TEGALREJO YOGYAKARTA — Frontend Script WARGA (Chat Only)
 // ============================================================
 
 let chatSessionId = null;

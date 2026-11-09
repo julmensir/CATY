@@ -201,13 +201,6 @@ const hybridRAG = new HybridRAG({
 });
 
 // ============================================================
-// INIT MODULES
-// ============================================================
-feedbackInit();
-learningInit();
-summarizerInit();
-
-// ============================================================
 // NOTIFIKASI
 // ============================================================
 const NOTIF_FILE = path.join(PATHS.logsDir, 'notifications.json');
@@ -825,7 +818,14 @@ BARU kirim jawaban.`,
     strictMode: true,
     surveyLink: '',
     surveyEnabled: true,
-    surveyIdleMinutes: 3
+    surveyIdleMinutes: 3,
+    contactInfo: {
+        address: 'Jl. Tompeyan TR III/219 Yogyakarta, Kode Pos: 55244',
+        phone: '(0274) 51578',
+        whatsapp: '08122780001',
+        email: 'tr@jogjakota.go.id',
+        hours: 'Senin - Kamis  08.00 - 15.00 WIB | Jumat 08.00-14.00 WIB'
+    }
 };
 
 let CONFIG;
@@ -1092,12 +1092,12 @@ cron.schedule('0 2 * * *', () => {
     runBackup();
 });
 
-cron.schedule('0 23 * * *', () => {
+cron.schedule('0 23 * * *', async () => {
     console.log('[CRON] Generate daily insight...');
     try {
         generateDailyInsight(
-            getFeedbackList(500),
-            getLearningQueue('all'),
+            await getFeedbackList(500),  // <-- Tambah await
+            await getLearningQueue('all'), // <-- Tambah await
             unansweredQuestions
         );
     } catch (e) {
@@ -1316,8 +1316,37 @@ app.get('/api/admin/dashboard/stats', authAdmin, async (req, res) => {
     const feedbackList = await getFeedbackList(500);
     const learningQueue = await getLearningQueue('all');
 
-    // ===== TOPIK POPULER =====
-    const topTopics = calculateTopTopics(unansweredQuestions, learningQueue, 10);
+    // ===== TOPIK POPULER (GABUNGAN MEMORI AI + FEEDBACK WARGA) =====
+    const topicMap = {};
+
+    // 1. Ambil dari Memori AI (berdasarkan Hit)
+    memoryItems.forEach(m => {
+        const q = (m.title || m.question || '').trim();
+        if (!q) return;
+        const key = q.toLowerCase();
+        if (topicMap[key]) {
+            topicMap[key].count += (m.hit || 1);
+        } else {
+            topicMap[key] = { title: q, count: (m.hit || 1), source: 'memory' };
+        }
+    });
+
+    // 2. Ambil dari Feedback Warga (pertanyaan yang sukses dijawab)
+    feedbackList.forEach(f => {
+        const q = (f.question || '').trim();
+        if (!q) return;
+        const key = q.toLowerCase();
+        if (topicMap[key]) {
+            topicMap[key].count += 1;
+        } else {
+            topicMap[key] = { title: q, count: 1, source: 'feedback' };
+        }
+    });
+
+    // 3. Urutkan dan ambil 10 teratas
+    const topTopics = Object.values(topicMap)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10);
 
     // ===== KATEGORI =====
     const categories = calculateCategories(unansweredQuestions, feedbackList);
@@ -1459,21 +1488,39 @@ app.get('/api/admin/report/summary', authAdmin, async (req, res) => {
         const daily = calculateDailyActivityFromAnalytics(analyticsDailyInRange, rangeDays)
             .filter(d => d.date >= startKey && d.date <= endKey);
 
-        // ✅ Hitung total sesi & pesan dari daily (permanen, tidak kena hapus sesi)
-        const totalSessionsInRange = daily.reduce((sum, d) => sum + (d.sessions || 0), 0);
+        // ✅ Hitung total sesi & pesan dari daily
+        let totalSessionsInRange = daily.reduce((sum, d) => sum + (d.sessions || 0), 0);
         const totalMessagesFromDaily = daily.reduce((sum, d) => sum + (d.messages || d.questions || 0), 0);
+        
+        // Jika tabel sessions kosong tapi ada pesan, hitung 1 sesi per hari yang aktif
+        if (totalSessionsInRange === 0 && totalMessagesFromDaily > 0) {
+            totalSessionsInRange = daily.filter(d => (d.messages || d.questions) > 0).length;
+        }
 
-        // ===== TOPIK POPULER — pakai calculateTopTopics() yang sama dgn Dashboard =====
-        const queueStats = await getQueueStats();
-        const learningQueue = await getLearningQueue('all');
+        // ===== TOPIK POPULER — GABUNGAN MEMORI & PERTANYAAN (Sama seperti Dashboard) =====
+        const topicMap = {};
+        // 1. Dari Memori AI
+        memoryItems.forEach(m => {
+            const q = (m.title || m.question || '').trim();
+            if (!q) return;
+            const key = q.toLowerCase();
+            if (topicMap[key]) topicMap[key].count += (m.hit || 1);
+            else topicMap[key] = { title: q, count: (m.hit || 1), source: 'memory' };
+        });
+        // 2. Dari Feedback Warga (Pertanyaan yang dijawab)
+        feedbackList.forEach(f => {
+            const q = (f.question || '').trim();
+            if (!q) return;
+            const key = q.toLowerCase();
+            if (topicMap[key]) topicMap[key].count += 1;
+            else topicMap[key] = { title: q, count: 1, source: 'feedback' };
+        });
+        const topTopics = Object.values(topicMap)
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 20);
 
-        // Filter unanswered yang masuk range aja
+        // ===== KATEGORI =====
         const unansweredForTopics = unansweredQuestions.filter(u => inRange(u.lastAsked));
-        const learningForTopics = learningQueue.filter(item => inRange(item.lastAsked));
-
-        const topTopics = calculateTopTopics(unansweredForTopics, learningForTopics, 20);
-
-        // ===== KATEGORI — pakai calculateCategories() yang sama dgn Dashboard =====
         const categories = calculateCategories(unansweredForTopics, feedbackList);
 
         const providerDetails = PROVIDERS_CONFIG.map((p, i) => ({
@@ -1787,37 +1834,43 @@ app.post('/api/admin/logout', authAdmin, (req, res) => {
 // ============================================================
 // ADMIN CONFIG
 // ============================================================
-app.get('/api/admin/config', authAdmin, (req, res) => {
-    res.json({
-        ...CONFIG,
-        providers: PROVIDERS_CONFIG.map((p, i) => ({
-            index: i,
-            name: p.name,
-            displayName: p.displayName || PROVIDERS[p.name]?.name || p.name,
-            roles: p.roles || ['chat'],
-            models: p.models,
-            embeddingModels: p.embeddingModels || PROVIDERS[p.name]?.embeddingModels || [],
-            masked: p.apiKey ? p.apiKey.slice(0, 8) + '...' + p.apiKey.slice(-6) : '',
-            enabled: p.enabled !== false,
-            isCustom: !!p.customEndpoint,
-            customEndpoint: p.customEndpoint || null
-        })),
-        knowledgeFiles: fs.existsSync(PATHS.knowledge)
-            ? fs.readdirSync(PATHS.knowledge).filter(f => /\.(md|txt)$/i.test(f)).map(f => {
-                const s = fs.statSync(path.join(PATHS.knowledge, f));
-                return { name: f, size: s.size, modified: s.mtime };
-            })
-            : [],
-        knowledgeChunks: knowledgeChunks.length,
-        memoryCount: memoryItems.length,
-        sessionCount: Object.keys(sessions).length,
-        unreadNotifications: notifications.filter(n => !n.read).length,
-        pendingUnanswered: unansweredQuestions.filter(u => !u.resolved).length,
-        pendingLearning: getQueueStats().pending,
-        graph: brain.getStats(),
-        rag: hybridRAG.getStats(),
-        roles: getRoleStats(PROVIDERS_CONFIG, PROVIDERS)
-    });
+app.get('/api/admin/config', authAdmin, async (req, res) => {
+    try {
+        const queueStats = await getQueueStats();
+        res.json({
+            ...CONFIG,
+            providers: PROVIDERS_CONFIG.map((p, i) => ({
+                index: i,
+                name: p.name,
+                displayName: p.displayName || PROVIDERS[p.name]?.name || p.name,
+                roles: p.roles || ['chat'],
+                models: p.models,
+                embeddingModels: p.embeddingModels || PROVIDERS[p.name]?.embeddingModels || [],
+                masked: p.apiKey ? p.apiKey.slice(0, 8) + '...' + p.apiKey.slice(-6) : '',
+                enabled: p.enabled !== false,
+                isCustom: !!p.customEndpoint,
+                customEndpoint: p.customEndpoint || null
+            })),
+            knowledgeFiles: fs.existsSync(PATHS.knowledge)
+                ? fs.readdirSync(PATHS.knowledge).filter(f => /\.(md|txt)$/i.test(f)).map(f => {
+                    const s = fs.statSync(path.join(PATHS.knowledge, f));
+                    return { name: f, size: s.size, modified: s.mtime };
+                })
+                : [],
+            knowledgeChunks: knowledgeChunks.length,
+            memoryCount: memoryItems.length,
+            sessionCount: Object.keys(sessions).length,
+            unreadNotifications: notifications.filter(n => !n.read).length,
+            pendingUnanswered: unansweredQuestions.filter(u => !u.resolved).length,
+            pendingLearning: queueStats.pending || 0,
+            graph: brain.getStats(),
+            rag: hybridRAG.getStats(),
+            roles: getRoleStats(PROVIDERS_CONFIG, PROVIDERS)
+        });
+    } catch (e) {
+        console.error('[ADMIN-CONFIG] Error:', e.message);
+        res.status(500).json({ error: e.message });
+    }
 });
 
 app.post('/api/admin/config', authAdmin, (req, res) => {
@@ -2543,11 +2596,11 @@ app.get('/api/admin/summary/knowledge', authAdmin, (req, res) => {
     res.json(generateKnowledgeSummary(knowledgeChunks));
 });
 
-app.post('/api/admin/summary/generate', authAdmin, (req, res) => {
+app.post('/api/admin/summary/generate', authAdmin, async (req, res) => {
     try {
-        const insight = generateDailyInsight(
-            getFeedbackList(500),
-            getLearningQueue('all'),
+        const insight = await generateDailyInsight(
+            await getFeedbackList(500),
+            await getLearningQueue('all'),
             unansweredQuestions
         );
         res.json({ success: true, insight });
@@ -3220,7 +3273,7 @@ if (USE_DB) {
         process.exit(1);
     }
 
-    // Auto-migrate: buat tabel jika belum ada (Neon / Back4app)
+    // Auto-migrate: buat tabel jika belum ada
     try {
         const fsMod = await import('fs');
         const pathMod = await import('path');
@@ -3243,9 +3296,15 @@ if (USE_DB) {
 // Load data secara Async
 CONFIG = await loadConfig();
 PROVIDERS_CONFIG = await loadProviders();
-await memoryInit();
+// ✅ PERBAIKAN: await memoryInit() dipindah ke dalam app.listen
 
 app.listen(PORT, async () => {
+    // ✅ Init modul DB SETELAH DB siap
+    await feedbackInit();
+    await learningInit();
+    await summarizerInit();
+    await memoryInit(); // ✅ MEMORI DIMUAT DI SINI (SETELAH DB)
+
     console.log('============================================');
     console.log(`CATY siap di http://localhost:${PORT}`);
     console.log(`Warga  : http://localhost:${PORT}/`);

@@ -1,6 +1,6 @@
 // ============================================================
 // admin-public/laporan.js
-// UI & Logic Laporan — SIVT AI
+// UI & Logic Laporan — SIVT AI (FINAL SAAS VERSION)
 // ============================================================
 
 let reportChartInstance = null;
@@ -27,11 +27,9 @@ function getReportRange() {
   let from;
 
   if (preset === 'today') {
-    // ✅ Hari ini: dari jam 00:00 sampai sekarang
     from = new Date();
     from.setHours(0, 0, 0, 0);
   } else if (preset === '7d') {
-    // ✅ 7 hari = H-6 sampai H (inklusif)
     from = new Date(now.getTime() - 6 * 86400000);
     from.setHours(0, 0, 0, 0);
   } else if (preset === '30d') {
@@ -55,7 +53,6 @@ function getReportRange() {
     from.setHours(0, 0, 0, 0);
   }
 
-  // ✅ PAKAI toLocalDateString (LOCAL timezone WIB) — bukan toISOString (UTC)
   return {
     from: toLocalDateString(from),
     to: toLocalDateString(now)
@@ -65,7 +62,35 @@ function getReportRange() {
 function toggleCustomRange() {
   const preset = document.getElementById('reportRange')?.value;
   const customDiv = document.getElementById('reportCustomRange');
-  if (customDiv) customDiv.style.display = preset === 'custom' ? 'flex' : 'none';
+  if (customDiv) {
+    customDiv.style.display = preset === 'custom' ? 'flex' : 'none';
+  }
+}
+
+// ============================================================
+// SET FILTER PERIOD (GAYA SAAS)
+// ============================================================
+function setFilterPeriod(period, btnElement) {
+  // 1. Hapus kelas 'active' dari semua tombol
+  document.querySelectorAll('.saas-pill').forEach(btn => btn.classList.remove('active'));
+  // 2. Tambahkan kelas 'active' ke tombol yang diklik
+  if (btnElement) btnElement.classList.add('active');
+  
+  // 3. Sembunyikan atau tampilkan input custom
+  const customRange = document.getElementById('saasCustomRange');
+  if (customRange) {
+    if (period === 'custom') {
+      customRange.classList.add('show');
+    } else {
+      customRange.classList.remove('show');
+      // 4. Set value ke dropdown (tersembunyi) & langsung load data
+      const hiddenSelect = document.getElementById('reportRange');
+      if (hiddenSelect) {
+        hiddenSelect.value = period;
+        loadReport();
+      }
+    }
+  }
 }
 
 // ============================================================
@@ -79,7 +104,9 @@ async function loadReport() {
 
   const rangeDisplay = document.getElementById('reportRangeDisplay');
   if (rangeDisplay) {
-    rangeDisplay.textContent = `${new Date(from).toLocaleDateString('id-ID')} - ${new Date(to).toLocaleDateString('id-ID')}`;
+    const optFrom = new Date(from).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    const optTo = new Date(to).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    rangeDisplay.textContent = `${optFrom} — ${optTo}`;
   }
 
   const overviewEl = document.getElementById('reportOverview');
@@ -168,7 +195,7 @@ function renderReportOverview(data) {
 }
 
 // ============================================================
-// RENDER: CHART HARIAN
+// RENDER: CHART HARIAN (FIXED)
 // ============================================================
 function renderReportChart(daily) {
   const el = document.getElementById('reportChart');
@@ -191,8 +218,8 @@ function renderReportChart(daily) {
     data: {
       labels: daily.map(d => new Date(d.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })),
       datasets: [{
-        label: 'Sesi',
-        data: daily.map(d => d.sessions),
+        label: 'Aktivitas',
+        data: daily.map(d => d.messages || d.sessions || d.questions || 0), // ✅ FIXED: Baca messages
         borderColor: '#3b82f6',
         backgroundColor: gradient,
         borderWidth: 3,
@@ -218,7 +245,7 @@ function renderReportChart(daily) {
 }
 
 // ============================================================
-// RENDER: DISTRIBUSI SUMBER JAWABAN (BARU)
+// RENDER: DISTRIBUSI SUMBER JAWABAN
 // ============================================================
 function renderReportSourceChart(analytics) {
   const el = document.getElementById('reportSourceChart');
@@ -230,7 +257,6 @@ function renderReportSourceChart(analytics) {
   const redirects = analytics.totalOutOfScope || 0;
   const totalChats = analytics.totalChats || 0;
 
-  // ✅ AI murni = totalChats - semua kategori
   const aiPure = Math.max(0, totalChats - memoryHits - ragHits - refusals - redirects);
 
   const values = [memoryHits, ragHits, aiPure, refusals, redirects];
@@ -455,7 +481,7 @@ function renderReportSessions(data) {
       Total <strong>${data.sessions.total}</strong> sesi dengan <strong>${data.sessions.messages}</strong> pesan
       • Rata-rata <strong>${data.sessions.avgMessagesPerSession}</strong> pesan/sesi
     </div>
-    <p class="text-secondary small mb-0">Untuk detail per sesi, silakan export CSV atau cetak PDF.</p>
+    <p class="text-secondary small mb-0">Untuk detail per sesi, silakan cetak PDF.</p>
   `;
 }
 
@@ -534,36 +560,6 @@ function renderReportUnanswered(data) {
   el.innerHTML = html;
 }
 
-// ============================================================
-// EXPORT CSV
-// ============================================================
-async function exportReport(type) {
-  const range = getReportRange();
-  showToast(`Menyiapkan CSV ${type}...`, 'info');
-
-  try {
-    const res = await fetch(`/api/admin/report/export?type=${type}&from=${range.from}&to=${range.to}`, {
-      credentials: 'include',
-      headers: { 'Authorization': `Bearer ${adminToken}` }
-    });
-
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `laporan-${type}-${new Date().toISOString().slice(0, 10)}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    showToast(`Export ${type} berhasil`, 'success');
-  } catch (err) {
-    showToast('Gagal export: ' + err.message, 'error');
-  }
-}
 
 // ============================================================
 // PRINT BROWSER
@@ -642,7 +638,6 @@ async function generatePDF() {
   if (progressText) progressText.textContent = 'Menyiapkan PDF...';
 
   try {
-    // Ambil section yang dicentang
     const sectionMap = {
       overview: 'pdfSectionOverview',
       sessions: 'pdfSectionSessions',
@@ -674,13 +669,11 @@ async function generatePDF() {
 
     if (progressText) progressText.textContent = `Generate PDF (${sections.length} section)...`;
 
-    // Build PDF
     const doc = window.buildLaporanPDF(currentReportData, {
       sections,
       aiName: currentReportData.aiName || 'SIVT AI'
     });
 
-    // Save
     const range = getReportRange();
     const filename = `Laporan-${currentReportData.aiName || 'SIVT'}-${range.from}-to-${range.to}.pdf`;
     doc.save(filename);
@@ -711,7 +704,7 @@ async function generatePDF() {
 // ============================================================
 window.loadReport = loadReport;
 window.toggleCustomRange = toggleCustomRange;
-window.exportReport = exportReport;
+window.setFilterPeriod = setFilterPeriod;
 window.printReport = printReport;
 window.openPdfModal = openPdfModal;
 window.generatePDF = generatePDF;

@@ -1674,3 +1674,498 @@ SETTINGS TABS (Menu Pengaturan - Umum/Logo/Tema)
     display: none;
   }
 }
+
+/* ============================================================
+   SAAS-STYLE FILTER BAR (Laporan) — THEME SYNC
+   ============================================================ */
+.saas-filter-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: var(--tblr-bg-surface-secondary, #f4f6fa);
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--tblr-border-color, #e5e7eb);
+}
+
+.saas-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.saas-filter-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tblr-secondary, #6b7280);
+  white-space: nowrap;
+}
+
+.saas-pills {
+  display: flex;
+  gap: 4px;
+  background: var(--tblr-bg-surface, #ffffff);
+  padding: 3px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--tblr-border-color, rgba(0,0,0,0.05));
+}
+
+.saas-pill {
+  border: none;
+  background: transparent;
+  color: var(--tblr-secondary, #5f6368);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.saas-pill:hover {
+  background: var(--tblr-bg-surface-secondary, #f1f3f5);
+  color: var(--tblr-primary, #0d47a1);
+}
+
+.saas-pill.active {
+  background: var(--tblr-primary, #0d47a1);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(13, 71, 161, 0.3);
+}
+
+.saas-custom-range {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+.saas-custom-range.show {
+  display: flex;
+}
+
+.saas-input-date {
+  border: 1px solid var(--tblr-border-color, #e5e7eb);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12.5px;
+  font-family: inherit;
+  color: var(--tblr-body-color, #1f2937);
+  outline: none;
+  background: var(--tblr-bg-surface, #ffffff); /* Mengikuti tema */
+  transition: border-color 0.2s;
+}
+
+/* Ikon Kalender jadi Putih di Dark Mode */
+[data-bs-theme="dark"] .saas-input-date::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.saas-input-date:focus {
+  border-color: var(--tblr-primary, #0d47a1);
+  box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1);
+}
+
+.saas-separator {
+  font-size: 12px;
+  color: var(--tblr-secondary, #9ca3af);
+}
+
+.saas-btn-apply {
+  border: none;
+  background: #10b981;
+  color: #fff;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saas-btn-apply:hover {
+  background: #059669;
+  transform: scale(1.05);
+}
+
+.saas-active-info {
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tblr-primary, #0d47a1);
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--tblr-bg-surface, #ffffff); /* Mengikuti tema */
+  border-radius: 8px;
+  border: 1px solid var(--tblr-border-color, #e5e7eb);
+}
+
+/* Penyesuaian Teks di Dark Mode */
+[data-bs-theme="dark"] .saas-active-info {
+  color: #93c5fd; /* Biru muda agar terbaca di background gelap */
+}
+
+@media (max-width: 768px) {
+  .saas-filter-bar { 
+    padding: 12px; 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 10px;
+  }
+  
+  /* Paksa label periode dan tombol jadi 1 baris ke bawah */
+  .saas-filter-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  /* Tombol Pill jadi kotak-kotak rapi */
+  .saas-pills { 
+    flex-wrap: wrap; 
+    justify-content: flex-start; 
+    border-radius: 12px; 
+    width: 100%;
+    background: transparent;
+    box-shadow: none;
+    gap: 8px;
+    padding: 0;
+  }
+  
+  .saas-pill { 
+    flex: 1 1 calc(33% - 8px); /* 3 kolom */
+    text-align: center; 
+    padding: 8px 10px; 
+    font-size: 12px; 
+    background: var(--tblr-bg-surface, #ffffff);
+    border: 1px solid var(--tblr-border-color, #e5e7eb);
+  }
+  
+  .saas-pill.active {
+    border-color: var(--tblr-primary, #0d47a1);
+  }
+
+  /* Info tanggal jadi 1 baris penuh */
+  .saas-active-info { 
+    margin-left: 0; 
+    justify-content: center; 
+    margin-top: 4px; 
+    width: 100%;
+  }
+  
+  /* Custom Range jadi 1 kolom ke bawah */
+  .saas-custom-range { 
+    flex-direction: column; 
+    align-items: stretch; 
+  }
+  .saas-custom-range.show {
+    display: flex;
+  }
+  .saas-separator { display: none; }
+  .saas-btn-apply { width: 100%; }
+}
+
+/* ============================================================
+   TOMBOL HEADER (Dark Mode & Refresh) — Responsif Mobile
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Pastikan tombol berjejer rapi ke samping */
+  .navbar-nav.flex-row {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 4px;
+  }
+  .navbar-nav.flex-row .nav-item {
+    display: flex !important;
+  }
+  /* Ukuran ikon sedikit lebih kecil di HP agar tidak sesak */
+  .navbar-nav.flex-row .btn-icon {
+    width: 34px !important;
+    height: 34px !important;
+    font-size: 16px !important;
+  }
+}
+/* ============================================================
+   FIX TAMPILAN JAM/UPTIME DI HP (Hero Card)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Kotak jam menyesuaikan lebar HP */
+  .hero-card .clock-card {
+    min-width: 0 !important;
+    padding: 10px 12px !important;
+    flex: 1 1 100% !important; /* Memenuhi lebar */
+    gap: 8px !important;
+  }
+
+  /* Ukuran ikon jam lebih kecil */
+  .hero-card .clock-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 15px !important;
+  }
+
+  /* Ukuran teks jam (23.30.26) */
+  .hero-card .clock-time {
+    font-size: 16px !important;
+  }
+
+  /* Ukuran teks label (Sen, 26 Okt 2026) */
+  .hero-card .clock-label {
+    font-size: 10px !important;
+    white-space: normal !important; /* Agar teks turun ke bawah jika kepanjangan */
+  }
+  
+  /* Bungkus jam secara vertikal agar tidak berjejer kesamping di HP */
+  .hero-card .d-flex.gap-2 {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+}
+
+/* ============================================================
+   FITUR PIN SIDEBAR (PUSH CONTENT / TIDAK MENUTUPI)
+   ============================================================ */
+.sidebar-pin-container {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 10;
+  opacity: 0;                 /* Sembunyikan secara default */
+  visibility: hidden;         /* Agar tidak bisa diklik saat tidak terlihat */
+  transition: all 0.3s ease;  /* Animasi halus */
+}
+
+/* Tampilkan saat kursor mengarah ke sidebar ATAU saat sidebar sedang di-pin */
+#adminSidebar:hover .sidebar-pin-container,
+#adminSidebar.pinned .sidebar-pin-container {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-pin-btn {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Tampilkan tombol pin hanya di Desktop */
+@media (min-width: 992px) {
+  .sidebar-pin-btn { display: flex; }
+}
+
+.sidebar-pin-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* Ikon Pin saat aktif */
+#adminSidebar.pinned .sidebar-pin-btn {
+  background: var(--tblr-primary);
+  border-color: var(--tblr-primary);
+}
+#adminSidebar.pinned .sidebar-pin-btn i {
+  color: #ffd700;
+  transform: rotate(45deg);
+}
+
+/* ============================================================
+   LOGIKA UTAMA: SIDEBAR PIN (PUSH LAYOUT)
+   ============================================================ */
+@media (min-width: 992px) {
+  /* Saat PIN aktif: Sidebar lebar tetap, Konten terdorong */
+  #adminSidebar.navbar-vertical.pinned {
+    width: 260px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.1) !important;
+  }
+  
+  /* Saat PIN aktif: Page Wrapper & Header bergeser ke kanan */
+  body.sidebar-is-pinned .page-wrapper {
+    margin-left: 260px !important;
+  }
+  body.sidebar-is-pinned .page-wrapper > header.navbar {
+    left: 260px !important;
+  }
+  
+  /* Paksa semua elemen di dalam sidebar tampil penuh saat di-pin */
+  #adminSidebar.pinned .nav-link-title,
+  #adminSidebar.pinned .nav-section,
+  #adminSidebar.pinned .nav-link .badge,
+  #adminSidebar.pinned .navbar-brand > a > .ms-2,
+  #adminSidebar.pinned .sidebar-user-card .user-info,
+  #adminSidebar.pinned .sidebar-logout-btn span {
+    opacity: 1 !important;
+    width: auto !important;
+    height: auto !important;
+    transform: none !important;
+    display: block !important;
+  }
+  
+  #adminSidebar.pinned .nav-link {
+    justify-content: flex-start !important;
+    padding: 10px 14px !important;
+    margin: 2px 8px !important;
+  }
+  
+  #adminSidebar.pinned .nav-link-icon {
+    margin-right: 12px !important;
+  }
+  
+  #adminSidebar.pinned .sidebar-footer-tabler {
+    padding: 16px !important;
+  }
+  
+  #adminSidebar.pinned .sidebar-user-card {
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+  }
+  
+  #adminSidebar.pinned .sidebar-logout-btn {
+    justify-content: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    color: #fca5a5 !important;
+  }
+}
+
+/* ============================================================
+   SIDEBAR ACCORDION (MENU BERTINGKAT)
+   ============================================================ */
+.submenu-list {
+  display: none;
+  padding-left: 0;
+  list-style: none;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.15); /* Efek gelap di dalam submenu */
+  border-radius: 8px;
+  margin: 4px 8px;
+  overflow: hidden;
+}
+
+/* Saat menu dibuka */
+.nav-item.open .submenu-list {
+  display: block;
+  animation: slideDown 0.3s ease forwards;
+}
+
+/* Animasi buka submenu */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Ikon panah */
+.nav-link-arrow {
+  transition: transform 0.3s ease;
+  font-size: 14px;
+  opacity: 0.5;
+}
+.nav-item.open .nav-link-arrow {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+/* Styling submenu item */
+.submenu-list .nav-link {
+  padding: 8px 16px 8px 44px !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.submenu-list .nav-link:hover,
+.submenu-list .nav-link.active {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.submenu-list .nav-link.active {
+  border-left: 3px solid var(--tblr-primary-light, #60a5fa);
+  font-weight: 700;
+}
+
+/* Sembunyikan panah saat sidebar dalam mode MINI (72px) */
+@media (min-width: 992px) {
+  #adminSidebar:not(:hover) .nav-link-arrow {
+    display: none !important;
+  }
+  #adminSidebar:not(:hover) .submenu-list {
+    display: none !important; /* Paksa sembunyi saat mini */
+  }
+  /* Saat mode mini, jangan tampilkan submenu meskipun statusnya open */
+  #adminSidebar:not(:hover) .nav-item.open .submenu-list {
+    display: none !important;
+  }
+}
+
+/* ============================================================
+   MODERN QUICK ACTIONS (Aksi Cepat Dashboard)
+   ============================================================ */
+.modern-quick-btn {
+  border-radius: 16px !important;
+  border: 1px solid var(--tblr-border-color) !important;
+  background: var(--tblr-bg-surface) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  padding: 20px 10px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+}
+
+.modern-quick-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08) !important;
+  border-color: var(--tblr-primary) !important;
+}
+
+.modern-quick-btn i {
+  margin-bottom: 12px !important;
+  transition: transform 0.2s ease;
+}
+
+.modern-quick-btn:hover i {
+  transform: scale(1.15);
+}
+
+/* Responsif Mobile (HP) - 2 Kolom */
+@media (max-width: 768px) {
+  .modern-quick-btn {
+    padding: 16px 8px !important;
+    border-radius: 14px !important;
+  }
+  .modern-quick-btn i {
+    font-size: 22px !important;
+    margin-bottom: 8px !important;
+  }
+  .modern-quick-btn span {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+  }
+}
+
+/* Responsif HP Layar Kecil */
+@media (max-width: 400px) {
+  .modern-quick-btn {
+    padding: 12px 6px !important;
+  }
+  .modern-quick-btn i {
+    font-size: 20px !important;
+  }
+  .modern-quick-btn span {
+    font-size: 10px !important;
+  }
+}

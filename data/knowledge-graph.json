@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "savedAt": "2026-10-24T12:30:05.523Z",
+  "savedAt": "2026-11-09T09:10:39.987Z",
   "stats": {
     "nodes": 1409,
     "edges": 598
@@ -12964,7 +12964,7 @@
     {
       "source": "waktu penyelesaian",
       "target": "1 sampai 3 hari kerja",
-      "weight": 689,
+      "weight": 949,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -12972,7 +12972,7 @@
     {
       "source": "nik",
       "target": "ttl",
-      "weight": 324,
+      "weight": 444,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12980,7 +12980,7 @@
     {
       "source": "nik",
       "target": "jenis kelamin",
-      "weight": 270,
+      "weight": 370,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12988,7 +12988,7 @@
     {
       "source": "ttl",
       "target": "jenis kelamin",
-      "weight": 270,
+      "weight": 370,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -12996,7 +12996,7 @@
     {
       "source": "data pemohon nama",
       "target": "ttl",
-      "weight": 270,
+      "weight": 370,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13004,7 +13004,7 @@
     {
       "source": "data pemohon nama",
       "target": "nik",
-      "weight": 216,
+      "weight": 296,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13012,7 +13012,7 @@
     {
       "source": "- tanda tangan",
       "target": "para ahli waris",
-      "weight": 162,
+      "weight": 222,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13020,7 +13020,7 @@
     {
       "source": "- tanda tangan",
       "target": "saksi",
-      "weight": 162,
+      "weight": 222,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13028,7 +13028,7 @@
     {
       "source": "para ahli waris",
       "target": "saksi",
-      "weight": 162,
+      "weight": 222,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13036,7 +13036,7 @@
     {
       "source": "para ahli waris",
       "target": "saksi ii",
-      "weight": 162,
+      "weight": 222,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13044,7 +13044,7 @@
     {
       "source": "saksi",
       "target": "saksi ii",
-      "weight": 162,
+      "weight": 222,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13052,7 +13052,7 @@
     {
       "source": "pekerjaan",
       "target": "alamat",
-      "weight": 160,
+      "weight": 220,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13060,7 +13060,7 @@
     {
       "source": "waktu penyelesaian",
       "target": "1 hari kerja",
-      "weight": 159,
+      "weight": 219,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13068,7 +13068,7 @@
     {
       "source": "4 b layanan nikah",
       "target": "talak",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13076,7 +13076,7 @@
     {
       "source": "4 b layanan nikah",
       "target": "dan cerai ntcr",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13084,7 +13084,7 @@
     {
       "source": "talak",
       "target": "dan cerai ntcr",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13092,7 +13092,7 @@
     {
       "source": "ttl",
       "target": "alamat",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13100,7 +13100,7 @@
     {
       "source": "data ketua dan sekretaris nama",
       "target": "jabatan",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13108,7 +13108,7 @@
     {
       "source": "- tanda tangan",
       "target": "ketua",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13116,7 +13116,7 @@
     {
       "source": "- tanda tangan",
       "target": "sekretaris",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13124,7 +13124,7 @@
     {
       "source": "ketua",
       "target": "sekretaris",
-      "weight": 108,
+      "weight": 148,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13132,7 +13132,7 @@
     {
       "source": "kata kunci",
       "target": "umur ktp",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13140,7 +13140,7 @@
     {
       "source": "kata kunci",
       "target": "syarat umur",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13148,7 +13148,7 @@
     {
       "source": "umur ktp",
       "target": "syarat umur",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13156,7 +13156,7 @@
     {
       "source": "umur ktp",
       "target": "ktp anak",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13164,7 +13164,7 @@
     {
       "source": "waktu penyelesaian",
       "target": "3 sampai 7 hari kerja",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13172,7 +13172,7 @@
     {
       "source": "kata kunci",
       "target": "pindah domisili",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13180,7 +13180,7 @@
     {
       "source": "kata kunci",
       "target": "pindah alamat",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13188,7 +13188,7 @@
     {
       "source": "pindah domisili",
       "target": "pindah alamat",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13196,7 +13196,7 @@
     {
       "source": "pindah domisili",
       "target": "pindah rumah",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13204,7 +13204,7 @@
     {
       "source": "pindah alamat",
       "target": "pindah rumah",
-      "weight": 106,
+      "weight": 146,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13212,7 +13212,7 @@
     {
       "source": "pemerintah kota yogyakarta",
       "target": "kemantren tegalrejo",
-      "weight": 63,
+      "weight": 83,
       "label": "meliputi, memiliki",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13220,7 +13220,7 @@
     {
       "source": "knowledge base ai",
       "target": "standar pelayanan publik kemantren tegalrejo tahun 2026",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13228,7 +13228,7 @@
     {
       "source": "- nama instansi",
       "target": "pemerintah kota yogyakarta",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13236,7 +13236,7 @@
     {
       "source": "- nama instansi",
       "target": "kemantren tegalrejo",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13244,7 +13244,7 @@
     {
       "source": "tompeyan tr iii 219 yogyakarta",
       "target": "kode pos",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13252,7 +13252,7 @@
     {
       "source": "- respons pengaduan",
       "target": "maksimal 3 tiga hari kerja",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13260,7 +13260,7 @@
     {
       "source": "2 sarana",
       "target": "prasarana fasilitas pendukung",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13268,7 +13268,7 @@
     {
       "source": "- fasilitas utama",
       "target": "sim pelayanan jss jogja smart service",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13276,7 +13276,7 @@
     {
       "source": "- fasilitas utama",
       "target": "komputer",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13284,7 +13284,7 @@
     {
       "source": "sim pelayanan jss jogja smart service",
       "target": "komputer",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13292,7 +13292,7 @@
     {
       "source": "sim pelayanan jss jogja smart service",
       "target": "printer",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13300,7 +13300,7 @@
     {
       "source": "- dasar hukum",
       "target": "perwal yogyakarta",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13308,7 +13308,7 @@
     {
       "source": "- dokumen lengkap dari kelurahan n1",
       "target": "n4 beserta lampiran 1 lembar",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13316,7 +13316,7 @@
     {
       "source": "- fotocopy ktp dan kk calon pengantin",
       "target": "masing 1 lembar",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13324,7 +13324,7 @@
     {
       "source": "- biaya",
       "target": "gratis",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13332,7 +13332,7 @@
     {
       "source": "- produk layanan",
       "target": "surat keterangan dispensasi nikah",
-      "weight": 59,
+      "weight": 79,
       "label": "",
       "semantic": false,
       "sourceFile": "standart-pelayanan-kemantren-tegalrejo-fix-2026-24084.txt"
@@ -13340,7 +13340,7 @@
     {
       "source": "berdasarkan bagan pendaftaran pelayanan",
       "target": "berikut adalah daftar layanan yang",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13348,7 +13348,7 @@
     {
       "source": "3 untuk perpanjangan",
       "target": "fotokopi izin terdahulu izin yang lama dan menunjukkan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13356,7 +13356,7 @@
     {
       "source": "4 untuk perpanjangan",
       "target": "melampirkan fotokopi izin terdahulu izin yang lama dan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13364,7 +13364,7 @@
     {
       "source": "5 jika warga terlantar",
       "target": "melampirkan surat keterangan orang terlantar skot",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13372,7 +13372,7 @@
     {
       "source": "- persyaratan umum",
       "target": "mengacu pada panduan teknis di bagian d",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13380,7 +13380,7 @@
     {
       "source": "bekerja yang dibuat",
       "target": "dibubuhi material dan ditandatangani pemohon serta",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13388,7 +13388,7 @@
     {
       "source": "telah dibubuhi materai",
       "target": "ditandatangani oleh para ahli waris yang rela tidak",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13396,7 +13396,7 @@
     {
       "source": "menerima harta warisan",
       "target": "2 dua orang saksi serta diketahui ketua rt dan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13404,7 +13404,7 @@
     {
       "source": "dibubuhi materai",
       "target": "ditandatangani oleh pemohon",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13412,7 +13412,7 @@
     {
       "source": "dibubuhi materai",
       "target": "2 dua orang saksi serta",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13420,7 +13420,7 @@
     {
       "source": "ditandatangani oleh pemohon",
       "target": "2 dua orang saksi serta",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13428,7 +13428,7 @@
     {
       "source": "informasi persyaratan",
       "target": "pelayanan umum lain yang menjadi kewenangan kelurahan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13436,7 +13436,7 @@
     {
       "source": "1 salinan digital pernyataan tempat tinggal yang dibuat",
       "target": "dibubuhi materai",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13444,7 +13444,7 @@
     {
       "source": "organisasi kemasyarakatan yang bersangkutan",
       "target": "diketahui oleh ketua rt",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13452,7 +13452,7 @@
     {
       "source": "organisasi kemasyarakatan yang bersangkutan",
       "target": "ketua",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13460,7 +13460,7 @@
     {
       "source": "diketahui oleh ketua rt",
       "target": "ketua",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13468,7 +13468,7 @@
     {
       "source": "rw dan lurah",
       "target": "serta membawa berkas asli pada saat pemohon mengambil",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13476,7 +13476,7 @@
     {
       "source": "6 foto kantor atau sekretariat organisasi kemasyarakatan",
       "target": "tampak depan yang",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13484,7 +13484,7 @@
     {
       "source": "partai politik yang bersangkutan",
       "target": "diketahui oleh ketua rt",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13492,7 +13492,7 @@
     {
       "source": "partai politik yang bersangkutan",
       "target": "ketua rw dan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13500,7 +13500,7 @@
     {
       "source": "diketahui oleh ketua rt",
       "target": "ketua rw dan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13508,7 +13508,7 @@
     {
       "source": "melangsungkan pernikahan",
       "target": "baik sebagai calon istri maupun calon suami",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13516,7 +13516,7 @@
     {
       "source": "- untuk mengajukan permohonan",
       "target": "silakan login ke akun jss dan cari aplikasi",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13524,7 +13524,7 @@
     {
       "source": "1 login jss",
       "target": "masuk ke akun jss anda",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13532,7 +13532,7 @@
     {
       "source": "2 akses aplikasi",
       "target": "cari dan masuk ke aplikasi pelayanan kelurahan dan kecamatan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13540,7 +13540,7 @@
     {
       "source": "3 pilih menu",
       "target": "pilih menu nikah rujuk ntcr -",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13548,7 +13548,7 @@
     {
       "source": "3 pilih menu",
       "target": "nikah talak rujuk cerai",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13556,7 +13556,7 @@
     {
       "source": "pilih menu nikah rujuk ntcr -",
       "target": "nikah talak rujuk cerai",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13564,7 +13564,7 @@
     {
       "source": "- jika ada kendala aplikasi",
       "target": "silakan menghubungi help desk jss melalui",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13572,7 +13572,7 @@
     {
       "source": "nama",
       "target": "nik",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13580,7 +13580,7 @@
     {
       "source": "nama",
       "target": "ttl",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13588,7 +13588,7 @@
     {
       "source": "data almarhum ahli waris nama",
       "target": "ttl",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13596,7 +13596,7 @@
     {
       "source": "data almarhum ahli waris nama",
       "target": "alamat",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13604,7 +13604,7 @@
     {
       "source": "alamat",
       "target": "nik",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13612,7 +13612,7 @@
     {
       "source": "data pemohon nama",
       "target": "pekerjaan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13620,7 +13620,7 @@
     {
       "source": "ttl",
       "target": "pekerjaan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13628,7 +13628,7 @@
     {
       "source": "bahwa kantor dpw dpd dpc",
       "target": "beralamat di",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13636,7 +13636,7 @@
     {
       "source": "bahwa kantor sekretariat ormas",
       "target": "beralamat di",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13644,7 +13644,7 @@
     {
       "source": "- semua dokumen yang diunggah harus dalam format png",
       "target": "jpeg",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13652,7 +13652,7 @@
     {
       "source": "- semua dokumen yang diunggah harus dalam format png",
       "target": "atau jpg dengan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13660,7 +13660,7 @@
     {
       "source": "jpeg",
       "target": "atau jpg dengan",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13668,7 +13668,7 @@
     {
       "source": "- berkas asli wajib dibawa ke kelurahan untuk",
       "target": "verifikasi",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13676,7 +13676,7 @@
     {
       "source": "- untuk kendala teknis pada aplikasi jss",
       "target": "silakan menghubungi help desk jss",
-      "weight": 54,
+      "weight": 74,
       "label": "",
       "semantic": false,
       "sourceFile": "Buku Pandua Sarat 1.md"
@@ -13684,7 +13684,7 @@
     {
       "source": "sistem informasi virtual tegalrejo",
       "target": "kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13692,7 +13692,7 @@
     {
       "source": "sistem informasi virtual tegalrejo",
       "target": "yogyakarta",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13700,7 +13700,7 @@
     {
       "source": "kemantren tegalrejo",
       "target": "yogyakarta",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13708,7 +13708,7 @@
     {
       "source": "kemantren tegalrejo",
       "target": "kota yogyakarta",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13716,7 +13716,7 @@
     {
       "source": "setiap topik dipisah dengan baris kosong",
       "target": "dilengkapi kata kunci untuk memudahkan pencarian oleh ai ---",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13724,7 +13724,7 @@
     {
       "source": "jumlah penduduk",
       "target": "sekitar 30 000 jiwa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13732,7 +13732,7 @@
     {
       "source": "kata kunci",
       "target": "tentang kemantren",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13740,7 +13740,7 @@
     {
       "source": "kata kunci",
       "target": "profil kemantren",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13748,7 +13748,7 @@
     {
       "source": "tentang kemantren",
       "target": "profil kemantren",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13756,7 +13756,7 @@
     {
       "source": "tentang kemantren",
       "target": "wilayah kemantren",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13764,7 +13764,7 @@
     {
       "source": "tegalrejo no 1",
       "target": "tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13772,7 +13772,7 @@
     {
       "source": "tegalrejo no 1",
       "target": "kota yogyakarta",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13780,7 +13780,7 @@
     {
       "source": "tegalrejo",
       "target": "kota yogyakarta",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13788,7 +13788,7 @@
     {
       "source": "tegalrejo",
       "target": "daerah istimewa yogyakarta 55241",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13796,7 +13796,7 @@
     {
       "source": "kota yogyakarta",
       "target": "daerah istimewa yogyakarta 55241",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13804,7 +13804,7 @@
     {
       "source": "- instagram",
       "target": "kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13812,7 +13812,7 @@
     {
       "source": "kata kunci",
       "target": "kontak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13820,7 +13820,7 @@
     {
       "source": "kata kunci",
       "target": "telepon",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13828,7 +13828,7 @@
     {
       "source": "kontak",
       "target": "telepon",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13836,7 +13836,7 @@
     {
       "source": "kontak",
       "target": "nomor telepon",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13844,7 +13844,7 @@
     {
       "source": "- senin sampai jumat",
       "target": "pukul 08 00 sampai 15 00 wib",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13852,7 +13852,7 @@
     {
       "source": "- sabtu",
       "target": "tutup",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13860,7 +13860,7 @@
     {
       "source": "- minggu",
       "target": "tutup",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13868,7 +13868,7 @@
     {
       "source": "- hari libur nasional",
       "target": "tutup",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13876,7 +13876,7 @@
     {
       "source": "jam istirahat",
       "target": "pukul 12 00 sampai 13 00 wib pelayanan tutup sementara",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13884,7 +13884,7 @@
     {
       "source": "kata kunci",
       "target": "cara hubungi petugas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13892,7 +13892,7 @@
     {
       "source": "kata kunci",
       "target": "kontak petugas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13900,7 +13900,7 @@
     {
       "source": "cara hubungi petugas",
       "target": "kontak petugas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13908,7 +13908,7 @@
     {
       "source": "cara hubungi petugas",
       "target": "telpon petugas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13916,7 +13916,7 @@
     {
       "source": "kontak petugas",
       "target": "telpon petugas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13924,7 +13924,7 @@
     {
       "source": "kata kunci",
       "target": "kk baru",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13932,7 +13932,7 @@
     {
       "source": "kata kunci",
       "target": "buat kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13940,7 +13940,7 @@
     {
       "source": "kk baru",
       "target": "buat kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13948,7 +13948,7 @@
     {
       "source": "kk baru",
       "target": "bikin kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13956,7 +13956,7 @@
     {
       "source": "istri",
       "target": "atau suami",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13964,7 +13964,7 @@
     {
       "source": "kata kunci",
       "target": "tambah anggota kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13972,7 +13972,7 @@
     {
       "source": "kata kunci",
       "target": "kk tambah anak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13980,7 +13980,7 @@
     {
       "source": "tambah anggota kk",
       "target": "kk tambah anak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13988,7 +13988,7 @@
     {
       "source": "kata kunci",
       "target": "kurangi anggota kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -13996,7 +13996,7 @@
     {
       "source": "kata kunci",
       "target": "kk pindah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14004,7 +14004,7 @@
     {
       "source": "kurangi anggota kk",
       "target": "kk pindah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14012,7 +14012,7 @@
     {
       "source": "kurangi anggota kk",
       "target": "kk meninggal",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14020,7 +14020,7 @@
     {
       "source": "persyaratan mengubah data pada kk seperti nama",
       "target": "alamat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14028,7 +14028,7 @@
     {
       "source": "persyaratan mengubah data pada kk seperti nama",
       "target": "status",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14036,7 +14036,7 @@
     {
       "source": "alamat",
       "target": "status",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14044,7 +14044,7 @@
     {
       "source": "status",
       "target": "pekerjaan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14052,7 +14052,7 @@
     {
       "source": "kata kunci",
       "target": "kk hilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14060,7 +14060,7 @@
     {
       "source": "kata kunci",
       "target": "kk rusak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14068,7 +14068,7 @@
     {
       "source": "kk hilang",
       "target": "kk rusak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14076,7 +14076,7 @@
     {
       "source": "kk hilang",
       "target": "ganti kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14084,7 +14084,7 @@
     {
       "source": "semua layanan kk baru",
       "target": "tambah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14092,7 +14092,7 @@
     {
       "source": "semua layanan kk baru",
       "target": "kurang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14100,7 +14100,7 @@
     {
       "source": "tambah",
       "target": "kurang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14108,7 +14108,7 @@
     {
       "source": "tambah",
       "target": "ubah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14116,7 +14116,7 @@
     {
       "source": "kurang",
       "target": "ubah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14124,7 +14124,7 @@
     {
       "source": "persyaratan membuat ktp untuk pertama kali",
       "target": "untuk warga usia 17 tahun ke atas atau yang sudah menikah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14132,7 +14132,7 @@
     {
       "source": "kata kunci",
       "target": "ktp pertama",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14140,7 +14140,7 @@
     {
       "source": "kata kunci",
       "target": "buat ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14148,7 +14148,7 @@
     {
       "source": "ktp pertama",
       "target": "buat ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14156,7 +14156,7 @@
     {
       "source": "kata kunci",
       "target": "ktp hilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14164,7 +14164,7 @@
     {
       "source": "kata kunci",
       "target": "ganti ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14172,7 +14172,7 @@
     {
       "source": "ktp hilang",
       "target": "ganti ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14180,7 +14180,7 @@
     {
       "source": "ktp hilang",
       "target": "ktp ilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14188,7 +14188,7 @@
     {
       "source": "kata kunci",
       "target": "ktp rusak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14196,7 +14196,7 @@
     {
       "source": "kata kunci",
       "target": "ganti ktp rusak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14204,7 +14204,7 @@
     {
       "source": "ktp rusak",
       "target": "ganti ktp rusak",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14212,7 +14212,7 @@
     {
       "source": "ktp rusak",
       "target": "ktp sobek",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14220,7 +14220,7 @@
     {
       "source": "kata kunci",
       "target": "perpanjang ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14228,7 +14228,7 @@
     {
       "source": "kata kunci",
       "target": "perbarui ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14236,7 +14236,7 @@
     {
       "source": "perpanjang ktp",
       "target": "perbarui ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14244,7 +14244,7 @@
     {
       "source": "perpanjang ktp",
       "target": "ktp kadaluarsa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14252,7 +14252,7 @@
     {
       "source": "persyaratan mengubah data pada ktp seperti nama",
       "target": "alamat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14260,7 +14260,7 @@
     {
       "source": "persyaratan mengubah data pada ktp seperti nama",
       "target": "pekerjaan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14268,7 +14268,7 @@
     {
       "source": "alamat",
       "target": "atau status",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14276,7 +14276,7 @@
     {
       "source": "pekerjaan",
       "target": "atau status",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14284,7 +14284,7 @@
     {
       "source": "anak di bawah umur 17 tahun belum bisa membuat ktp",
       "target": "cukup terdaftar di kk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14292,7 +14292,7 @@
     {
       "source": "kata kunci",
       "target": "sktm",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14300,7 +14300,7 @@
     {
       "source": "kata kunci",
       "target": "surat tidak mampu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14308,7 +14308,7 @@
     {
       "source": "sktm",
       "target": "surat tidak mampu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14316,7 +14316,7 @@
     {
       "source": "sktm",
       "target": "keterangan tidak mampu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14324,7 +14324,7 @@
     {
       "source": "kata kunci",
       "target": "fungsi sktm",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14332,7 +14332,7 @@
     {
       "source": "kata kunci",
       "target": "kegunaan sktm",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14340,7 +14340,7 @@
     {
       "source": "fungsi sktm",
       "target": "kegunaan sktm",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14348,7 +14348,7 @@
     {
       "source": "fungsi sktm",
       "target": "sktm untuk apa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14356,7 +14356,7 @@
     {
       "source": "kegunaan sktm",
       "target": "sktm untuk apa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14364,7 +14364,7 @@
     {
       "source": "kata kunci",
       "target": "domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14372,7 +14372,7 @@
     {
       "source": "kata kunci",
       "target": "surat domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14380,7 +14380,7 @@
     {
       "source": "domisili",
       "target": "surat domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14388,7 +14388,7 @@
     {
       "source": "domisili",
       "target": "keterangan domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14396,7 +14396,7 @@
     {
       "source": "- pembuatan",
       "target": "bank",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14404,7 +14404,7 @@
     {
       "source": "kata kunci",
       "target": "fungsi domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14412,7 +14412,7 @@
     {
       "source": "kata kunci",
       "target": "kegunaan domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14420,7 +14420,7 @@
     {
       "source": "fungsi domisili",
       "target": "kegunaan domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14428,7 +14428,7 @@
     {
       "source": "fungsi domisili",
       "target": "domisili untuk apa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14436,7 +14436,7 @@
     {
       "source": "kata kunci",
       "target": "izin keramaian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14444,7 +14444,7 @@
     {
       "source": "kata kunci",
       "target": "izin acara",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14452,7 +14452,7 @@
     {
       "source": "izin keramaian",
       "target": "izin acara",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14460,7 +14460,7 @@
     {
       "source": "izin keramaian",
       "target": "izin hajatan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14468,7 +14468,7 @@
     {
       "source": "kata kunci",
       "target": "fungsi izin keramaian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14476,7 +14476,7 @@
     {
       "source": "kata kunci",
       "target": "izin untuk acara",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14484,7 +14484,7 @@
     {
       "source": "fungsi izin keramaian",
       "target": "izin untuk acara",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14492,7 +14492,7 @@
     {
       "source": "fungsi izin keramaian",
       "target": "izin keramaian untuk apa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14500,7 +14500,7 @@
     {
       "source": "izin untuk acara",
       "target": "izin keramaian untuk apa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14508,7 +14508,7 @@
     {
       "source": "kata kunci",
       "target": "pindah keluar",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14516,7 +14516,7 @@
     {
       "source": "kata kunci",
       "target": "surat pindah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14524,7 +14524,7 @@
     {
       "source": "pindah keluar",
       "target": "surat pindah",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14532,7 +14532,7 @@
     {
       "source": "pindah keluar",
       "target": "pindah domisili",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14540,7 +14540,7 @@
     {
       "source": "kata kunci",
       "target": "pindah masuk",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14548,7 +14548,7 @@
     {
       "source": "kata kunci",
       "target": "surat datang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14556,7 +14556,7 @@
     {
       "source": "pindah masuk",
       "target": "surat datang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14564,7 +14564,7 @@
     {
       "source": "pindah masuk",
       "target": "kedatangan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14572,7 +14572,7 @@
     {
       "source": "batas waktu",
       "target": "sebaiknya diurus sebelum anak berusia 1 tahun",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14580,7 +14580,7 @@
     {
       "source": "jika terlambat",
       "target": "ada prosedur tambahan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14588,7 +14588,7 @@
     {
       "source": "kata kunci",
       "target": "akta kelahiran",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14596,7 +14596,7 @@
     {
       "source": "kata kunci",
       "target": "surat lahir",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14604,7 +14604,7 @@
     {
       "source": "kata kunci",
       "target": "akta kematian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14612,7 +14612,7 @@
     {
       "source": "kata kunci",
       "target": "surat kematian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14620,7 +14620,7 @@
     {
       "source": "akta kematian",
       "target": "surat kematian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14628,7 +14628,7 @@
     {
       "source": "akta kematian",
       "target": "meninggal",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14636,7 +14636,7 @@
     {
       "source": "untuk pengajuan kur",
       "target": "izin usaha",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14644,7 +14644,7 @@
     {
       "source": "untuk pengajuan kur",
       "target": "atau keperluan administrasi usaha lainnya",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14652,7 +14652,7 @@
     {
       "source": "izin usaha",
       "target": "atau keperluan administrasi usaha lainnya",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14660,7 +14660,7 @@
     {
       "source": "kata kunci",
       "target": "sku",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14668,7 +14668,7 @@
     {
       "source": "3 fotokopi dokumen yang menunjukkan perbedaan nama ijazah",
       "target": "akta",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14676,7 +14676,7 @@
     {
       "source": "kata kunci",
       "target": "beda nama",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14684,7 +14684,7 @@
     {
       "source": "kata kunci",
       "target": "nama berbeda",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14692,7 +14692,7 @@
     {
       "source": "beda nama",
       "target": "nama berbeda",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14700,7 +14700,7 @@
     {
       "source": "kata kunci",
       "target": "surat keterangan umum",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14708,7 +14708,7 @@
     {
       "source": "kata kunci",
       "target": "surat bebas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14716,7 +14716,7 @@
     {
       "source": "surat keterangan umum",
       "target": "surat bebas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14724,7 +14724,7 @@
     {
       "source": "surat keterangan umum",
       "target": "sku umum",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14732,7 +14732,7 @@
     {
       "source": "- kk",
       "target": "1 sampai 3 hari kerja",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14740,7 +14740,7 @@
     {
       "source": "- ktp",
       "target": "1 sampai 3 hari kerja",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14748,7 +14748,7 @@
     {
       "source": "- sktm",
       "target": "1 hari kerja",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14756,7 +14756,7 @@
     {
       "source": "- surat domisili",
       "target": "1 hari kerja",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14764,7 +14764,7 @@
     {
       "source": "- izin keramaian",
       "target": "3 sampai 7 hari kerja",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14772,7 +14772,7 @@
     {
       "source": "jika ada pihak yang meminta biaya",
       "target": "segera laporkan ke petugas atau call center di 0274 123456",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14780,7 +14780,7 @@
     {
       "source": "kata kunci",
       "target": "biaya",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14788,7 +14788,7 @@
     {
       "source": "kata kunci",
       "target": "harga",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14796,7 +14796,7 @@
     {
       "source": "biaya",
       "target": "harga",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14804,7 +14804,7 @@
     {
       "source": "biaya",
       "target": "bayar berapa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14812,7 +14812,7 @@
     {
       "source": "kata kunci",
       "target": "daring",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14820,7 +14820,7 @@
     {
       "source": "kata kunci",
       "target": "internet",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14828,7 +14828,7 @@
     {
       "source": "daring",
       "target": "internet",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14836,7 +14836,7 @@
     {
       "source": "daring",
       "target": "lewat online",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14844,7 +14844,7 @@
     {
       "source": "internet",
       "target": "lewat online",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14852,7 +14852,7 @@
     {
       "source": "kata kunci",
       "target": "diwakilkan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14860,7 +14860,7 @@
     {
       "source": "kata kunci",
       "target": "kuasa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14868,7 +14868,7 @@
     {
       "source": "diwakilkan",
       "target": "kuasa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14876,7 +14876,7 @@
     {
       "source": "diwakilkan",
       "target": "wakil",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14884,7 +14884,7 @@
     {
       "source": "kuasa",
       "target": "wakil",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14892,7 +14892,7 @@
     {
       "source": "jika dokumen kk",
       "target": "ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14900,7 +14900,7 @@
     {
       "source": "jika dokumen kk",
       "target": "akta hilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14908,7 +14908,7 @@
     {
       "source": "ktp",
       "target": "akta hilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14916,7 +14916,7 @@
     {
       "source": "kata kunci",
       "target": "dokumen hilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14924,7 +14924,7 @@
     {
       "source": "kata kunci",
       "target": "surat hilang",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14932,7 +14932,7 @@
     {
       "source": "anak di bawah 17 tahun belum bisa membuat ktp",
       "target": "cukup terdaftar di kartu keluarga",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14940,7 +14940,7 @@
     {
       "source": "kata kunci",
       "target": "sabtu tutup",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14948,7 +14948,7 @@
     {
       "source": "kata kunci",
       "target": "hari sabtu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14956,7 +14956,7 @@
     {
       "source": "sabtu tutup",
       "target": "hari sabtu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14964,7 +14964,7 @@
     {
       "source": "sabtu tutup",
       "target": "jam sabtu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14972,7 +14972,7 @@
     {
       "source": "hari sabtu",
       "target": "jam sabtu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14980,7 +14980,7 @@
     {
       "source": "berapa lama",
       "target": "pembuatan surat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14988,7 +14988,7 @@
     {
       "source": "kata kunci",
       "target": "berapa lama",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -14996,7 +14996,7 @@
     {
       "source": "kata kunci",
       "target": "waktu penyelesaian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15004,7 +15004,7 @@
     {
       "source": "berapa lama",
       "target": "waktu penyelesaian",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15012,7 +15012,7 @@
     {
       "source": "berapa lama",
       "target": "kapan selesai",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15020,7 +15020,7 @@
     {
       "source": "kata kunci",
       "target": "antar jemput",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15028,7 +15028,7 @@
     {
       "source": "kata kunci",
       "target": "delivery",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15036,7 +15036,7 @@
     {
       "source": "antar jemput",
       "target": "delivery",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15044,7 +15044,7 @@
     {
       "source": "antar jemput",
       "target": "kirim dokumen",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15052,7 +15052,7 @@
     {
       "source": "delivery",
       "target": "kirim dokumen",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15060,7 +15060,7 @@
     {
       "source": "jika ada keluhan",
       "target": "saran",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15068,7 +15068,7 @@
     {
       "source": "jika ada keluhan",
       "target": "atau pengaduan terhadap layanan kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15076,7 +15076,7 @@
     {
       "source": "saran",
       "target": "atau pengaduan terhadap layanan kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15084,7 +15084,7 @@
     {
       "source": "- instagram dm",
       "target": "kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15092,7 +15092,7 @@
     {
       "source": "kata kunci",
       "target": "pengaduan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15100,7 +15100,7 @@
     {
       "source": "- senin sampai jumat",
       "target": "08 00 sampai 15 00 wib",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15108,7 +15108,7 @@
     {
       "source": "di luar jam tersebut",
       "target": "pengaduan bisa dikirim",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15116,7 +15116,7 @@
     {
       "source": "kata kunci",
       "target": "jam pengaduan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15124,7 +15124,7 @@
     {
       "source": "kata kunci",
       "target": "kontak pengaduan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15132,7 +15132,7 @@
     {
       "source": "jam pengaduan",
       "target": "kontak pengaduan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15140,7 +15140,7 @@
     {
       "source": "kata kunci",
       "target": "cara cepat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15148,7 +15148,7 @@
     {
       "source": "kata kunci",
       "target": "biar cepat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15156,7 +15156,7 @@
     {
       "source": "cara cepat",
       "target": "biar cepat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15164,7 +15164,7 @@
     {
       "source": "cara cepat",
       "target": "urus surat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15172,7 +15172,7 @@
     {
       "source": "biar cepat",
       "target": "urus surat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15180,7 +15180,7 @@
     {
       "source": "kata kunci",
       "target": "dokumen yang dibawa",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15188,7 +15188,7 @@
     {
       "source": "kata kunci",
       "target": "syarat umum",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15196,7 +15196,7 @@
     {
       "source": "dokumen yang dibawa",
       "target": "syarat umum",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15204,7 +15204,7 @@
     {
       "source": "dokumen yang dibawa",
       "target": "dokumen dasar",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15212,7 +15212,7 @@
     {
       "source": "syarat umum",
       "target": "dokumen dasar",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15220,7 +15220,7 @@
     {
       "source": "misalnya saat mengurus kk baru",
       "target": "sekalian bisa mengurus ktp",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15228,7 +15228,7 @@
     {
       "source": "sampaikan ke petugas di awal supaya bisa",
       "target": "bersamaan",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15236,7 +15236,7 @@
     {
       "source": "kata kunci",
       "target": "beberapa surat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15244,7 +15244,7 @@
     {
       "source": "kata kunci",
       "target": "urus sekaligus",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15252,7 +15252,7 @@
     {
       "source": "beberapa surat",
       "target": "urus sekaligus",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15260,7 +15260,7 @@
     {
       "source": "kata kunci",
       "target": "fotokopi",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15268,7 +15268,7 @@
     {
       "source": "kata kunci",
       "target": "fotokopi di kantor",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15276,7 +15276,7 @@
     {
       "source": "fotokopi",
       "target": "fotokopi di kantor",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15284,7 +15284,7 @@
     {
       "source": "kata kunci",
       "target": "darurat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15292,7 +15292,7 @@
     {
       "source": "kata kunci",
       "target": "emergency",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15300,7 +15300,7 @@
     {
       "source": "darurat",
       "target": "emergency",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15308,7 +15308,7 @@
     {
       "source": "darurat",
       "target": "ambulans",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15316,7 +15316,7 @@
     {
       "source": "emergency",
       "target": "ambulans",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15324,7 +15324,7 @@
     {
       "source": "kata kunci",
       "target": "difabel",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15332,7 +15332,7 @@
     {
       "source": "kata kunci",
       "target": "disabilitas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15340,7 +15340,7 @@
     {
       "source": "difabel",
       "target": "disabilitas",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15348,7 +15348,7 @@
     {
       "source": "difabel",
       "target": "penyandang cacat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15356,7 +15356,7 @@
     {
       "source": "disabilitas",
       "target": "penyandang cacat",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15364,7 +15364,7 @@
     {
       "source": "kata kunci",
       "target": "lansia",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15372,7 +15372,7 @@
     {
       "source": "kata kunci",
       "target": "orang tua",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15380,7 +15380,7 @@
     {
       "source": "lansia",
       "target": "orang tua",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15388,7 +15388,7 @@
     {
       "source": "lansia",
       "target": "prioritas lansia",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15396,7 +15396,7 @@
     {
       "source": "orang tua",
       "target": "prioritas lansia",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15404,7 +15404,7 @@
     {
       "source": "- semua layanan gratis",
       "target": "tidak ada pungutan biaya",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15412,7 +15412,7 @@
     {
       "source": "- data kontak dan jam pelayanan dapat berubah",
       "target": "selalu konfirmasi ke kantor jika ragu",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15420,7 +15420,7 @@
     {
       "source": "- untuk layanan yang tidak tercantum di sini",
       "target": "hubungi langsung petugas kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15428,7 +15428,7 @@
     {
       "source": "jika ada informasi yang perlu ditambahkan",
       "target": "hubungi admin kemantren tegalrejo",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15436,7 +15436,7 @@
     {
       "source": "kata kunci",
       "target": "dokumentasi",
-      "weight": 53,
+      "weight": 73,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15540,7 +15540,7 @@
     {
       "source": "fotokopi",
       "target": "ada fotokopi tidak ---",
-      "weight": 13,
+      "weight": 33,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -15548,7 +15548,15 @@
     {
       "source": "fotokopi di kantor",
       "target": "ada fotokopi tidak ---",
-      "weight": 13,
+      "weight": 33,
+      "label": "",
+      "semantic": false,
+      "sourceFile": "buku-pengetahuan.md"
+    },
+    {
+      "source": "- chatbot caty ini akan terus belajar dari pertanyaan yang",
+      "target": "ditanyakan dan menambah pengetahuannya otomatis ---",
+      "weight": 21,
       "label": "",
       "semantic": false,
       "sourceFile": "buku-pengetahuan.md"
@@ -17736,14 +17744,6 @@
       "label": "dibuat oleh",
       "semantic": true,
       "sourceFile": "enrich:Buku Pandua Sarat 1.md"
-    },
-    {
-      "source": "- chatbot caty ini akan terus belajar dari pertanyaan yang",
-      "target": "ditanyakan dan menambah pengetahuannya otomatis ---",
-      "weight": 1,
-      "label": "",
-      "semantic": false,
-      "sourceFile": "buku-pengetahuan.md"
     }
   ]
 }

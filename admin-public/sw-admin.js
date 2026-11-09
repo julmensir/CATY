@@ -1,10 +1,12 @@
 // Service Worker SIVT AI — Admin
-const CACHE_NAME = 'sivt-admin-v2';
+const CACHE_NAME = 'caty-admin-v1';
 const ASSETS = [
     '/admin/',
     '/admin/index.html',
-    '/admin/style.css',
-    '/admin/script.js',
+    '/admin/style-admin.css',      // ✅ BENAR
+    '/admin/script-admin.js',      // ✅ BENAR
+    '/admin/laporan.js',           // ✅ TAMBAHKAN
+    '/admin/dashboard.js',         // ✅ TAMBAHKAN
     '/admin/manifest-admin.json'
 ];
 

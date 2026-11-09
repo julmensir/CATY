@@ -128,11 +128,11 @@ async function loadPublicConfigAdmin() {
   try {
     const res = await fetch('/api/config/public');
     const cfg = await res.json();
-    document.title = `${cfg.aiName || 'SIVT AI'} - Admin Dashboard`;
+    document.title = `${cfg.aiName || 'CATY'} - Admin Dashboard`;
     const loginTitle = document.getElementById('loginTitle');
-    if (loginTitle) loginTitle.textContent = cfg.aiName || 'SIVT AI';
+    if (loginTitle) loginTitle.textContent = cfg.aiName || 'CATY';
     const sidebarAiName = document.getElementById('sidebarAiName');
-    if (sidebarAiName) sidebarAiName.textContent = cfg.aiName || 'SIVT AI';
+    if (sidebarAiName) sidebarAiName.textContent = cfg.aiName || 'CATY';
     const logoHtml = cfg.logoUrl ? `<img src="${cfg.logoUrl}" alt="logo" style="width:100%;height:100%;object-fit:contain;">` : 'S';
     const loginLogo = document.getElementById('loginLogo');
     if (loginLogo) loginLogo.innerHTML = logoHtml;
@@ -373,6 +373,7 @@ function adminFetch(url, opts = {}) {
 // ============================================================
 function showPage(page) {
   currentPage = page;
+  window.currentPage = page;
   document.querySelectorAll('.nav-link[data-page]').forEach(item => {
     item.classList.toggle('active', item.dataset.page === page);
   });
@@ -381,7 +382,7 @@ function showPage(page) {
   });
   const titles = {
     dashboard:     'Dashboard',
-    settings:      'Pengaturan',
+    settings:      'Identitas',
     prompt:        'Prompt AI',
     providers:     'Provider AI',
     knowledge:     'Pengetahuan',
@@ -1296,7 +1297,7 @@ async function saveGeneral() {
     const data = await res.json();
     if (data.success) {
       await loadPublicConfigAdmin();
-      document.title = `${updates.aiName || 'SIVT AI'} - Admin Dashboard`;
+      document.title = `${updates.aiName || 'CATY'} - Admin Dashboard`;
       showToast('Pengaturan umum disimpan', 'success');
     } else showToast(data.message, 'error');
   } catch (err) { showToast(err.message, 'error'); }
@@ -2237,3 +2238,130 @@ if (document.readyState === 'loading') {
 } else {
   initPasswordToggle();
 }
+
+// ============================================================
+// FITUR PIN SIDEBAR (PUSH CONTENT)
+// ============================================================
+function togglePinSidebar() {
+  const sidebar = document.getElementById('adminSidebar');
+  const icon = document.getElementById('pinIcon');
+  if (!sidebar) return;
+
+  const isPinned = sidebar.classList.toggle('pinned');
+  
+  // Tambah/hapus class di BODY agar konten terdorong
+  if (isPinned) {
+    document.body.classList.add('sidebar-is-pinned');
+    if (icon) icon.style.color = '#ffd700';
+  } else {
+    document.body.classList.remove('sidebar-is-pinned');
+    if (icon) icon.style.color = 'white';
+  }
+  
+  // Simpan status
+  localStorage.setItem('sidebar_pinned', isPinned ? 'true' : 'false');
+}
+
+// Cek status pin saat halaman dimuat
+document.addEventListener('DOMContentLoaded', () => {
+  const isPinned = localStorage.getItem('sidebar_pinned') === 'true';
+  if (isPinned) {
+    const sidebar = document.getElementById('adminSidebar');
+    if (sidebar) sidebar.classList.add('pinned');
+    document.body.classList.add('sidebar-is-pinned');
+  }
+});
+
+window.togglePinSidebar = togglePinSidebar;
+
+// ============================================================
+// LOGIKA SIDEBAR ACCORDION (MENU BERTINGKAT)
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const submenuToggles = document.querySelectorAll('.submenu-toggle');
+
+  submenuToggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const parentItem = toggle.closest('.has-submenu');
+      const isOpen = parentItem.classList.contains('open');
+
+      // Tutup semua submenu lain
+      document.querySelectorAll('.has-submenu.open').forEach(item => {
+        if (item !== parentItem) item.classList.remove('open');
+      });
+
+      // Toggle submenu yang diklik
+      if (isOpen) {
+        parentItem.classList.remove('open');
+      } else {
+        parentItem.classList.add('open');
+      }
+    });
+  });
+});
+
+// ============================================================
+// SIMPAN SEMUA PENGATURAN (IDENTITAS, LOGO, TEMA)
+// ============================================================
+async function saveAllSettings() {
+  showToast('Menyimpan semua pengaturan...', 'info');
+
+  // 1. Ambil Data
+  const aiName = document.getElementById('cfg-aiName').value.trim();
+  const tagline = document.getElementById('cfg-tagline').value.trim();
+  const welcomeMessage = document.getElementById('cfg-welcomeMessage').value;
+  const contactInfo = {
+    address: document.getElementById('cfg-contact-address').value.trim(),
+    phone: document.getElementById('cfg-contact-phone').value.trim(),
+    whatsapp: document.getElementById('cfg-contact-whatsapp').value.trim(),
+    email: document.getElementById('cfg-contact-email').value.trim(),
+    hours: document.getElementById('cfg-contact-hours').value.trim()
+  };
+  
+  const applyToWarga = document.getElementById('themeApplyToWarga')?.checked || false;
+  const theme = {
+    primary: document.getElementById('theme-primary').value,
+    primaryDark: document.getElementById('theme-primaryDark').value,
+    primaryLight: document.getElementById('theme-primary').value,
+    accent: document.getElementById('theme-accent').value,
+    sidebarStart: document.getElementById('theme-sidebarStart').value,
+    sidebarEnd: document.getElementById('theme-sidebarEnd').value
+  };
+
+  // 2. Kirim ke Backend
+  try {
+    const res = await adminFetch('/api/admin/config', {
+      method: 'POST',
+      body: JSON.stringify({ 
+        aiName, 
+        tagline, 
+        welcomeMessage, 
+        contactInfo,
+        theme: theme, 
+        themeApplyToWarga: applyToWarga 
+      })
+    });
+    
+    const data = await res.json();
+    if (data.success) {
+      // Update state lokal & tampilan
+      if (currentTheme) {
+        currentTheme = { ...currentTheme, ...theme, applyToWarga };
+        applyTheme(theme);
+      }
+      
+      await loadPublicConfigAdmin(); // Update logo/nama di sidebar
+      document.title = `${aiName || 'CATY'} - Admin Dashboard`;
+      
+      showToast('Semua pengaturan berhasil disimpan!', 'success');
+    } else {
+      showToast(data.message || 'Gagal menyimpan', 'error');
+    }
+  } catch (err) {
+    showToast('Error: ' + err.message, 'error');
+  }
+}
+
+window.saveAllSettings = saveAllSettings;

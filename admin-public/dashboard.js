@@ -431,14 +431,14 @@ function renderLearningHighlight(learning) {
 }
 
 // ============================================================
-// RENDER: TOPIK POPULER (FIXED - dari pertanyaan warga)
+// RENDER: TOPIK POPULER (GABUNGAN MEMORI & FEEDBACK WARGA)
 // ============================================================
 function renderTopTopics(topics) {
   const el = document.getElementById('topTopicsList');
   if (!el) return;
 
   if (!topics || topics.length === 0) {
-    el.innerHTML = '<div class="text-center text-secondary py-4">Belum ada pertanyaan warga.<br><small>Topik akan muncul setelah warga bertanya.</small></div>';
+    el.innerHTML = '<div class="text-center text-secondary py-4">Belum ada data topik.<br><small>Topik akan muncul setelah warga bertanya atau AI menyimpan memori.</small></div>';
     return;
   }
 
@@ -447,19 +447,27 @@ function renderTopTopics(topics) {
   el.innerHTML = topics.slice(0, 8).map((t, i) => {
     const pct = Math.round(((t.count || 0) / maxCount) * 100);
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `<span class="badge bg-blue-lt">#${i + 1}</span>`;
+    
+    // Ikon kecil untuk membedakan sumber
+    let sourceBadge = '';
+    if (t.source === 'memory') {
+      sourceBadge = '<span class="badge bg-purple-lt text-purple ms-1" title="Dari Memori AI"><i class="ti ti-brain"></i></span>';
+    } else if (t.source === 'feedback') {
+      sourceBadge = '<span class="badge bg-green-lt text-green ms-1" title="Dari Feedback Warga"><i class="ti ti-message-circle"></i></span>';
+    }
+
     return `
       <div class="mb-3">
         <div class="d-flex align-items-center mb-1">
           <span style="font-size: 16px; margin-right: 8px;">${medal}</span>
           <div class="flex-fill text-truncate" style="font-weight: 600; font-size: 13px;" title="${t.title}">
-            ${t.title}
+            ${t.title} ${sourceBadge}
           </div>
           <span class="badge bg-blue text-white ms-2">${t.count || 0}x</span>
         </div>
         <div class="progress" style="height: 6px;">
           <div class="progress-bar bg-blue" style="width: ${pct}%"></div>
         </div>
-        ${t.lastAsked ? `<div class="text-secondary small mt-1" style="font-size: 10px;"><i class="ti ti-clock"></i> Terakhir: ${new Date(t.lastAsked).toLocaleDateString('id-ID')}</div>` : ''}
       </div>
     `;
   }).join('');

@@ -1,5 +1,5 @@
-// Service Worker SIVT AI
-const CACHE_NAME = 'sivt-ai-v4';
+// Service Worker CATY
+const CACHE_NAME = 'caty-v1';
 const ASSETS = [
     '/',
     '/index.html',

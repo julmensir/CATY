@@ -1,1260 +1,454 @@
-# SIVT AI — Sistem Informasi Virtual TEGALREJO
+<div align="center">
 
-> **AI Chatbot Multi-Provider dengan RAG Hybrid, Knowledge Graph, Memory, Auto-Learning, dan Feedback System untuk Kemantren Tegalrejo Yogyakarta**
+# 🤖 CATY
 
-![Version](https://img.shields.io/badge/version-2.1.0-blue)
-![Node](https://img.shields.io/badge/node-%3E%3D20.0.0-green)
-![License](https://img.shields.io/badge/license-ISC-lightgrey)
+### **CHAT AI TEGALREJO YOGYAKARTA**
 
-🔗 **Repository**: [https://github.com/julmensir/Magang-PSI](https://github.com/julmensir/Magang-PSI)
+Asisten virtual Kemantren Tegalrejo untuk layanan administrasi warga, 24 jam, berbasis AI dan buku pengetahuan resmi.
 
----
+![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=nodedotjs&logoColor=white)
+![Express](https://img.shields.io/badge/Express-5-000000?logo=express)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-opsional-4169E1?logo=postgresql&logoColor=white)
+![PWA](https://img.shields.io/badge/PWA-warga%20%2B%20admin-5A0FC8?logo=pwa&logoColor=white)
+![Bahasa](https://img.shields.io/badge/Bahasa-Indonesia-red)
 
-## 📋 DAFTAR ISI
-
-1. [Tentang Aplikasi](#-tentang-aplikasi)
-2. [Fitur Utama](#-fitur-utama)
-3. [Arsitektur Sistem](#-arsitektur-sistem)
-4. [Alur Kerja AI](#-alur-kerja-ai)
-5. [Struktur Folder](#-struktur-folder)
-6. [Instalasi & Setup](#-instalasi--setup)
-7. [Konfigurasi Environment](#-konfigurasi-environment)
-8. [Cara Menjalankan](#-cara-menjalankan)
-9. [Panduan Admin Dashboard](#-panduan-admin-dashboard)
-10. [Multi-Provider AI & Role System](#-multi-provider-ai--role-system)
-11. [Sistem Pengetahuan (RAG Hybrid)](#-sistem-pengetahuan-rag-hybrid)
-12. [Knowledge Graph (Graph RAG)](#-knowledge-graph-graph-rag)
-13. [Sistem Memori AI](#-sistem-memori-ai)
-14. [Anti-Halusinasi (Classifier)](#-anti-halusinasi-classifier)
-15. [Auto-Learning System](#-auto-learning-system)
-16. [Unified Learning Pipeline](#-unified-learning-pipeline)
-17. [Feedback & Analytics](#-feedback--analytics)
-18. [Keamanan](#-keamanan)
-19. [API Endpoints](#-api-endpoints)
-20. [Troubleshooting](#-troubleshooting)
-21. [Tips & Best Practices](#-tips--best-practices)
-22. [Konsep Penting](#-konsep-penting)
-23. [FAQ](#-faq-frequently-asked-questions)
-24. [Kontak & Lisensi](#-kontak--lisensi)
+</div>
 
 ---
 
-## 🎯 TENTANG APLIKASI
+## 📑 Daftar Isi
 
-**SIVT AI** (Sistem Informasi Virtual TEGALREJO) adalah asisten virtual berbasis AI yang dirancang khusus untuk **Kemantren Tegalrejo, Yogyakarta**. Aplikasi ini membantu warga mendapatkan informasi tentang layanan administrasi kependudukan seperti KTP, KK, Akta Kelahiran, dan lain-lain.
-
-### Keunggulan Utama
-
-- 🧠 **AI yang Akurat** — Tidak mengarang jawaban (anti-halusinasi)
-- 📚 **Belajar dari Pengetahuan** — Berbasis buku panduan resmi
-- 🔍 **RAG Hybrid** — Gabungan BM25 + Embedding + RRF Fusion
-- 🕸️ **Knowledge Graph** — Graph RAG untuk konteks lebih dalam
-- 💾 **Ingat Percakapan** — Memory system yang cerdas
-- 🎓 **Belajar Mandiri** — Auto-learning dari pertanyaan warga
-- 🔄 **Unified Learning** — 1x jawab admin, 5 sistem terupdate
-- 👍 **Feedback User** — Rating jawaban untuk perbaikan
-- 🔌 **Multi-Provider AI** — 9 provider + custom, dengan Role System
-- 🛡️ **Aman** — Enkripsi AES-256, JWT, bcrypt
-- 📱 **PWA** — Bisa diinstall di HP
-
----
-
-## ✨ FITUR UTAMA
-
-### 🎯 Untuk Warga (Pengguna Chat)
-
-| Fitur | Deskripsi |
-|-------|-----------|
-| 💬 **Chat Interaktif** | Tanya jawab dengan AI 24/7 |
-| 🎨 **Desain Modern** | UI/UX mobile-friendly |
-| ⚡ **Tombol Cepat** | Pertanyaan umum 1-klik |
-| 👍 **Rating Jawaban** | Kasih feedback jika jawaban kurang pas |
-| 🎙️ **Multi-Bahasa** | Indonesia santai & natural |
-| 📲 **PWA** | Install seperti aplikasi native |
-| 🌙 **Warna Kustom** | Sesuai tema Kemantren |
-
-### 🛠️ Untuk Admin
-
-| Fitur | Deskripsi |
-|-------|-----------|
-| 📊 **Dashboard Real-time** | Statistik lengkap aplikasi |
-| 🔌 **Multi-Provider AI** | 9 provider + custom endpoint |
-| 🎭 **Provider Role System** | chat / embedding / enrichment / query-rewriter |
-| 📚 **Upload Pengetahuan** | Upload file .md / .txt |
-| 🕸️ **Knowledge Graph** | Visualisasi + semantic enrichment |
-| 💾 **Kelola Memori** | Lihat/edit/hapus memori AI |
-| ❓ **Tak Terjawab** | Pertanyaan yang belum dijawab AI |
-| 🧠 **Auto-Learning** | AI deteksi pertanyaan populer otomatis |
-| 🔄 **Unified Learning** | 1x jawab → 5 sistem update |
-| ⭐ **Feedback & Analytics** | Statistik kepuasan user |
-| 🔔 **Notifikasi** | Alert sistem real-time |
-| 🎨 **Theme Kustom** | Ganti warna aplikasi |
-| 🖼️ **Logo Branding** | Upload logo instansi |
-| 🔐 **Keamanan** | Ganti password, enkripsi AES-256 |
-| 💾 **Backup Otomatis** | Backup harian terenkripsi |
-| 📱 **Responsive** | Mobile, tablet, desktop |
+- [Tentang CATY](#-tentang-caty)
+- [Fitur Utama](#-fitur-utama)
+- [Cara Kerja Singkat](#-cara-kerja-singkat)
+- [Teknologi](#-teknologi)
+- [Struktur Folder](#-struktur-folder)
+- [Instalasi Cepat](#-instalasi-cepat)
+- [Konfigurasi `.env`](#-konfigurasi-env)
+- [Menjalankan Aplikasi](#-menjalankan-aplikasi)
+- [Mode Penyimpanan: File vs PostgreSQL](#-mode-penyimpanan-file-vs-postgresql)
+- [Provider AI](#-provider-ai)
+- [Buku Pengetahuan](#-buku-pengetahuan)
+- [Dashboard Admin](#-dashboard-admin)
+- [Keamanan](#-keamanan)
+- [Backup & Restore](#-backup--restore)
+- [Catatan Penting & Masalah yang Diketahui](#-catatan-penting--masalah-yang-diketahui)
+- [Dokumentasi Lengkap](#-dokumentasi-lengkap)
 
 ---
 
-## 🏗️ ARSITEKTUR SISTEM
+## 📖 Tentang CATY
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      USER BROWSER                           │
-│  ┌─────────────────┐         ┌─────────────────────────┐   │
-│  │   CHAT PAGE     │         │   ADMIN DASHBOARD       │   │
-│  │   (Public)      │         │   (Login Required)      │   │
-│  └────────┬────────┘         └──────────┬──────────────┘   │
-└───────────┼─────────────────────────────┼───────────────────┘
-            │ HTTPS                       │ HTTPS + JWT
-┌───────────▼─────────────────────────────▼───────────────────┐
-│                    EXPRESS.JS SERVER                        │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │               MIDDLEWARE LAYER                       │   │
-│  │  CORS · Rate Limit · Auth · Enkripsi · Helmet       │   │
-│  └─────────────────────────────────────────────────────┘   │
-│                                                             │
-│  ┌─────────────────────────────────────────────────────┐   │
-│  │              CHAT PIPELINE                          │   │
-│  │                                                     │   │
-│  │  User Query                                         │   │
-│  │      │                                              │   │
-│  │      ▼                                              │   │
-│  │  ┌────────────────┐                                 │   │
-│  │  │  CLASSIFIER    │ ← Anti-halusinasi               │   │
-│  │  └────────┬───────┘                                 │   │
-│  │           ▼                                         │   │
-│  │  ┌────────────────┐                                 │   │
-│  │  │    MEMORY      │ ← Cek memori lama               │   │
-│  │  │    SEARCH      │                                 │   │
-│  │  └────────┬───────┘                                 │   │
-│  │           ▼ (kosong)                                │   │
-│  │  ┌────────────────┐                                 │   │
-│  │  │  RAG HYBRID    │ ← BM25 + Embedding + RRF        │   │
-│  │  │  + QUERY REWR. │                                 │   │
-│  │  └────────┬───────┘                                 │   │
-│  │           ▼                                         │   │
-│  │  ┌────────────────┐                                 │   │
-│  │  │ KNOWLEDGE      │ ← Graph traversal               │   │
-│  │  │ GRAPH QUERY    │                                 │   │
-│  │  └────────┬───────┘                                 │   │
-│  │           ▼                                         │   │
-│  │  ┌────────────────┐                                 │   │
-│  │  │  AI PROVIDER   │ ← Fallback multi-provider       │   │
-│  │  │   (Fallback)   │                                 │   │
-│  │  └────────┬───────┘                                 │   │
-│  │           ▼                                         │   │
-│  │  ┌────────────────┐                                 │   │
-│  │  │   TRACKING     │ ← Feedback, Learning, Stats     │   │
-│  │  └────────────────┘                                 │   │
-│  └─────────────────────────────────────────────────────┘   │
-└───────────────────────────┬─────────────────────────────────┘
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                     DATA STORAGE                            │
-│                                                             │
-│  knowledge/     memory/         data/                       │
-│  *.md, *.txt    memory.md       config.json                 │
-│                 sessions/       providers.json.enc          │
-│                                 knowledge-graph.json        │
-│                                 embedding-cache.json        │
-│                                 feedback.json               │
-│                                 analytics.json              │
-│                                 learning-queue.json         │
-│                                 unanswered.json             │
-│                                 backups/                    │
-└─────────────────────────────────────────────────────────────┘
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    AI PROVIDERS                             │
-│  Gemini · Groq · OpenRouter · Cerebras · Together           │
-│  Mistral · DeepSeek · Fireworks · xAI Grok · Custom         │
-│                                                             │
-│  Setiap provider bisa punya role:                           │
-│  [chat] [embedding] [enrichment] [query-rewriter]           │
-└─────────────────────────────────────────────────────────────┘
+**CATY** adalah chatbot layanan publik untuk **Kemantren Tegalrejo, Yogyakarta**. Warga bisa bertanya tentang KTP, KK, akta, surat keterangan, izin usaha, pindah domisili, dan layanan lain lewat tampilan chat yang ringan dan bisa dipasang seperti aplikasi (PWA).
+
+Prinsip utamanya: **CATY hanya menjawab dari Buku Pengetahuan yang dikelola admin**. Jika jawabannya tidak ada, CATY tidak mengarang. Ia mengarahkan warga ke petugas, lalu mencatat pertanyaan itu supaya admin bisa menambahkan jawabannya.
+
+Aplikasi terdiri dari dua bagian:
+
+| Bagian | Alamat | Untuk siapa |
+|---|---|---|
+| **Chat Warga** | `/` | Warga, tanpa login |
+| **Dashboard Admin** | `/admin/` | Petugas Kemantren, dengan login |
+
+---
+
+## ✨ Fitur Utama
+
+### Untuk Warga
+- 💬 Chat dengan jawaban **streaming** (muncul bertahap, via Server-Sent Events)
+- ⚡ **Tombol pertanyaan cepat** yang bisa diatur admin
+- 🧠 Saran topik otomatis ketika pertanyaan tidak ditemukan
+- 👍👎 **Rating** pada setiap jawaban
+- 📋 **Survei kepuasan** otomatis setelah warga diam beberapa menit
+- 🌗 Tema dan logo mengikuti pengaturan admin
+- 📱 **PWA**: bisa dipasang di layar utama HP
+
+### Untuk Admin
+- 📊 **Dashboard** statistik (1 hari, 7 hari, 30 hari, 90 hari, 1 tahun)
+- 🔌 **Multi-provider AI** dengan fallback otomatis dan sistem peran (*role*)
+- 📚 **Manajer Buku Pengetahuan** (unggah, edit, hapus file `.md` / `.txt`)
+- 🕸️ **Knowledge Graph** interaktif dengan pengayaan relasi lewat LLM
+- 🧩 **Memori AI**: jawaban yang sudah terbukti disimpan untuk respons instan
+- 📥 **Kotak "Tak Terjawab"** dengan antrean prioritas (normal, medium, high, urgent)
+- 🎓 **Pipeline belajar terpadu**: satu jawaban admin memperbarui pengetahuan, graph, dan menandai pertanyaan selesai
+- 📈 **Laporan** dengan grafik dan cetak **PDF** (ekspor **CSV** tersedia lewat API)
+- 🔔 Notifikasi, riwayat percakapan, dan feedback
+- 💾 **Backup terenkripsi** otomatis harian dan restore
+- 🎨 Kustomisasi nama AI, tagline, logo, tema warna, mode gelap, dan *system prompt*
+
+---
+
+## 🔍 Cara Kerja Singkat
+
+Setiap pesan warga melewati alur berlapis. Lapisan murah dicoba lebih dulu supaya cepat dan hemat biaya API.
+
+```mermaid
+flowchart TD
+    A[Pesan warga] --> B{Classifier<br/>sesuai topik Kemantren?}
+    B -- Di luar topik --> R[Pesan pengalihan<br/>+ catat ke Tak Terjawab]
+    B -- Ya --> C{Memori AI<br/>skor cukup tinggi?}
+    C -- Cocok --> M[Jawab dari memori<br/>tanpa memanggil AI]
+    C -- Tidak --> D[Konteks Knowledge Graph]
+    D --> E[Hybrid RAG<br/>query rewrite + BM25 + semantic + RRF]
+    E --> F[LLM dengan fallback<br/>antar provider dan model]
+    F --> G{Jawaban berisi penolakan?}
+    G -- Ya --> H[Catat ke Tak Terjawab<br/>dan Learning Queue]
+    G -- Tidak --> I[Simpan ke Memori AI<br/>jika confidence cukup]
 ```
 
----
-
-## 🔄 ALUR KERJA AI
-
-### 📝 Step-by-Step: Apa yang Terjadi Saat Warga Bertanya?
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 1: USER MENGIRIM PESAN                                │
-│  User: "Syarat membuat KK baru apa?"                        │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 2: RATE LIMIT & VALIDASI                              │
-│  • Cek apakah user terlalu sering kirim pesan               │
-│  • Validasi panjang pesan (max 2000 karakter)               │
-│  • Cek session ID user                                      │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 3: CLASSIFIER (Anti-Halusinasi)                       │
-│  Cek: Apakah pertanyaan relevan dengan Kemantren?           │
-│  • Scan kata kunci OUT_OF_SCOPE (politik, jodoh, dll)       │
-│  • Scan kata kunci IN_SCOPE (KTP, KK, syarat, dll)          │
-│  • Cek kecocokan dengan knowledge chunks                    │
-│                                                             │
-│  ✅ IN-SCOPE  → lanjut ke STEP 4                            │
-│  ❌ OUT-SCOPE → kirim pesan tolak sopan → SIMPAN ke          │
-│                  "Tak Terjawab" → selesai                   │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼ (IN-SCOPE)
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 4: MEMORY SEARCH (Cek Ingatan Lama)                   │
-│  Cari di memori AI apakah pernah jawab pertanyaan serupa    │
-│                                                             │
-│  Scoring: kata cocok +5, stem +4, bigram +15,               │
-│           identik +50, bonus hit +3                         │
-│  Threshold: 60 poin                                         │
-│                                                             │
-│  ✅ COCOK (≥60) → kirim jawaban dari memori                 │
-│  ❌ TIDAK      → lanjut ke STEP 5                           │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 5: RAG HYBRID SEARCH                                  │
-│                                                             │
-│  a) QUERY REWRITING (via LLM, opsional)                     │
-│     "syarat kk baru ilang" → "syarat KK, KK hilang"         │
-│                                                             │
-│  b) BM25 SEARCH (Layer 1 — keyword)                         │
-│     • Index dokumen, term frequency                         │
-│     • IDF × TF normalization                                │
-│     • Ambil top 15                                          │
-│                                                             │
-│  c) SEMANTIC SEARCH (Layer 2 — embedding)                   │
-│     • Query → vector via provider embedding                 │
-│     • Cosine similarity dengan chunk vectors                │
-│     • Ambil top 15                                          │
-│                                                             │
-│  d) RRF FUSION                                              │
-│     • Gabungkan hasil BM25 + Semantic                       │
-│     • Reciprocal Rank Fusion (k=60)                         │
-│     • Ambil top 6                                           │
-│                                                             │
-│  e) CACHE (opsional)                                        │
-│     • Kalau query ini pernah ditanya <1 jam → cache hit     │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 6: KNOWLEDGE GRAPH TRAVERSAL                          │
-│  • Ekstrak entitas dari query via NLP lokal                 │
-│  • Cari node yang cocok di graph                            │
-│  • Ambil neighbor (depth 1) sebagai konteks tambahan        │
-│  • Contoh: "KK" → terkait "KTP", "akta", "kelahiran"        │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 7: KIRIM KE AI PROVIDER (Fallback)                    │
-│                                                             │
-│  System Prompt + Konteks (RAG+Graph) + Pertanyaan User      │
-│                                                             │
-│  Coba provider satu per satu (role: chat):                  │
-│  1. Gemini 2.0 Flash                                        │
-│  2. Gemini Flash Latest                                     │
-│  3. Groq llama-3.3-70b                                      │
-│  4. OpenRouter llama-3.3-70b:free                           │
-│  ...dst sampai berhasil                                     │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 8: BERSIHKAN FORMAT (cleanAIText)                     │
-│  • Hapus ** ** (bold markdown)                              │
-│  • Hapus ## ## (heading markdown)                           │
-│  • Hapus ` ` (code markdown)                                │
-│  • Convert - item → • item                                  │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 9: STREAMING KE USER                                  │
-│  Kirim per 8 karakter untuk efek mengetik                   │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 10: TRACKING & LEARNING                               │
-│  • Kalau AI menolak → catat ke "Tak Terjawab"               │
-│  • Kalau RAG confidence ≥70 → simpan ke memori              │
-│  • Update analytics (totalChats, dll)                       │
-│  • Tampilkan tombol feedback 👍👎                           │
-└────────────────────────┬────────────────────────────────────┘
-                         ▼
-┌─────────────────────────────────────────────────────────────┐
-│  STEP 11: USER BERI FEEDBACK (Opsional)                     │
-│  • User klik 👍 → simpan sebagai "Good Example"             │
-│  • User klik 👎 → simpan sebagai "Bad Example"              │
-│  • Admin bisa lihat di dashboard                            │
-└─────────────────────────────────────────────────────────────┘
-```
+Penjelasan lengkap tiap lapisan ada di [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md).
 
 ---
 
-## 📁 STRUKTUR FOLDER
+## 🛠️ Teknologi
 
-```
-MAGANG PSI/
-│
-├── 📄 .env                      # Environment variables (RAHASIA!)
-├── 📄 .env.example              # Template environment
-├── 📄 .gitignore                # Git ignore rules
-├── 📄 index.js                  # Main server file
-├── 📄 package.json              # Dependencies
-├── 📄 package-lock.json         # Lock file
-├── 📄 README.md                 # Dokumentasi ini
-├── 📄 CHANGELOG.md              # Riwayat perubahan
-│
-├── 📂 lib/                      # Library modules (OTAK AI)
-│   ├── providers.js             # Multi-provider AI manager
-│   ├── provider-role.js         # Role system (chat/embed/enrich/rewrite)
-│   ├── memory.js                # Memory + stemming Indonesia
-│   ├── classifier.js            # Anti-halusinasi classifier
-│   ├── feedback.js              # Feedback & analytics
-│   ├── learning.js              # Auto-learning engine
-│   ├── summarizer.js            # Auto-summarization & insight
-│   │
-│   ├── 🆕 rag-bm25.js           # RAG Layer 1: BM25 keyword search
-│   ├── 🆕 rag-embedding.js      # RAG Layer 2: Semantic (embedding)
-│   ├── 🆕 rag-hybrid.js         # RAG Fusion (RRF) + Query Rewriting
-│   ├── 🆕 rag-cache.js          # Cache query populer
-│   │
-│   ├── 🆕 graph-engine.js       # Knowledge Graph (graphology)
-│   ├── 🆕 graph-enricher.js     # Triple extraction via LLM
-│   │
-│   └── 🆕 unified-learning.js   # Pipeline 1x jawab → 5 sistem update
-│
-├── 📂 data/                     # Data storage
-│   ├── config.json              # Konfigurasi aplikasi
-│   ├── providers.json.enc       # API keys (encrypted AES-256)
-│   ├── unanswered.json          # Pertanyaan tak terjawab
-│   ├── feedback.json            # Feedback user
-│   ├── analytics.json           # Data analytics
-│   ├── learning-queue.json      # Antrian auto-learning
-│   ├── 🆕 knowledge-graph.json  # Knowledge Graph (nodes + edges)
-│   ├── 🆕 embedding-cache.json  # Cache embedding (7 hari TTL)
-│   └── 📂 backups/              # Backup otomatis
-│       └── backup-*.zip.enc
-│
-├── 📂 knowledge/                # Buku pengetahuan (RAG)
-│   ├── buku-pengetahuan.md      # Konten pengetahuan utama
-│   └── Buku Panduan.txt         # Sumber tambahan
-│
-├── 📂 memory/                   # Memori AI
-│   ├── memory.md                # Memori Q&A tervalidasi
-│   └── 📂 sessions/             # Sesi percakapan aktif
-│       └── sess_*.json
-│
-├── 📂 logs/                     # Log sistem
-│   └── notifications.json       # Riwayat notifikasi
-│
-├── 📂 public/                   # Frontend files
-│   ├── index.html               # HTML halaman utama
-│   ├── script.js                # JavaScript frontend
-│   ├── style.css                # CSS styling
-│   ├── sw.js                    # Service Worker (PWA)
-│   ├── manifest.json            # PWA manifest
-│   └── 📂 uploads/              # Upload file user
-│       └── logo.png
-│
-└── 📂 tmp/                      # Temporary files
-```
+| Lapisan | Teknologi |
+|---|---|
+| Runtime | Node.js (ES Modules, *top-level await*), disarankan **Node 20+** |
+| Server | Express 5, Helmet, CORS, `express-rate-limit`, `cookie-parser`, `multer` |
+| Autentikasi | JWT (cookie `httpOnly`), `bcrypt` |
+| Enkripsi | AES-256-GCM (API key provider dan file backup) |
+| Database (opsional) | PostgreSQL lewat `pg` |
+| AI | Google Gemini (`@google/genai`) dan provider *OpenAI-compatible* |
+| Pencarian | BM25 lokal + embedding (cosine similarity) + Reciprocal Rank Fusion |
+| Graph | `graphology` + `compromise` (NLP lokal) |
+| Jadwal | `node-cron` |
+| Backup | `adm-zip` + `pg_dump` |
+| UI warga | HTML/CSS/JS murni, Bootstrap 5.3, Font Awesome 6.4 |
+| UI admin | Tabler 1.0 beta, Chart.js 4.4, vis-network 9.1, jsPDF 2.5 + AutoTable 3.8 |
+
+> Versi Express dan `express-rate-limit` disimpulkan dari sintaks kode (`/admin/{*splat}` dan `ipKeyGenerator`). Cocokkan dengan `package.json` Anda.
 
 ---
 
-## 🚀 INSTALASI & SETUP
+## 📁 Struktur Folder
 
-### 📋 Persyaratan Sistem
+Struktur di bawah disusun dari path yang dipakai kode. Folder `knowledge/`, `memory/`, `data/`, `logs/`, `tmp/` dibuat otomatis saat server pertama kali jalan.
 
-| Requirement | Minimum | Rekomendasi |
-|-------------|---------|-------------|
-| **Node.js** | v20.0.0 | v22+ |
-| **NPM** | v10.0.0 | v11+ |
-| **RAM** | 2 GB | 4 GB+ |
-| **Storage** | 500 MB | 1 GB+ |
-| **OS** | Windows 10 / Ubuntu 20.04 | Windows 11 / Ubuntu 22.04 |
+```
+caty/
+├── index.js                  # Server utama (API, auth, chat, backup, cron)
+├── package.json
+├── .env                      # Rahasia, JANGAN di-commit
+├── .env.example
+│
+├── db/
+│   └── schema.sql            # Skema PostgreSQL (dijalankan otomatis jika USE_DB=true)
+│
+├── lib/                      # Modul backend
+│   ├── providers.js          # Registry provider AI + fallback chat/embedding
+│   ├── provider-role.js      # Sistem peran provider
+│   ├── providers-db.js       # CRUD provider di PostgreSQL
+│   ├── classifier.js         # Deteksi pertanyaan di luar topik
+│   ├── memory.js             # Memori AI + tokenizer, stemmer, sinonim
+│   ├── rag-bm25.js           # Pencarian keyword BM25
+│   ├── rag-embedding.js      # Semantic search + cache embedding
+│   ├── rag-hybrid.js         # Gabungan BM25 + semantic + RRF + query rewrite
+│   ├── rag-cache.js          # Cache hasil pencarian (TTL 1 jam)
+│   ├── graph-engine.js       # Knowledge graph
+│   ├── graph-enricher.js     # Ekstraksi triple via LLM
+│   ├── unified-learning.js   # Pipeline jawaban admin
+│   ├── learning.js           # Antrean belajar (PostgreSQL)
+│   ├── feedback.js           # Feedback + analytics (PostgreSQL)
+│   ├── summarizer.js         # Ringkasan pengetahuan + insight harian
+│   ├── dashboard-stats.js    # Perhitungan statistik dashboard
+│   ├── cetak-laporan.js      # Generator PDF laporan (dijalankan di browser)
+│   ├── config-db.js          # Config di PostgreSQL
+│   └── db.js                 # Pool koneksi PostgreSQL
+│
+├── public/                   # Aplikasi warga  →  /
+│   ├── index.html            # (file sumber: index_1.html)
+│   ├── style.css
+│   ├── script.js
+│   ├── sw.js
+│   ├── manifest.json
+│   └── uploads/              # Logo hasil unggahan admin
+│
+├── admin-public/             # Dashboard admin  →  /admin/
+│   ├── index.html            # (file sumber: index.html)
+│   ├── style-admin.css
+│   ├── script-admin.js
+│   ├── dashboard.js
+│   ├── laporan.js
+│   ├── sw-admin.js
+│   └── manifest-admin.json
+│
+├── knowledge/                # Buku pengetahuan (.md / .txt)
+│   └── buku-pengetahuan.md
+├── memory/
+│   ├── memory.md             # Memori (mode file)
+│   └── sessions/             # Sesi percakapan (JSON, TTL 2 jam)
+├── data/                     # config, graph, cache embedding, backup, dll.
+│   ├── knowledge-graph.json
+│   ├── embedding-cache.json
+│   ├── unanswered.json
+│   └── backups/              # Backup terenkripsi (*.zip.enc)
+├── logs/notifications.json
+└── tmp/                      # File sementara (upload, proses backup)
+```
 
-### 🔧 Langkah Instalasi
+> ⚠️ Pada file yang Anda kirim, halaman **warga** bernama `index_1.html` dan halaman **admin** bernama `index.html`. Saat menaruhnya ke folder, ubah keduanya menjadi `index.html` di `public/` dan `admin-public/`.
 
-#### 1. Clone Repository
+---
+
+## 🚀 Instalasi Cepat
+
+### Prasyarat
+- **Node.js 20+** dan npm
+- **PostgreSQL 14+** (hanya jika memakai `USE_DB=true`)
+- `pg_dump` di PATH (hanya jika memakai PostgreSQL dan ingin backup otomatis)
+- Minimal **satu API key** provider AI (Gemini dan Groq punya paket gratis)
+
+### Langkah
+
 ```bash
-git clone https://github.com/julmensir/Magang-PSI.git
-cd Magang-PSI
-```
+# 1. Ambil kode
+git clone <url-repo-anda> caty
+cd caty
 
-#### 2. Install Dependencies
-```bash
-npm install
-```
+# 2. Pasang dependensi
+npm install express cors helmet multer express-rate-limit bcrypt jsonwebtoken \
+            cookie-parser node-cron adm-zip dotenv pg @google/genai \
+            graphology compromise
 
-Dependencies:
-- `express` — Web framework
-- `@google/genai` — Google Gemini SDK
-- `graphology` — Knowledge Graph
-- `compromise` — NLP lokal (ekstraksi entitas)
-- `bcrypt` — Password hashing
-- `jsonwebtoken` — JWT auth
-- `cookie-parser`, `cors`, `helmet` — Middleware
-- `express-rate-limit` — Rate limiting
-- `multer` — Upload file
-- `adm-zip` — Backup
-- `node-cron` — Scheduled tasks
-- `dotenv` — Environment variables
+# 3. Salin konfigurasi
+cp .env.example .env
 
-#### 3. Setup Environment Variables
-Copy `.env.example` ke `.env`:
-```bash
-copy .env.example .env
-```
-
-Generate `JWT_SECRET` & `ENCRYPTION_KEY` (jalankan 2x):
-```bash
+# 4. Buat secret (jalankan dua kali, satu untuk tiap nilai)
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+# → tempel ke JWT_SECRET dan ENCRYPTION_KEY di .env
+
+# 5. Jalankan
+node index.js
 ```
 
-Edit `.env`:
-```env
-PORT=3000
-NODE_ENV=production
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=GantiPasswordAnda123!
-JWT_SECRET=<hasil_generate_1>
-ENCRYPTION_KEY=<hasil_generate_2>
+Pastikan `package.json` memuat `"type": "module"` karena seluruh kode memakai `import`.
+
+Jika sukses, konsol menampilkan:
+
+```
+CATY siap di http://localhost:3000
+Warga  : http://localhost:3000/
+Admin  : http://localhost:3000/admin/
 ```
 
-#### 4. Tambahkan Buku Pengetahuan
-Buat `knowledge/buku-pengetahuan.md`:
+Selanjutnya: login di `/admin/`, buka **Provider AI** lalu tambahkan API key, lalu isi **Buku Pengetahuan**.
+
+---
+
+## ⚙️ Konfigurasi `.env`
+
+| Variabel | Wajib | Keterangan |
+|---|:---:|---|
+| `JWT_SECRET` | ✅ | Minimal **32 karakter**. Server berhenti jika kosong atau terlalu pendek. |
+| `ENCRYPTION_KEY` | ✅ | Tepat **64 karakter hex** (32 byte). Mengenkripsi API key dan backup. **Jika hilang, API key tersimpan dan backup lama tidak bisa dibuka.** |
+| `ADMIN_USERNAME` | – | Default `admin`. |
+| `ADMIN_PASSWORD_HASH` | ✳️ | Hash bcrypt (diawali `$2`). **Disarankan.** |
+| `ADMIN_PASSWORD` | ✳️ | Password polos, di-hash saat start. Dipakai jika hash tidak ada. |
+| `PORT` | – | Default `3000`. |
+| `NODE_ENV` | – | Isi `production` agar cookie login memakai flag `secure` (wajib HTTPS). |
+| `USE_DB` | – | `true` untuk memakai PostgreSQL. Default: mode file. |
+| `DATABASE_URL` | – | Connection string PostgreSQL (SSL aktif otomatis). Alternatif dari `PG*`. |
+| `PGHOST` `PGPORT` `PGDATABASE` `PGUSER` `PGPASSWORD` | – | Alternatif `DATABASE_URL`. Default: `localhost`, `5432`, `db_caty`, `postgres`. |
+| `BACKUP_KEEP_COUNT` | – | Jumlah file backup yang disimpan. Default `4`. |
+
+✳️ Isi salah satu. Jika keduanya kosong, server memakai password bawaan `admin123` dan menulis peringatan di log. **Jangan biarkan ini di produksi.**
+
+Membuat hash bcrypt:
+
+```bash
+node -e "require('bcrypt').hash('PasswordKuat!', 10).then(console.log)"
+```
+
+Contoh lengkap ada di [`.env.example`](.env.example).
+
+---
+
+## ▶️ Menjalankan Aplikasi
+
+```bash
+node index.js               # jalankan biasa
+node --watch index.js       # mode pengembangan (Node 18.11+)
+```
+
+Pengecekan kesehatan: `GET /api/health` menampilkan uptime, provider, jumlah chunk, memori, sesi, status graph, dan statistik RAG.
+
+Panduan produksi (Nginx, HTTPS, PM2, systemd): [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+---
+
+## 🗄️ Mode Penyimpanan: File vs PostgreSQL
+
+| Data | `USE_DB=false` (file) | `USE_DB=true` (PostgreSQL) |
+|---|---|---|
+| Konfigurasi | `data/config.json` | tabel `config` |
+| Provider AI (terenkripsi) | `data/providers.json.enc` | tabel `providers` |
+| Memori AI | `memory/memory.md` | tabel `memory` |
+| **Feedback** | ❌ nonaktif | ✅ tabel `feedback` |
+| **Analytics** | ❌ nonaktif | ✅ tabel `analytics_events` |
+| **Learning Queue** | ❌ nonaktif | ✅ tabel `learning_queue` |
+| Pertanyaan tak terjawab | `data/unanswered.json` | `data/unanswered.json` (tetap file) |
+| Sesi percakapan | `memory/sessions/*.json` | `memory/sessions/*.json` (tetap file) |
+| Notifikasi | `logs/notifications.json` | `logs/notifications.json` (tetap file) |
+| Buku pengetahuan, graph, cache embedding | file | file |
+
+> **Penting:** fitur feedback, analytics, dan learning queue hanya berfungsi dengan `USE_DB=true`. Tanpa itu, dashboard menampilkan nol untuk data tersebut. Untuk penggunaan nyata, **pakai PostgreSQL**.
+
+Detail tabel: [`docs/DATABASE.md`](docs/DATABASE.md).
+
+---
+
+## 🔌 Provider AI
+
+CATY memanggil provider secara berurutan. Jika satu gagal, ia mencoba model berikutnya lalu provider berikutnya.
+
+**Bawaan:** Google Gemini, Groq, OpenRouter, Cerebras, Together AI, Mistral AI, DeepSeek, Fireworks AI, xAI Grok.
+**Kustom:** provider apa pun yang kompatibel dengan OpenAI (isi *Custom Endpoint*).
+
+Setiap provider bisa punya satu atau lebih **peran**:
+
+| Peran | Fungsi |
+|---|---|
+| `chat` | Menjawab warga |
+| `embedding` | Membuat vektor untuk semantic search (Gemini, Together, Mistral, atau kustom) |
+| `enrichment` | Mengekstrak relasi untuk Knowledge Graph dan pipeline belajar |
+| `query-rewriter` | Peran terdaftar; pada kode saat ini penulisan ulang query memakai provider berperan `chat` |
+
+API key **dienkripsi AES-256-GCM** sebelum disimpan dan hanya ditampilkan sebagian (*masked*) di dashboard.
+
+> Daftar nama model bawaan ada di `lib/providers.js`. Nama model provider sering berubah, jadi periksa dokumentasi provider dan perbarui lewat menu **Provider AI → Edit Model**.
+
+---
+
+## 📚 Buku Pengetahuan
+
+Taruh file `.md` atau `.txt` di folder `knowledge/` atau unggah lewat dashboard (maks. 5 MB per file). Sistem memecahnya menjadi *chunk* per judul (`##` sampai `######`). Tanpa judul, dipecah per paragraf.
+
+Format yang disarankan:
+
 ```markdown
-# Buku Pengetahuan SIVT AI
+# Buku Pengetahuan CATY
 
-## Syarat Membuat KK Baru
+## Syarat Pembuatan KTP Elektronik
 
-Kata kunci : syarat membuat KK baru, cara urus KK
-Pertanyaan : Syarat membuat KK baru
+Kata kunci : ktp, ktp-el, kartu tanda penduduk, buat ktp baru
 
-Jawaban : Untuk membuat KK baru, siapkan:
-• Surat pengantar RT/RW (asli)
-• Fotokopi KTP suami dan istri
-• Fotokopi Buku Nikah atau Akta Perkawinan
-• Formulir permohonan KK (diisi di kantor)
-• Fotokopi Akta Kelahiran anak (jika ada)
+Pertanyaan : Apa saja syarat membuat KTP baru?
 
-Semua proses GRATIS dan selesai dalam 1-3 hari kerja.
+Jawaban : Syarat pembuatan KTP baru:
+• Fotokopi Kartu Keluarga
+• Fotokopi Akta Kelahiran
+• Surat pengantar RT/RW
+• Formulir permohonan
+
+Kategori : Administrasi
 ```
 
-**Format penting**: setiap topik dipisah `##`, ada `Kata kunci :` dan `Jawaban :`.
+Tips:
+- Satu topik per judul. Chunk yang fokus memberi hasil pencarian lebih akurat.
+- Baris `Kata kunci :` dipakai sebagai sinyal tambahan. Isi dengan istilah dan singkatan yang biasa dipakai warga.
+- Judul bergaya `## BAGIAN 1 ...` dilewati (dianggap pembatas).
+- Setelah mengubah file, klik **Reload** di dashboard. Perubahan lewat dashboard langsung dimuat ulang otomatis.
 
 ---
 
-## ⚙️ KONFIGURASI ENVIRONMENT
+## 🖥️ Dashboard Admin
 
-| Variable | Wajib | Deskripsi |
-|----------|-------|-----------|
-| `PORT` | ✅ | Port server (default 3000) |
-| `NODE_ENV` | ✅ | `production` / `development` |
-| `ADMIN_USERNAME` | ✅ | Username admin login |
-| `ADMIN_PASSWORD` | ✅ | Password admin (plain text) |
-| `ADMIN_PASSWORD_HASH` | ⚠️ | Auto-generated oleh sistem |
-| `JWT_SECRET` | ✅ | Secret JWT (min 32 char) |
-| `ENCRYPTION_KEY` | ✅ | Key AES-256 (64 char hex) |
+Buka `/admin/` lalu login. Menu:
 
-### 🔐 Auto-Migration Password
+| Grup | Halaman | Fungsi |
+|---|---|---|
+| – | **Dashboard** | Statistik, grafik aktivitas, sumber jawaban, tren feedback, topik populer, kategori |
+| Provider AI | **Semua Provider** | Tambah, uji, aktif/nonaktif, atur peran dan model |
+| Pengetahuan | **Buku Pengetahuan** | Kelola file pengetahuan |
+| | **Knowledge Graph** | Visualisasi graph, detail node, pengayaan via LLM |
+| | **Memori AI** | Lihat, ubah, hapus memori |
+| Monitoring | **Tak Terjawab** | Antrean pertanyaan yang perlu dijawab admin |
+| | **Feedback & Akurasi** | Rating warga dan akurasi |
+| | **Laporan** | Laporan periode, cetak PDF dan Print |
+| | **Percakapan** | Riwayat sesi aktif |
+| | **Notifikasi** | Peringatan sistem |
+| Sistem | **Backup** | Backup manual, unduh, restore |
+| Konfigurasi | **Identitas** | Nama AI, tagline, logo, tema, kontak, survei, tombol cepat |
+| | **Prompt AI** | System prompt dan parameter memori/percakapan |
+| | **Keamanan** | Ganti password |
 
-Saat pertama start, sistem akan:
-1. Deteksi `ADMIN_PASSWORD` plain text
-2. Auto-hash dengan bcrypt
-3. Simpan sebagai `ADMIN_PASSWORD_HASH`
-4. Restart server untuk efek penuh
-
----
-
-## 🎬 CARA MENJALANKAN
-
-### 🚀 Mode Production
-```bash
-npm start
-```
-
-Output:
-```
-[FEEDBACK] 40 feedback dimuat.
-[LEARNING] 3 pertanyaan di learning queue.
-============================================
-SIVT AI siap di http://localhost:3000
-Provider AI    : 5 terdaftar (5 aktif)
-  1. [✓] Google Gemini [chat,embedding] → gemini-2.0-flash
-  2. [✓] Groq [chat,query-rewriter] → llama-3.3-70b-versatile
-  3. [✓] OpenRouter [chat] → meta-llama/llama-3.3-70b:free
-Memori         : 36 item
-Knowledge      : 88 chunk
-Unanswered     : 1 pending
-Graph          : 234 nodes, 567 edges
-RAG Hybrid     : BM25=88 docs, Embedding=88 vecs
-============================================
-```
-
-### 🛑 Stop Server
-Tekan `Ctrl+C` — server menyimpan semua sesi & graph sebelum keluar.
-
-### 🌐 Akses Aplikasi
-- **Chat (Public)**: http://localhost:3000
-- **Admin Dashboard**: http://localhost:3000 → klik ⚙️ kanan atas
-
-### 🌍 Akses dari LAN (HP)
-1. Cari IP lokal: `ipconfig` → IPv4 Address
-2. Buka di HP: `http://192.168.x.x:3000`
-3. Allow Node.js di Windows Firewall
+Panduan langkah demi langkah: [`docs/PANDUAN-ADMIN.md`](docs/PANDUAN-ADMIN.md).
 
 ---
 
-## 🎛️ PANDUAN ADMIN DASHBOARD
+## 🔒 Keamanan
 
-### 🔐 Cara Login
-1. Buka `http://localhost:3000`
-2. Klik ikon **⚙️** (kanan atas chat header)
-3. Masukkan username & password dari `.env`
+Yang sudah diterapkan:
 
-### 📊 Menu Dashboard
+- Login admin dengan **JWT** di cookie `httpOnly` + `sameSite=lax` (berlaku 30 hari)
+- Password di-hash **bcrypt**; ganti password lewat dashboard menulis hash baru ke `.env`
+- API key provider dan file backup dienkripsi **AES-256-GCM**
+- **Rate limit**: API umum 500 permintaan / 15 menit, login 10 gagal / 15 menit, chat per sesi (default 20 / menit)
+- Path sensitif diblokir: `.env`, `config.json`, `package.json`, `/knowledge/`, `/memory/`, `/data/`, `/tmp/`, `/node_modules/`
+- Upload dibatasi: logo (gambar, 2 MB), pengetahuan (`.md`/`.txt`, 5 MB), nama file disanitasi
+- Pesan chat dibatasi 2000 karakter
 
-| Menu | Fungsi |
-|------|--------|
-| **📊 Dashboard** | Statistik & ringkasan aplikasi |
-| **⚙️ Umum** | Identitas AI, kontak, sambutan |
-| **🖼️ Logo & Branding** | Upload logo instansi |
-| **🎨 Warna Tema** | Kustom warna aplikasi |
-| **🔌 Provider AI** | Kelola provider + role system |
-| **💬 Prompt AI** | Atur system instruction AI |
-| **📚 Pengetahuan** | Upload & kelola buku pengetahuan |
-| **🕸️ Knowledge Graph** | Visualisasi + semantic enrichment |
-| **❓ Tak Terjawab** | Pertanyaan yang tidak bisa dijawab AI |
-| **🧠 Auto-Learning** | Antrian belajar dari pertanyaan populer |
-| **⭐ Feedback & Akurasi** | Statistik kepuasan & akurasi |
-| **💾 Memori AI** | Kelola memori AI |
-| **💬 Percakapan** | Sesi percakapan aktif |
-| **🔔 Notifikasi** | Riwayat notifikasi sistem |
-| **💾 Backup** | Backup & restore data |
-| **🔐 Keamanan** | Ganti password admin |
-
-### 📊 Dashboard Stat
-
-| Stat | Deskripsi |
-|------|-----------|
-| 🔌 **Provider AI** | Total & berapa aktif |
-| 📚 **Chunk Pengetahuan** | Jumlah chunk di buku |
-| 💾 **Memori AI** | Total memori & total hit |
-| 💬 **Sesi Aktif** | Sesi aktif & total pesan |
-| ⭐ **Kepuasan User** | % feedback positif |
-| ✅ **Akurasi Jawaban** | % jawaban berhasil |
-| ❓ **Tak Terjawab** | Pertanyaan pending |
-| 🔔 **Notifikasi** | Belum dibaca |
-| 🕸️ **Graph Nodes** | Total node knowledge graph |
-| 🔗 **Graph Edges** | Total edge knowledge graph |
-
-Ditambah:
-- **Chart aktivitas 7 hari**
-- **RAG Hybrid Stats** (BM25 docs, embedding vecs, cache size, hit rate)
-- **Status provider**
-- **Antrian belajar**
+Yang perlu Anda perhatikan sebelum produksi ada di bagian berikutnya.
 
 ---
 
-## 🔌 MULTI-PROVIDER AI & ROLE SYSTEM
+## 💾 Backup & Restore
 
-### 🎭 Provider Role System 🆕
+- **Otomatis** setiap hari pukul **02.00** (zona waktu server), menyimpan sejumlah `BACKUP_KEEP_COUNT` terbaru
+- **Manual** lewat menu **Backup**
+- Format `*.zip.enc` terenkripsi dengan `ENCRYPTION_KEY`
 
-Setiap provider bisa punya **1 atau lebih role**:
+Isi backup: dump PostgreSQL (`database_dump.sql`, jika `USE_DB=true`), folder `knowledge/`, `knowledge-graph.json`, dan `embedding-cache.json`.
 
-| Role | Fungsi |
-|------|--------|
-| 🗨️ **chat** | Menjawab user (LLM utama) |
-| 📐 **embedding** | Ubah teks jadi vector untuk RAG semantic |
-| ✨ **enrichment** | Ekstrak triple (subjek-predikat-objek) ke Graph |
-| 🔄 **query-rewriter** | Rewrite pertanyaan user agar RAG lebih akurat |
-
-**1 provider bisa punya beberapa role sekaligus.** Contoh:
-- **Gemini** → `chat` + `embedding` + `enrichment` (all-rounder)
-- **Groq** → `chat` + `query-rewriter` (tercepat)
-- **Mistral** → `chat` + `enrichment` (fallback bagus)
-
-**Cara setting**: di tabel provider, klik badge role untuk toggle on/off.
-
-### 🌐 9 Provider Built-in
-
-| Provider | Gratis? | Link Daftar |
-|----------|---------|-------------|
-| Google Gemini | ✅ | [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey) |
-| Groq | ✅ | [console.groq.com/keys](https://console.groq.com/keys) |
-| OpenRouter | ✅ | [openrouter.ai/keys](https://openrouter.ai/keys) |
-| Cerebras | ✅ | [cloud.cerebras.ai](https://cloud.cerebras.ai) |
-| Together AI | 💰 | [api.together.xyz](https://api.together.xyz) |
-| Mistral AI | ✅ | [console.mistral.ai](https://console.mistral.ai) |
-| DeepSeek | 💰 | [platform.deepseek.com](https://platform.deepseek.com) |
-| Fireworks AI | 💰 | [fireworks.ai](https://fireworks.ai) |
-| xAI Grok | 💰 | [console.x.ai](https://console.x.ai) |
-
-### 🔧 Provider Custom (OpenAI-compatible)
-
-Contoh untuk **Ollama Lokal**:
-| Field | Nilai |
-|-------|-------|
-| Nama | `ollama` |
-| Custom Endpoint | `http://localhost:11434/v1` |
-| API Key | `ollama` |
-| Models | `llama3.2,mistral,qwen2.5` |
-
-### 🎯 Fallback Logic
-
-```
-Provider 1, Model 1 → FAIL (429)
-Provider 1, Model 2 → FAIL (404)
-Provider 1, Model 3 → OK  ✅ SELESAI
-   (kalau semua fail → provider 2)
-```
-
-| Error | Tindakan |
-|-------|----------|
-| 401 | API key invalid → coba provider lain |
-| 429 | Kuota habis → coba provider lain |
-| 404 | Model tidak ada → coba model lain |
-| 503 | Server sibuk → coba provider lain |
+Catatan restore ada di bagian berikut. Panduan lengkap: [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md#backup--restore).
 
 ---
 
-## 📚 SISTEM PENGETAHUAN (RAG HYBRID) 🆕
+## ⚠️ Catatan Penting & Masalah yang Diketahui
 
-### 🎯 Konsep RAG Hybrid
+Saya menemukan hal-hal berikut saat membaca kode. Tidak ada yang menghalangi aplikasi berjalan, tetapi sebaiknya ditangani.
 
-**RAG** (Retrieval-Augmented Generation) — Ambil dulu dari database, baru kirim ke AI.
+### Keamanan
+1. **Password bawaan `admin123`** dipakai jika `.env` tidak berisi password. Selalu isi `ADMIN_PASSWORD_HASH`.
+2. **CORS** diset `origin: true` dengan `credentials: true`, artinya semua asal diizinkan. Batasi ke domain Anda di produksi.
+3. **Content-Security-Policy dimatikan** (`helmet`) agar CDN Chart.js dan vis-network berjalan. Pertimbangkan mengaktifkannya dengan daftar CDN yang diizinkan.
+4. Token JWT juga dikembalikan di body respons login dan disimpan di variabel JS dashboard (bukan `localStorage`). Itu cukup aman, tetapi cookie `httpOnly` sebenarnya sudah memadai, jadi token di body bisa dihapus jika tidak diperlukan.
 
-**Hybrid** — Gabungkan **2 metode pencarian** + **fusion**:
+### Perilaku yang mungkin tidak sesuai harapan
+5. **Batas chat per sesi tidak ikut berubah.** `rateLimitPerSession` dibaca saat limiter dibuat, sebelum `CONFIG` dimuat, sehingga nilainya selalu 20/menit walau admin mengubahnya.
+6. **Restore tidak mengimpor `database_dump.sql`.** Restore hanya memulihkan file. Impor dump secara manual: `psql -d <db> -f database_dump.sql`.
+7. **Backup tidak mencakup** `unanswered.json`, `memory/sessions/`, dan `notifications.json`. Restore mencari beberapa file JSON lama (`config.json`, `feedback.json`, dst.) yang tidak dibuat oleh backup saat ini.
+8. **Insight harian (cron 23.00) dihitung tetapi tidak disimpan.** Fungsi ringkasan membaca kunci `summaries` di tabel `config`, tetapi tidak ada kode yang menuliskannya, sehingga daftar ringkasan selalu kosong.
+9. **Classifier memakai pencocokan substring.** Kata seperti `sim`, `ml`, atau `kue` bisa tertangkap di dalam kata lain (misalnya "simpan"). Pertanyaan baru dialihkan hanya jika tidak ada kata kunci layanan yang cocok, tetapi tetap ada risiko salah alih.
+10. **Statistik `sessions` harian** pada analytics selalu 0 karena event tidak menyimpan hitungan sesi unik. Grafik memakai jumlah pesan.
+11. **Tabel `sessions`, `messages`, `unanswered_questions`, `knowledge_chunks`, `notifications`** ada di `schema.sql`, tetapi kode yang saya baca masih memakai file untuk data tersebut.
+12. Nomor kontak di `systemInstruction` bawaan (WA `0812-3456-7890`, telp `(0274) 123456`) adalah **contoh** dan berbeda dari `contactInfo`. Ganti sebelum dipakai.
 
-```
-User Query
-   ↓
-[Query Rewriting] ← LLM ubah ke keyword
-   ↓
-┌────────────────┬────────────────┐
-│  BM25 SEARCH   │  SEMANTIC      │
-│  (keyword)     │  (embedding)   │
-└────────┬───────┴────────┬───────┘
-         ↓                ↓
-    [RRF FUSION] ← Gabungkan hasil
-         ↓
-   Top 6 Chunk
-         ↓
-   Kirim ke AI + Konteks
-```
+### Penamaan
+13. Sisa nama lama **SIVT / SIVTY** masih ada di beberapa tempat. Daftar dan dampaknya ada di [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md#penamaan-yang-masih-memakai-sivt). Hati-hati: header backup `SIVTBK01` jangan diubah tanpa migrasi karena backup lama tidak akan terbaca.
 
-### 📐 Layer 1: BM25 Search
-
-Implementasi **BM25 (Best Match 25)** — standar industri untuk keyword search:
-
-- `K1 = 1.5` — term frequency saturation
-- `B = 0.75` — length normalization
-- `IDF = log(1 + (N - df + 0.5) / (df + 0.5))`
-
-**Kelebihan**: Akurat untuk kata kunci spesifik (KTP, KK, syarat).
-
-### 🧠 Layer 2: Semantic Search
-
-Ubah teks jadi **vector** via provider embedding, lalu hitung **cosine similarity**.
-
-**Kelebihan**: Paham makna, bukan cuma kata. Contoh:
-- "cara bikin kk" ≈ "syarat membuat kartu keluarga" (beda kata, makna sama)
-
-### 🔀 RRF Fusion
-
-**Reciprocal Rank Fusion (RRF)** — gabungkan ranking dari 2 sumber:
-
-```
-RRF_score(d) = Σ 1 / (k + rank(d))
-```
-
-`k = 60` (konstanta standar).
-
-**Hasil**: chunk yang muncul di **kedua** ranking dapat skor tinggi.
-
-### 🔄 Query Rewriting 🆕
-
-Ubah pertanyaan user jadi **keyword pencarian** via LLM:
-
-| Input | Output |
-|-------|--------|
-| "cara bikin KTP yang ilang gimana ya?" | "syarat KTP hilang, prosedur penggantian" |
-| "jam buka kantor hari sabtu?" | "jam pelayanan sabtu, jam operasional" |
-
-### ⚡ Smart Cache
-
-Query populer di-cache **1 jam**. Query mirip → cache hit → hemat token + cepat.
-
-### 📊 Confidence Level
-
-| Top Score | Confidence | Aksi |
-|-----------|-----------|------|
-| ≥ 0.03 | 100% | Kirim jawaban |
-| ≥ 0.02 | 70% | Kirim jawaban |
-| ≥ 0.015 | 40% | Kirim dengan konteks terbatas |
-| < 0.015 | 0% | Kirim suggestions |
-
-### 🎛️ Rebuild RAG Index
-
-Kalau upload pengetahuan baru tapi RAG belum update:
-1. Dashboard → **RAG Hybrid Stats** → **Rebuild RAG Index**
-2. Sistem akan re-embed semua chunk (butuh provider role `embedding`)
+### PWA
+14. `sw-admin.js` memakai strategi *cache-first* untuk JS/CSS, sehingga pembaruan admin bisa tertunda. Naikkan `CACHE_NAME` setiap rilis atau samakan dengan `sw.js` warga yang *network-first*.
+15. Meta viewport warga memakai `user-scalable=no`, yang menyulitkan pengguna yang perlu memperbesar tampilan.
+16. Ikon manifest 192 dan 512 memakai satu file `logo.png`. Sediakan dua ukuran asli, dan pisahkan `any` dari `maskable`. Unggahan logo disimpan dengan ekstensi aslinya (`logo.jpg`, `logo.webp`, ...), sehingga ikon PWA hanya cocok jika logo diunggah sebagai **PNG**.
 
 ---
 
-## 🕸️ KNOWLEDGE GRAPH (GRAPH RAG) 🆕
+## 📚 Dokumentasi Lengkap
 
-### 🎯 Konsep
-
-**Knowledge Graph** menyimpan **relasi antar konsep** dalam bentuk:
-
-```
-[Subjek] ──predikat──> [Objek]
-```
-
-Contoh:
-```
-[KK]  ──memerlukan──>  [KTP]
-[KK]  ──memerlukan──>  [Akta Kelahiran]
-[KTP] ──berlaku untuk──> [Warga 17+]
-```
-
-### 🛠️ Cara Kerja
-
-1. **Ekstraksi entitas** via NLP lokal (`compromise`) — ambil kata benda penting
-2. **Ekstraksi relasi** (co-occurrence) — kata benda yang muncul bareng jadi edge
-3. **Semantic triple extraction** via LLM (`graph-enricher.js`) — relasi lebih cerdas
-4. **Traversal** saat user bertanya — ambil konteks dari node sekitar
-
-### ✨ Semantic Enrichment (Beta)
-
-Menu **Knowledge Graph** → **Mulai Enrich**:
-
-- Proses N chunk (default 30)
-- Kirim ke provider role `enrichment`
-- LLM ekstrak triple → tambahkan edge semantic
-- **Hemat**: pakai provider gratis (Gemini/Groq) untuk enrichment
-
-### 🎨 Visualisasi
-
-- Node = konsep (makin besar = makin penting)
-- Edge = relasi (makin tebal = makin kuat)
-- Klik node → lihat detail + neighbor
-- Search box untuk cari node
-
-### 📊 Auto-Save
-
-Graph disimpan otomatis ke `data/knowledge-graph.json` tiap 60 detik kalau ada perubahan.
+| Dokumen | Isi |
+|---|---|
+| [`docs/ARSITEKTUR.md`](docs/ARSITEKTUR.md) | Alur chat, RAG, memori, graph, pipeline belajar, PWA, penamaan |
+| [`docs/API.md`](docs/API.md) | Seluruh endpoint REST beserta contoh |
+| [`docs/DATABASE.md`](docs/DATABASE.md) | Skema PostgreSQL dan pemetaan modul |
+| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) | Instalasi server, Nginx, HTTPS, PM2, backup, pemecahan masalah |
+| [`docs/PANDUAN-ADMIN.md`](docs/PANDUAN-ADMIN.md) | Panduan penggunaan dashboard untuk petugas |
 
 ---
 
-## 💾 SISTEM MEMORI AI
+<div align="center">
 
-### 🎯 Konsep
+Dibuat untuk **Kemantren Tegalrejo, Kota Yogyakarta** 🏛️
 
-Memori menyimpan **Q&A tervalidasi** dari percakapan. AI cek memori **SEBELUM** RAG.
-
-**Keuntungan**:
-- 🚀 Respon lebih cepat
-- 💰 Hemat token API
-- 🎯 Jawaban konsisten
-
-### 📊 Threshold
-
-| Setting | Default | Fungsi |
-|---------|---------|--------|
-| `memoryMinScore` | 60 | Min skor untuk **pakai** memori |
-| `memorySaveThreshold` | 40 | Min skor untuk **simpan** baru |
-
-### ✅ Syarat Simpan ke Memori
-
-Jawaban baru disimpan **hanya jika**:
-- ✅ Panjang ≥50 karakter
-- ✅ Tidak diakhiri `:`
-- ✅ Tidak diakhiri `...`
-- ✅ Bukan refusal
-- ✅ RAG confidence ≥70%
-
-### 🔤 Variasi Pertanyaan
-
-Memori mendukung **variasi**:
-```
-Pertanyaan  : syarat membuat kk baru
-Variasi     : syarat kk baru, cara buat kk, syarat bikin kk
-```
-
-### 📈 Hit Counter
-
-Setiap dipakai, `hit` bertambah. Semakin sering → bonus skor.
-
----
-
-## 🛡️ ANTI-HALUSINASI (CLASSIFIER)
-
-### 🎯 Konsep
-
-Sebelum AI menjawab, **Classifier** cek apakah pertanyaan:
-1. **Relevan dengan Kemantren** → Lanjut
-2. **Di luar topik** → Tolak sopan
-
-### 🚫 Out-of-Scope Keywords
-
-```
-politik, presiden, pemilu, partai
-cuaca, ramalan, zodiak, horoskop
-saham, crypto, bitcoin, trading
-jodoh, mantan, pacar
-game, ml, pubg, free fire
-film, artis, selebgram
-resep, masak, kue
-obat, penyakit, dokter
-sim, stnk, bpkb
-```
-
-### ✅ In-Scope Keywords
-
-```
-ktp, kk, kartu keluarga, akta, akte
-kelahiran, kematian, pernikahan, nikah
-pindah, domisili, usaha, umkm
-surat, keterangan, pengantar
-kemantren, tegalrejo, kelurahan
-syarat, biaya, gratis, jam
-alamat, kontak, telepon
-```
-
-### 🧠 Logika Keputusan
-
-| Kondisi | Hasil |
-|---------|-------|
-| Ada OUT + tidak ada IN | ❌ Redirect |
-| Ada IN | ✅ Proceed |
-| Ada knowledge match | ✅ Proceed |
-| Tidak ada keyword | ⚠️ Proceed with caution |
-
----
-
-## 🎓 AUTO-LEARNING SYSTEM
-
-### 🎯 Konsep
-
-Deteksi pertanyaan **populer** yang sering ditanya tapi belum ada di pengetahuan.
-
-### 📊 Frekuensi → Prioritas
-
-| Frekuensi | Prioritas | Ikon |
-|-----------|-----------|------|
-| ≥10x | 🚨 Urgent | Merah |
-| ≥5x | ⚠️ Tinggi | Orange |
-| ≥3x | 📌 Sedang | Biru |
-| <3x | ℹ️ Normal | Abu |
-
-### 🔍 Similarity Detection
-
-**Levenshtein Distance** untuk deteksi pertanyaan mirip. Threshold: **85%**.
-
-```
-"Syarat KK baru"     ← 100%
-"syarat membuat kk"   ← 85% (dianggap sama)
-"cara buat kk baru"   ← 78% (dianggap sama)
-"KTP hilang"          ← 20% (beda)
-```
-
-### 📝 Variant Collection
-
-Setiap pertanyaan mirip disimpan sebagai variant:
-```json
-{
-  "question": "syarat membuat kk baru",
-  "variants": ["syarat membuat kk", "cara buat kk baru"],
-  "count": 15,
-  "priority": "urgent"
-}
-```
-
----
-
-## 🔄 UNIFIED LEARNING PIPELINE 🆕
-
-### 🎯 Konsep
-
-**1x jawab admin = 5 sistem terupdate otomatis:**
-
-Saat admin jawab pertanyaan di menu **"Tak Terjawab"** atau **"Auto-Learning"**:
-
-1. ✅ **Buku Pengetahuan** — Append otomatis ke `buku-pengetahuan.md`
-2. ✅ **Knowledge Graph** — Update incremental (+ nodes, + edges)
-3. ✅ **Auto-Learning Queue** — Tandai resolved
-4. ✅ **Pertanyaan Tak Terjawab** — Tandai resolved
-5. ✅ **Semantic Triple** — Ekstrak triple baru via LLM (opsional)
-
-### 🚀 Cara Pakai
-
-1. Buka menu **Tak Terjawab** atau **Auto-Learning**
-2. Klik **➕ Tambah Jawaban**
-3. Isi kategori (opsional)
-4. Isi **jawaban lengkap** (min 20 karakter)
-5. Klik **Simpan & Update Semua**
-6. Lihat progress pipeline di modal:
-   ```
-   ✅ Buku Pengetahuan terupdate
-   ✅ Knowledge Graph +12 edges
-   ✅ Resolved: Tak Terjawab ✓ Auto-Learning ✓
-   ✅ Semantic: 4 triple diekstrak
-   ```
-
-### 💡 Kenapa Powerful?
-
-Tanpa unified pipeline, admin harus:
-- Append manual ke `.md`
-- Rebuild graph
-- Tandai resolved di 2 tempat
-- Trigger enrichment manual
-
-Dengan unified: **1 klik, semua selesai**.
-
----
-
-## ⭐ FEEDBACK & ANALYTICS
-
-### 👍 Feedback User
-
-Setiap jawaban AI, user bisa kasih:
-- 👍 **Berguna**
-- 👎 **Kurang tepat**
-
-### 📊 Analytics Tracking
-
-| Event | Kapan |
-|-------|-------|
-| `totalChats` | Setiap chat |
-| `totalAnswers` | AI berhasil jawab |
-| `totalRefusals` | AI menolak jawab |
-| `totalMemoryHits` | Jawaban dari memori |
-| `totalRagHits` | Jawaban dari RAG |
-| `totalOutOfScope` | Out of topik |
-
-### 📈 Akurasi Formula
-
-```
-Akurasi = (Total Answers - Total Refusals) / Total Answers × 100%
-```
-
----
-
-## 🔐 KEAMANAN
-
-| Data | Metode |
-|------|--------|
-| API Keys (`providers.json.enc`) | AES-256-GCM |
-| Backup files | AES-256 |
-| Password admin | bcrypt (10 rounds) |
-| JWT Token | HS256 |
-| Cookies | httpOnly, sameSite=lax |
-
-### 🚦 Rate Limiting
-
-| Endpoint | Limit |
-|----------|-------|
-| `/api/*` | 500 req / 15 menit |
-| `/api/chat` | 20 req / menit |
-| `/api/admin/login` | 10 req / 15 menit |
-
-### 🛡️ File Protection
-
-File ini **tidak bisa diakses publik**: `.env`, `data/*.json`, `data/*.enc`, `knowledge/*`, `memory/*`, `logs/*`.
-
----
-
-## 🔌 API ENDPOINTS
-
-### 🌐 Public Endpoints
-
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| GET | `/api/config/public` | Config publik |
-| GET | `/api/health` | Health check |
-| GET | `/api/topics` | Daftar topik |
-| POST | `/api/chat` | Chat dengan AI (SSE) |
-| POST | `/api/feedback` | Kirim feedback |
-
-### 🔐 Admin Endpoints (JWT Required)
-
-| Method | Endpoint | Deskripsi |
-|--------|----------|-----------|
-| POST | `/api/admin/login` | Login |
-| POST | `/api/admin/logout` | Logout |
-| GET | `/api/admin/check` | Cek session |
-| GET/POST | `/api/admin/config` | Config |
-| GET | `/api/admin/dashboard/stats` | Stats |
-| POST | `/api/admin/providers/add` | Tambah provider |
-| POST | `/api/admin/providers/remove` | Hapus provider |
-| POST | `/api/admin/providers/toggle` | Toggle on/off |
-| POST | `/api/admin/providers/update-models` | Update models |
-| POST | `/api/admin/providers/update-key` | Update API key |
-| POST | `/api/admin/providers/update-roles` | 🆕 Update roles |
-| POST | `/api/admin/providers/test` | Test koneksi |
-| GET | `/api/admin/knowledge/...` | Kelola pengetahuan |
-| GET | `/api/admin/memory` | Lihat memori |
-| POST | `/api/admin/memory/delete` | Hapus memori |
-| GET | `/api/admin/unanswered` | Tak terjawab |
-| POST | `/api/admin/unified/add-to-knowledge` | 🆕 Unified pipeline |
-| GET | `/api/admin/learning/queue` | Learning queue |
-| GET | `/api/admin/feedback/stats` | Stats feedback |
-| GET | `/api/admin/graph/visualize` | 🆕 Data graph |
-| GET | `/api/admin/graph/node/:id` | 🆕 Detail node |
-| POST | `/api/admin/graph/enrich` | 🆕 Enrich via AI |
-| GET | `/api/admin/rag/stats` | 🆕 RAG stats |
-| POST | `/api/admin/rag/rebuild` | 🆕 Rebuild index |
-| GET | `/api/admin/notifications` | Notifikasi |
-| POST | `/api/admin/backup` | Backup manual |
-| POST | `/api/admin/change-password` | Ganti password |
-
-### 📡 Chat API (SSE)
-
-**Request**:
-```json
-POST /api/chat
-{ "message": "Syarat membuat KK?", "sessionId": "sess_xxx" }
-```
-
-**Response Stream**:
-```
-data: {"sessionId":"sess_xxx"}
-data: {"meta":{"source":"ai","context":6,"confidence":100}}
-data: {"meta":{"provider":"Mistral AI","model":"open-mistral-nemo"}}
-data: {"delta":"Untuk"}
-data: {"delta":" membuat"}
-data: {"delta":" KK baru..."}
-data: {"done":true}
-```
-
----
-
-## 🐛 TROUBLESHOOTING
-
-### Error: `Cannot find module 'X'`
-**Solusi**: `npm install`
-
-### Error: `EADDRINUSE`
-**Solusi**: Ganti port di `.env` → `PORT=3001`
-
-### Error: `FATAL: JWT_SECRET tidak ada`
-**Solusi**:
-```bash
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
-Paste hasilnya ke `.env`.
-
-### AI Tidak Menjawab
-**Cek**:
-1. Log terminal — cari `[FAIL]`
-2. Menu **Provider AI** → **Test**
-3. Error 401 → API key salah
-4. Error 429 → Kuota habis
-5. Error 404 → Model tidak ada
-
-### RAG Tidak Temukan Chunk
-**Solusi**:
-1. Upload file `.md` / `.txt` di **Pengetahuan**
-2. Klik **Reload**
-3. **Rebuild RAG Index** dari dashboard
-
-### Graph Kosong / Tidak Muncul Node
-**Solusi**:
-1. Pastikan sudah upload pengetahuan
-2. Graph dibangun otomatis saat load knowledge
-3. Atau klik **Rebuild Graph** di menu Graph
-
-### Enrichment Gagal
-**Solusi**:
-1. Pastikan ada provider role `enrichment`
-2. Kalau tidak ada, provider `chat` akan dipakai
-3. Test dengan 5 chunk dulu
-
-### Memori Tidak Bekerja
-**Cek**:
-1. Menu **Memori AI** — ada data?
-2. Threshold `memoryMinScore` — default 60
-3. 50-60 untuk akurasi, 40-50 untuk responsif
-
-### Model Gemini/Groq Tidak Ada
-**Error**: `HTTP 404: Model tidak tersedia`
-**Solusi**: Menu Provider → ✏️ Edit Model → update ke model terbaru.
-
-### Reset Provider Lama
-```bash
-del data\providers.json.enc
-npm start
-```
-Lalu tambah ulang via dashboard.
-
-### Backup Tidak Jalan
-**Cek**:
-1. Log terminal — cari `[CRON]`
-2. Backup otomatis jam **02:00** — server harus nyala
-3. Manual: klik **Backup Sekarang**
-
----
-
-## 📈 TIPS & BEST PRACTICES
-
-### 🎯 Untuk Akurasi AI
-1. **Buku pengetahuan lengkap** — semakin lengkap semakin akurat
-2. **Format konsisten** — selalu pakai `Kata kunci :` & `Jawaban :`
-3. **Variasi kata kunci** — tambahkan sinonim & typo umum
-4. **Update berkala** — cek "Tak Terjawab" tiap minggu
-5. **Enrich graph** — pakai LLM untuk triple semantic
-
-### 💰 Hemat Token API
-1. **Memory threshold 60** — jawaban populer dari memori
-2. **RAG confidence 70** — hanya kirim kalau yakin
-3. **Provider gratis dulu** — Gemini, Groq, OpenRouter
-4. **Query cache** aktif — query populer dari cache
-5. **Pilih provider role tepat**:
-   - `chat` → Gemini (cepat & pintar)
-   - `embedding` → Gemini text-embedding-004 (gratis)
-   - `query-rewriter` → Groq (paling cepat)
-   - `enrichment` → Gemini/Groq (jarang dipakai)
-
-### 🔒 Keamanan
-1. **Ganti password default** — jangan `admin123`
-2. **Random JWT_SECRET** — 64 char hex
-3. **Random ENCRYPTION_KEY** — 64 char hex
-4. **Backup rutin** — minimal 1x per minggu
-5. **Update dependencies** — `npm update` tiap bulan
-
-### 🚀 Performa
-1. **Restart server** kalau memory leak
-2. **Backup lama dihapus** — retention 30 hari
-3. **Session cleanup** — auto 2 jam
-4. **Monitor log** — cek output `npm start`
-5. **Rebuild RAG** kalau lambat — mungkin index korup
-
----
-
-## 🎓 KONSEP PENTING
-
-### RAG vs Memory vs AI vs Graph
-
-| Aspek | RAG | Memory | AI | Graph |
-|-------|-----|--------|-----|-------|
-| **Sumber** | Buku pengetahuan | Q&A lama | LLM | Relasi antar konsep |
-| **Kecepatan** | Cepat | Sangat cepat | Tergantung API | Sangat cepat |
-| **Biaya** | Gratis | Gratis | Bayar | Gratis |
-| **Akurasi** | 100% dari buku | 100% dari sebelumnya | Bisa halusinasi | 100% dari relasi |
-| **Kapan** | Pertanyaan baru | Pertanyaan mirip | Umum | Konteks tambahan |
-
-### 🔀 Flow Optimasi
-
-```
-Pertanyaan Populer  → Memory (Cepat + Hemat)
-Pertanyaan Mirip    → RAG Hybrid (Akurat + Gratis)
-Pertanyaan Umum     → AI + Graph (Fleksibel + Kontekstual)
-Pertanyaan Out      → Tolak (Sopan)
-Jawaban Admin       → Unified Pipeline (5 sistem update)
-```
-
----
-
-## ❓ FAQ (FREQUENTLY ASKED QUESTIONS)
-
-**Q: Apakah bisa offline?**
-A: Tidak sepenuhnya. Butuh internet untuk akses AI provider. UI bisa diakses via PWA offline.
-
-**Q: Berapa biaya operasional?**
-A: Minimal. Kalau pakai provider gratis (Gemini, Groq, OpenRouter), bisa **Rp 0**.
-
-**Q: Apakah data warga disimpan?**
-A: Yang disimpan hanya pertanyaan populer (di memori & learning queue). **Data pribadi warga TIDAK disimpan.**
-
-**Q: Bisa dipakai instansi lain?**
-A: Bisa. Ganti nama AI, logo, dan isi buku pengetahuan sesuai instansi.
-
-**Q: Bagaimana kalau AI salah jawab?**
-A: Admin bisa koreksi lewat menu "Tak Terjawab", "Auto-Learning", atau "Memori AI".
-
-**Q: Support Bahasa Jawa?**
-A: Bisa ditambahkan di `systemInstruction` prompt AI.
-
-**Q: Berapa lama setup awal?**
-A: ~15-30 menit untuk instalasi + tambah 1 provider + upload pengetahuan dasar.
-
-**Q: Bisa jalan di HP?**
-A: Ya. Buka di browser HP, atau install sebagai PWA (Add to Home Screen).
-
-**Q: Apa itu RAG Hybrid?**
-A: Gabungan 2 metode pencarian (BM25 keyword + Semantic embedding) dengan RRF Fusion. Lebih akurat dari RAG biasa.
-
-**Q: Apa itu Knowledge Graph?**
-A: Struktur relasi antar konsep (contoh: "KK memerlukan KTP"). Membantu AI paham konteks lebih dalam.
-
-**Q: Apa itu Unified Learning Pipeline?**
-A: Fitur di mana 1x admin jawab pertanyaan = otomatis update 5 sistem (buku pengetahuan, graph, learning queue, unanswered, semantic triple).
-
-**Q: Apa itu Provider Role System?**
-A: Setiap provider AI bisa punya role berbeda: chat, embedding, enrichment, query-rewriter. 1 provider bisa punya banyak role.
-
----
-
-## 📞 KONTAK & LISENSI
-
-### 🏢 Kemantren Tegalrejo
-
-- 📍 **Alamat**: Jl. Tegalrejo No.1, Tegalrejo, Kota Yogyakarta, DIY 55241
-- 🧭 **Patokan**: dekat Pasar Tegalrejo, seberang SMP Negeri, ±500 m dari Jalan Magelang
-- 🚌 **Transportasi**: Trans Jogja jalur 2A/2B, turun di halte Tegalrejo
-- 📞 **Telepon**: (0274) 123456
-- 📱 **WhatsApp**: 0812-3456-7890
-- ✉️ **Email**: kemantren.tegalrejo@jogjakota.go.id
-- 🌐 **Website**: tegalrejo.jogjakota.go.id
-- 📸 **Instagram**: @kemantren.tegalrejo
-
-### 🕐 Jam Pelayanan
-
-| Hari | Jam |
-|------|-----|
-| Senin – Jumat | 08.00 – 15.00 WIB |
-| Istirahat | 12.00 – 13.00 WIB |
-| Sabtu | 08.00 – 12.00 WIB |
-| Minggu & Libur | TUTUP |
-
-### 🚨 Kontak Darurat
-
-| Layanan | Nomor |
-|---------|-------|
-| Ambulans | 118 |
-| Polisi | 110 |
-| Pemadam Kebakaran | 113 |
-| SAR | 115 |
-| PLN | 123 |
-| PDAM | (0274) 1234567 |
-
-> ✅ **Semua layanan administrasi di Kemantren Tegalrejo GRATIS.** Kalau ada pihak yang minta biaya, laporkan ke **(0274) 123456**.
-
-### 📄 Lisensi
-
-**ISC License** — Bebas digunakan untuk keperluan internal Kemantren Tegalrejo Yogyakarta.
-
-🔗 Repository: [https://github.com/julmensir/Magang-PSI](https://github.com/julmensir/Magang-PSI)
-
----
-
-## 🙏 TERIMA KASIH
-
-Aplikasi ini dibuat untuk mempermudah warga Kemantren Tegalrejo dalam mengakses informasi layanan administrasi kependudukan.
-
-**Semoga bermanfaat!** 🇮🇩
-
----
-
-*README ini dibuat dengan ❤️ untuk SIVT AI — Sistem Informasi Virtual TEGALREJO*
-
-*Last updated: 2026 | Version 2.1.0*
+</div>
